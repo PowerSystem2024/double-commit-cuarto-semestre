@@ -26,5 +26,20 @@ En esta etapa académica trabajamos con distintos lenguajes, aplicando conceptos
 ---
 
 ## 📂 Estructura del Repositorio
-
+```bash
+semestre_4/
+├── python/
+│   └── laboratorio_usuarios    
+│       ├── entidades
+│       │   └── Usuario.py
+│       └── utils
+│           └── connection.py     
+├── java/
+│   └── (vacío)
+├── javascript
+... to be continued
+         /\_/\ 
+        ( o.o ) 
+        /  ^  \ 
+```
 
