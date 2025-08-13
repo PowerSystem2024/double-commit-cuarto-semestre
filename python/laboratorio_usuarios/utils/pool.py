@@ -1,5 +1,5 @@
 import psycopg2
-from psycopg2 import pool
+from psycopg2.pool import SimpleConnectionPool
 
 
 class Pool:
@@ -9,7 +9,7 @@ class Pool:
     def iniciar_pool(cls):
         if cls._pool is None:
             try:
-                cls._pool = pool.SimpleConnectionPool(
+                cls._pool = SimpleConnectionPool(
                     minconn=1,  # mínimo de conexiones abiertas
                     maxconn=5,  # máximo de conexiones abiertas
                     host="localhost",
