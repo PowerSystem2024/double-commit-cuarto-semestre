@@ -10,8 +10,8 @@ PASSWORD_DB = os.getenv("DB_PASSWORD")
 
 class Conexion:
     _DATABASE = "laboratorio_usuarios"
-    _USERNAME = USERNAME_DB
-    _PASSWORD = PASSWORD_DB
+    _USERNAME = "postgres"
+    _PASSWORD = 12076596
     _PORT = "5432"
     _HOST = "127.0.0.1"
     _conexion = None

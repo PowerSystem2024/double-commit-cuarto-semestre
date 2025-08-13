@@ -16,6 +16,7 @@ class UsuarioDAO:
     SET nombre=%s, email=%s, contrasenia=%s,
     WHERE id_usuario=%s
     """
+    
     _ELIMINAR_USUARIO = "DELETE FROM usuario WHERE id_usuario=%s"
 
     @classmethod
@@ -29,7 +30,7 @@ class UsuarioDAO:
                 if usuarios:
                     for usuario in usuarios:
                         id_usuario, nombre, email, contrasenia = usuario
-                        registro = Usuario(
+                        registro =Usuario(
                             username=nombre,
                             email=email,
                             password=contrasenia,
