@@ -6,3 +6,8 @@
 labEnv
 /venv
 /myVenv
+.venv
+
+# Archivos de python/caché
+__pycache__
+*.pyc

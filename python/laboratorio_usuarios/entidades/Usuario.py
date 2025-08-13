@@ -26,8 +26,23 @@ class Usuario:
     def password(self, password):
         self._password = password
         
+    from colorama import Fore, Style
+
     def __str__(self):
-        return f"""{Fore.GREEN}{Style.BRIGHT}
-    ID: {self._id_usuario}
-    Usuario: {self._username}{Style.RESET_ALL}
-    """
+        id_line = f"ID: {self._id_usuario}"
+        user_line = f"Usuario: {self._username}"
+
+        # Calculamos el ancho del recuadro según el texto más largo
+        max_length = max(len(id_line), len(user_line))
+        
+        top_border = "┌" + "─" * (max_length + 2) + "┐"
+        bottom_border = "└" + "─" * (max_length + 2) + "┘"
+
+        return (
+            f"{Fore.GREEN}{Style.BRIGHT}"
+            f"{top_border}\n"
+            f"│ {id_line.ljust(max_length)} │\n"
+            f"│ {user_line.ljust(max_length)} │\n"
+            f"{bottom_border}"
+            f"{Style.RESET_ALL}"
+        )

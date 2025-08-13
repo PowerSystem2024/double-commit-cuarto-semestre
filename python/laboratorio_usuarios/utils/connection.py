@@ -3,6 +3,7 @@ import sys, os
 from dotenv import load_dotenv
 from colorama import Fore, Style
 
+# Carga el .env (variables de entorno)
 load_dotenv()
 USERNAME_DB = os.getenv("DB_USER")
 PASSWORD_DB = os.getenv("DB_PASSWORD")
