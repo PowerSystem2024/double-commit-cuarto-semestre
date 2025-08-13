@@ -1,4 +1,6 @@
 from colorama import Fore, Style, init
+from entidades.Usuario import Usuario
+from controllers.usuario import UsuarioDAO
 
 init(autoreset=True)  # Para que los colores se reseteen automáticamente
 
@@ -35,19 +37,35 @@ def menu_handler():
 
         if option == "1":
             print("📋 Listando usuarios...")
-            # usuarios = UsuarioDAO.listar()
+            usuarios = UsuarioDAO.listar()
+            if not usuarios:
+                print(
+                    f"{Fore.YELLOW}No hay usuarios registrados.{Style.RESET_ALL}"
+                )
+            else:
+                for usuario in usuarios:
+                    print(
+                        f"\n{Fore.WHITE}{Style.BRIGHT}{usuario}{Style.RESET_ALL}"
+                    )
         elif option == "2":
             print("➕ Agregando usuario...")
-            # username = input("Ingrese el nombre: ")
-            # password = input("Ingrese la contraseña: ")
-            # usuario = Usuario(username, password)
-            # UsuarioDAO.insertar(usuario)
+            username = input("Ingrese el nombre: ").strip()
+            email = input("Ingrese el email: ").strip()
+            password = input("Ingrese la contraseña: ").strip()
+            usuario = Usuario(username, email, password)
+            UsuarioDAO.insertar(usuario)
         elif option == "3":
             print("✏️ Actualizando usuario...")
-            # Implementación DAO
+            username = input("Ingrese el nuevo nombre: ").strip()
+            email = input("Ingrese el nuevo email: ").strip()
+            password = input("Ingrese la nueva contraseña: ").strip()
+            id_usuario = input("Ingrese el ID del usuario a actualizar: ").strip()
+            usuario = Usuario(username, email, password, id_usuario)
+            UsuarioDAO.actualizar(usuario)
         elif option == "4":
-            # Agregar implementación DAO
             print("🗑 Eliminando usuario...")
+            id_usuario = input("Ingrese el ID del usuario a eliminar: ").strip()
+            UsuarioDAO.eliminar(id_usuario)
         elif option == "5":
             print("👋 Saliendo de la aplicación...")
             break
