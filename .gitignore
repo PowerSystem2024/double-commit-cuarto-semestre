@@ -3,6 +3,6 @@
 .env.*
 
 # Entorno virtual
-/laboratorioEnv
+labEnv
 /venv
 /myVenv
