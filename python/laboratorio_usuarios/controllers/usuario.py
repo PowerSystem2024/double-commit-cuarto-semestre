@@ -1,6 +1,6 @@
 from entidades.Usuario import Usuario
 from utils.connection import Conexion
-
+from logger.logger_base import logger
 
 class UsuarioDAO:
     _usuario_actual = None
@@ -40,6 +40,7 @@ class UsuarioDAO:
                 return registros
         except Exception as e:
             print(f"Error al leer usuarios: {e}")
+            logger.error(msg=f"Error al leer usuarios: {e}")
             return []
 
     @classmethod
@@ -63,6 +64,7 @@ class UsuarioDAO:
                 print(f"{usuario}")
         except Exception as e:
             print(f"Error al crear usuario: {e}")
+            logger.error(msg=f"Error al leer usuario: {e}")
 
     @classmethod
     def actualizar_usuario(cls, usuario):
@@ -84,6 +86,7 @@ class UsuarioDAO:
                 print("")
         except Exception as e:
             print(f"Error al actualizar usuario: {e}")
+            logger.error(msg=f"Error al actualizar usuario: {e}")
 
     @classmethod
     def eliminar_usuario(cls, id_usuario):
@@ -98,4 +101,5 @@ class UsuarioDAO:
                 else:
                     print(f"Usuario eliminado exitosamente, ID: {id_usuario}")
         except Exception as e:
-            print(f"Error al eliminar usuario: {e}")  
+            print(f"Error al eliminar usuario: {e}")
+            logger.error(msg=f"Error al eliminar usuario: {e}")
