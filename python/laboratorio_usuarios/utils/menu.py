@@ -60,7 +60,7 @@ def menu_handler():
             password = input("Ingrese la nueva contraseña: ").strip()
             email = input("Ingrese el nuevo email: ").strip()
             id_usuario = input("Ingrese el ID del usuario a actualizar: ").strip()
-            usuario = Usuario(username, password, email)
+            usuario = Usuario(username, password, email, id_usuario)
             UsuarioDAO.actualizar_usuario(usuario)
         elif option == "4":
             print("🗑 Eliminando usuario...")
