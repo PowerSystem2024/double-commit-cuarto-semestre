@@ -37,7 +37,7 @@ def menu_handler():
 
         if option == "1":
             print("📋 Listando usuarios...")
-            usuarios = UsuarioDAO.listar()
+            usuarios = UsuarioDAO.listar_usuarios()
             if not usuarios:
                 print(
                     f"{Fore.YELLOW}No hay usuarios registrados.{Style.RESET_ALL}"
