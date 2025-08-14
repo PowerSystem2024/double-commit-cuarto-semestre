@@ -13,7 +13,7 @@ class Usuario:
     
     @property
     def username(self):
-        return self.username
+        return self._username
     
     @username.setter
     def username(self, username):

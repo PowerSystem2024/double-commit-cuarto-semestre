@@ -7,13 +7,13 @@ class UsuarioDAO:
     _SELECCIONAR_USUARIO = "SELECT * FROM usuario ORDER BY id_usuario"
 
     _INSERTAR_USUARIO = """
-    INSERT INTO usuario(nombre, email, contrasenia)
+    INSERT INTO usuario(username, password, email)
     VALUES (%s, %s, %s)
     """
 
     _ACTUALIZAR_USUARIO = """
     UPDATE usuario
-    SET nombre=%s, email=%s, contrasenia=%s,
+    SET username=%s, password=%s, email=%s,
     WHERE id_usuario=%s
     """
     
@@ -29,11 +29,11 @@ class UsuarioDAO:
                 usuarios = cursor.fetchall()
                 if usuarios:
                     for usuario in usuarios:
-                        id_usuario, nombre, email, contrasenia = usuario
+                        id_usuario, username, password, email = usuario
                         registro =Usuario(
-                            username=nombre,
+                            username=username,
+                            password=password,
                             email=email,
-                            password=contrasenia,
                             id_usuario=id_usuario,
                         )
                         registros.append(registro)
@@ -52,8 +52,8 @@ class UsuarioDAO:
                     cls._INSERTAR_USUARIO,
                     (
                         usuario.username,
-                        usuario.email,  
-                        usuario.password  
+                        usuario.password,
+                        usuario.email,   
                     ),
                 )
                 conexion.commit()
@@ -74,8 +74,8 @@ class UsuarioDAO:
                     cls._ACTUALIZAR_USUARIO,
                     (
                         usuario.username,
-                        usuario.email,
                         usuario.password,
+                        usuario.email,
                         usuario.id_usuario,
                     ),
                 )
