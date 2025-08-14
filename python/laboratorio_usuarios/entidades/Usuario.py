@@ -34,8 +34,6 @@ class Usuario:
     @email.setter
     def email(self, email):
         self._email = email
-        
-    from colorama import Fore, Style
 
     def __str__(self):
         id_line = f"ID: {self._id_usuario}"

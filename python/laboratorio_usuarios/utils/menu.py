@@ -50,22 +50,22 @@ def menu_handler():
         elif option == "2":
             print("➕ Agregando usuario...")
             username = input("Ingrese el nombre: ").strip()
-            email = input("Ingrese el email: ").strip()
             password = input("Ingrese la contraseña: ").strip()
-            usuario = Usuario(username, email, password)
-            UsuarioDAO.insertar(usuario)
+            email = input("Ingrese el email: ").strip()
+            usuario = Usuario(username, password, email)
+            UsuarioDAO.insertar_usuario(usuario)
         elif option == "3":
             print("✏️ Actualizando usuario...")
             username = input("Ingrese el nuevo nombre: ").strip()
-            email = input("Ingrese el nuevo email: ").strip()
             password = input("Ingrese la nueva contraseña: ").strip()
+            email = input("Ingrese el nuevo email: ").strip()
             id_usuario = input("Ingrese el ID del usuario a actualizar: ").strip()
-            usuario = Usuario(username, email, password, id_usuario)
-            UsuarioDAO.actualizar(usuario)
+            usuario = Usuario(username, password, email)
+            UsuarioDAO.actualizar_usuario(usuario)
         elif option == "4":
             print("🗑 Eliminando usuario...")
             id_usuario = input("Ingrese el ID del usuario a eliminar: ").strip()
-            UsuarioDAO.eliminar(id_usuario)
+            UsuarioDAO.eliminar_usuario(id_usuario)
         elif option == "5":
             print("👋 Saliendo de la aplicación...")
             break
