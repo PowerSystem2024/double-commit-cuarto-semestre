@@ -81,6 +81,7 @@ class UsuarioDAO:
                 )
                 conexion.commit()
                 print(f"Usuario actualizado exitosamente: {usuario}")
+                print("")
         except Exception as e:
             print(f"Error al actualizar usuario: {e}")
 
