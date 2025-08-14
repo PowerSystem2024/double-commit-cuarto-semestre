@@ -1,10 +1,11 @@
 from colorama import Style, Fore
 
 class Usuario:
-    def __init__(self, username: str, password: str, id_usuario: int = None):
+    def __init__(self, username: str, password: str, email: str, id_usuario: int = None):
         self._id_usuario = id_usuario
         self._username = username
         self._password = password
+        self._email = email
         
     @property
     def id_usuario(self):
@@ -25,6 +26,14 @@ class Usuario:
     @password.setter
     def password(self, password):
         self._password = password
+        
+    @property
+    def email(self):
+        return self._email
+    
+    @email.setter
+    def email(self, email):
+        self._email = email
         
     from colorama import Fore, Style
 
