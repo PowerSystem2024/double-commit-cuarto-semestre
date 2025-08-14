@@ -13,7 +13,7 @@ class UsuarioDAO:
 
     _ACTUALIZAR_USUARIO = """
     UPDATE usuario
-    SET username=%s, password=%s, email=%s,
+    SET username=%s, password=%s, email=%s
     WHERE id_usuario=%s
     """
     
