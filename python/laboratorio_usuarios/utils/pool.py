@@ -1,6 +1,8 @@
-import psycopg2
 from psycopg2.pool import SimpleConnectionPool
+from dotenv import load_dotenv
 
+DB_USER = load_dotenv("DB_USER")
+DB_PASSWORD = load_dotenv("DB_PASSWORD")
 
 class Pool:
     _pool = None
@@ -13,8 +15,8 @@ class Pool:
                     minconn=1,  # mínimo de conexiones abiertas
                     maxconn=5,  # máximo de conexiones abiertas
                     host="localhost",
-                    user="postgres",
-                    password="tu_password",
+                    user=DB_USER,
+                    password=DB_PASSWORD,
                     port="5432",
                     database="laboratorio_usuarios",
                 )
