@@ -1,10 +1,11 @@
 from colorama import Style, Fore
 
 class Usuario:
-    def __init__(self, username: str, password: str, id_usuario: int = None):
+    def __init__(self, username: str, password: str, email: str, id_usuario: int = None):
         self._id_usuario = id_usuario
         self._username = username
         self._password = password
+        self._email = email
         
     @property
     def id_usuario(self):
@@ -12,7 +13,7 @@ class Usuario:
     
     @property
     def username(self):
-        return self.username
+        return self._username
     
     @username.setter
     def username(self, username):
@@ -26,8 +27,29 @@ class Usuario:
     def password(self, password):
         self._password = password
         
+    @property
+    def email(self):
+        return self._email
+    
+    @email.setter
+    def email(self, email):
+        self._email = email
+
     def __str__(self):
-        return f"""{Fore.GREEN}{Style.BRIGHT}
-    ID: {self._id_usuario}
-    Usuario: {self._username}{Style.RESET_ALL}
-    """
+        id_line = f"ID: {self._id_usuario}"
+        user_line = f"Usuario: {self._username}"
+
+        # Calculamos el ancho del recuadro según el texto más largo
+        max_length = max(len(id_line), len(user_line))
+        
+        top_border = "┌" + "─" * (max_length + 2) + "┐"
+        bottom_border = "└" + "─" * (max_length + 2) + "┘"
+
+        return (
+            f"{Fore.GREEN}{Style.BRIGHT}"
+            f"{top_border}\n"
+            f"│ {id_line.ljust(max_length)} │\n"
+            f"│ {user_line.ljust(max_length)} │\n"
+            f"{bottom_border}"
+            f"{Style.RESET_ALL}"
+        )
