@@ -1,4 +1,4 @@
-from .pool import Pool 
+from pool import Pool
 
 class CursorDelPool:
     def __init__(self):
