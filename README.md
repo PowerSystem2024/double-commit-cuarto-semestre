@@ -13,18 +13,25 @@ En esta etapa académica trabajamos con distintos lenguajes, aplicando conceptos
 
 - 🐍 **Python**
 - ☕ **Java**
-- 🌐 **JavaScript**
-
----
-
-## 🎯 Objetivos del Repositorio
-
-✅ Fortalecer las habilidades de programación.  
-✅ Desarrollar proyectos colaborativos.  
-✅ Prepararnos para entornos laborales reales.  
+- 🌐 **JavaScript**  
 
 ---
 
 ## 📂 Estructura del Repositorio
-
+```bash
+semestre_4/
+├── python/
+│   └── laboratorio_usuarios    
+│       ├── entidades
+│       │   └── Usuario.py
+│       └── utils
+│           └── connection.py     
+├── java/
+│   └── (vacío)
+├── javascript
+... to be continued
+         /\_/\ 
+        ( o.o ) 
+        /  ^  \ 
+```
 

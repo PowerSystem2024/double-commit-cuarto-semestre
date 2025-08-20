@@ -1,0 +1,245 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(#e0f7fa, #ffffff);
+  color: #333;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 1.8em;
+  margin-bottom: 15px;
+}
+
+header {
+  display: flex;
+  height: 56px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#seleccionar-personaje {
+  width: 60%;
+  margin: 16px auto;
+}
+
+#seleccionar-personaje label {
+  display: inline-block;
+  margin: 10px;
+  cursor: pointer;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+#seleccionar-personaje label:hover {
+  border-color: #2196f3;
+  background-color: #e3f2fd;
+}
+
+#seleccionar-personaje img {
+  display: block;
+  margin: 0 auto 5px;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border: 2px solid #bbb;
+}
+#duelo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 10px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+section {
+  margin: 30px 0;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #fff;
+  border: 2px solid #eee;
+}
+
+#seleccionar-ataque button {
+  margin: 10px;
+  font-size: 1.2em;
+}
+
+#mensajes {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+/* Estilos para los botones de selección de personaje */
+#seleccionar-personaje label {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 16px;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  font-weight: bold;
+  text-align: center;
+  min-width: 110px;
+}
+#seleccionar-personaje label:hover,
+#seleccionar-personaje input[type="radio"]:checked + label {
+  border-color: #0078d7;
+  box-shadow: 0 4px 12px rgba(0, 120, 215, 0.1);
+  background: #e6f0fa;
+}
+/* Colores personalizados por personaje */
+#seleccionar-personaje label[for="zuko"] {
+  border-color: #e25822;
+  background: #fff5f0;
+}
+#seleccionar-personaje label[for="zuko"]:hover,
+#seleccionar-personaje input#zuko:checked + label {
+  border-color: #e25822;
+  background: #ffe5d5;
+}
+#seleccionar-personaje label[for="katara"] {
+  border-color: #3498db;
+  background: #f0f8ff;
+}
+#seleccionar-personaje label[for="katara"]:hover,
+#seleccionar-personaje input#katara:checked + label {
+  border-color: #3498db;
+  background: #d6ecfa;
+}
+#seleccionar-personaje label[for="aang"] {
+  border-color: #7ed6df;
+  background: #f0fcff;
+}
+#seleccionar-personaje label[for="aang"]:hover,
+#seleccionar-personaje input#aang:checked + label {
+  border-color: #7ed6df;
+  background: #e0f7fa;
+}
+#seleccionar-personaje label[for="toph"] {
+  border-color: #27ae60;
+  background: #f3fff0;
+}
+#seleccionar-personaje label[for="toph"]:hover,
+#seleccionar-personaje input#toph:checked + label {
+  border-color: #27ae60;
+  background: #e0ffe5;
+}
+#seleccionar-personaje img {
+  display: block;
+  margin: 6px auto 0 auto;
+  border-radius: 50%;
+  border: 1.5px solid #ccc;
+  background: #fff;
+}
+
+.resultado-combate {
+  margin: 16px;
+  padding: 16px;
+  border: 2px solid #27ae60;
+  border-radius: 12px;
+  background-color: #e0ffe5;
+}
+
+dialog {
+  padding: 4px;
+  width: 280px;
+  border: none;
+  border: 2px solid;
+  border-color: #eee;
+  background-color: #fff;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 10px #333);
+}
+
+dialog div header {
+  height: 24px;
+  padding-inline: 4px;
+  color: #dfdfdf;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  -webkit-app-region: drag;
+}
+
+dialog div p {
+  color: #0a0a0a;
+}
+
+dialog div header span {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #eee;
+  margin-left: 2px;
+  font-size: 14px;
+  border-radius: 3px;
+  color: #0a0a0a;
+  cursor: default;
+  font-weight: 600;
+}
+
+dialog span:hover {
+  background-color: #ccc;
+  color: #d32f2f;
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(4px);
+  cursor: alias;
+}
+
+@media (width <= 762px) {
+  dialog {
+    width: 100%;
+  }
+}
+
+.reglas {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  margin: 16px auto;
+  justify-content: center;
+  background-color: #f9f9f9;
+  border: 2px solid #eee;
+  padding: 16px;
+  border-radius: 12px;
+
+  & ol > li {
+    text-align: left;
+  }
+}
+
+#cerrar-reglas {
+  border: 1px solid #eee;
+  padding: 2px 6px;
+  cursor: pointer;
+  width: fit-content;
+}
