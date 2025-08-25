@@ -1,9 +1,10 @@
 const shopContent = document.getElementById("shopContent");
 const carrito = [];
 
+
 productos.forEach((product) => {
-    const content = document.createElement("div");
-    content.innerHTML = `
+  const content = document.createElement("div");
+  content.innerHTML = `
         <img src="${product.imagen}">
         <h3>${product.nombre}</h3>
         <p>${product.precio}</p>
