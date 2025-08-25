@@ -1,14 +1,36 @@
+/* @font-face {
+  font-family: 'AvatarFont1';
+  src: url('/Javascript/Avatar/public/Fonts/Avatar\ Airbender.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+} */
+
+@font-face {
+  font-family: 'AvatarFont2';
+  src: url('/Javascript/Avatar/public/Fonts/Jhunwest\ Convex.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   font-family: "Segoe UI", sans-serif;
-  background: linear-gradient(#e0f7fa, #ffffff);
+  background-image: url('../public/fondo2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
   color: #333;
   text-align: center;
   padding: 20px;
 }
 
 h1 {
-  font-size: 2.5em;
-  margin-bottom: 10px;
+  /* font-family: 'AvatarFont1', sans-serif; */
+  font-size: 10rem;
+  color: black;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+  text-align: center;
+  margin: 0;
 }
 
 h2 {
@@ -16,11 +38,48 @@ h2 {
   margin-bottom: 15px;
 }
 
+h2.subtitle{
+  font-family: 'AvatarFont2', sans-serif;
+  font-size: 2rem;
+  color: #000000;
+  margin: 0;
+}
+h3.subtitle{
+  font-family: 'AvatarFont2', sans-serif;
+  font-size: 1.2rem;
+  color: #000000;
+  margin: 0;
+}
+
+img.imgLogo{
+  height: 15rem;
+  width: auto;
+  margin: 0%;
+}
+
 header {
   display: flex;
-  height: 56px;
-  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
+}
+
+#titulo-header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: stretch;
+  flex-direction: column;
+}
+
+#botones-header {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+}
+
+#reiniciar {
+  background-color: #d32f2f;
 }
 
 #seleccionar-personaje {
@@ -53,6 +112,7 @@ header {
   object-fit: cover;
   border: 2px solid #bbb;
 }
+
 #duelo {
   display: flex;
   align-items: flex-end;
@@ -94,7 +154,6 @@ section {
   color: #d32f2f;
 }
 
-/* Estilos para los botones de selección de personaje */
 #seleccionar-personaje label {
   display: inline-block;
   margin: 10px;
@@ -109,49 +168,59 @@ section {
   text-align: center;
   min-width: 110px;
 }
+
 #seleccionar-personaje label:hover,
-#seleccionar-personaje input[type="radio"]:checked + label {
+#seleccionar-personaje input[type="radio"]:checked+label {
   border-color: #0078d7;
   box-shadow: 0 4px 12px rgba(0, 120, 215, 0.1);
   background: #e6f0fa;
 }
+
 /* Colores personalizados por personaje */
 #seleccionar-personaje label[for="zuko"] {
   border-color: #e25822;
   background: #fff5f0;
 }
+
 #seleccionar-personaje label[for="zuko"]:hover,
-#seleccionar-personaje input#zuko:checked + label {
+#seleccionar-personaje input#zuko:checked+label {
   border-color: #e25822;
   background: #ffe5d5;
 }
+
 #seleccionar-personaje label[for="katara"] {
   border-color: #3498db;
   background: #f0f8ff;
 }
+
 #seleccionar-personaje label[for="katara"]:hover,
-#seleccionar-personaje input#katara:checked + label {
+#seleccionar-personaje input#katara:checked+label {
   border-color: #3498db;
   background: #d6ecfa;
 }
+
 #seleccionar-personaje label[for="aang"] {
   border-color: #7ed6df;
   background: #f0fcff;
 }
+
 #seleccionar-personaje label[for="aang"]:hover,
-#seleccionar-personaje input#aang:checked + label {
+#seleccionar-personaje input#aang:checked+label {
   border-color: #7ed6df;
   background: #e0f7fa;
 }
+
 #seleccionar-personaje label[for="toph"] {
   border-color: #27ae60;
   background: #f3fff0;
 }
+
 #seleccionar-personaje label[for="toph"]:hover,
-#seleccionar-personaje input#toph:checked + label {
+#seleccionar-personaje input#toph:checked+label {
   border-color: #27ae60;
   background: #e0ffe5;
 }
+
 #seleccionar-personaje img {
   display: block;
   margin: 6px auto 0 auto;
@@ -215,7 +284,7 @@ dialog::backdrop {
   cursor: alias;
 }
 
-@media (width <= 762px) {
+@media (width <=762px) {
   dialog {
     width: 100%;
   }
@@ -232,7 +301,7 @@ dialog::backdrop {
   padding: 16px;
   border-radius: 12px;
 
-  & ol > li {
+  & ol>li {
     text-align: left;
   }
 }
@@ -242,4 +311,78 @@ dialog::backdrop {
   padding: 2px 6px;
   cursor: pointer;
   width: fit-content;
+}
+
+/* Responsive: tablet y pantallas medianas */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 6rem;
+  }
+
+  h2.subtitle {
+    font-size: 1.5rem;
+  }
+
+  h3.subtitle {
+    font-size: 1rem;
+  }
+
+  img.imgLogo {
+    height: 10rem;
+  }
+
+  #seleccionar-personaje {
+    width: 80%;
+  }
+
+  #duelo {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+  section {
+    padding: 15px;
+  }
+}
+
+/* Responsive: móvil y pantallas chicas */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 4rem;
+  }
+
+  h2.subtitle {
+    font-size: 1.2rem;
+  }
+
+  h3.subtitle {
+    font-size: 0.9rem;
+  }
+
+  img.imgLogo {
+    height: 7rem;
+  }
+
+  #seleccionar-personaje {
+    width: 95%;
+  }
+
+  #duelo {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  button {
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+
+  section {
+    padding: 10px;
+  }
 }
