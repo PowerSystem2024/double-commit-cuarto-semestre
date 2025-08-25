@@ -2,7 +2,7 @@ const productos=[
     {
         id: 1,
         nombre: "Naranjas",
-        precio: 1.5,
+        precio: 1000,
         quanty: 10,
         imagen: "/E-COMMERCE2025/client/media/fruta1.jpg",
     },
