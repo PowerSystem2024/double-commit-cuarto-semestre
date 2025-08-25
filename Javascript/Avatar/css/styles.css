@@ -1,9 +1,9 @@
-/* @font-face {
+@font-face {
   font-family: 'AvatarFont1';
   src: url('/Javascript/Avatar/public/Fonts/Avatar\ Airbender.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
-} */
+}
 
 @font-face {
   font-family: 'AvatarFont2';
@@ -14,7 +14,7 @@
 
 body {
   font-family: "Segoe UI", sans-serif;
-  background-image: url('../public/fondo2.png');
+  background-image: url('../public/fondo.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -36,6 +36,7 @@ h1 {
 h2 {
   font-size: 1.8em;
   margin-bottom: 15px;
+  color: rgb(27, 42, 50);
 }
 
 h2.subtitle{
@@ -79,12 +80,19 @@ header {
 }
 
 #reiniciar {
-  background-color: #d32f2f;
+  background-color: #a22626;
 }
+
+#reiniciar:hover {
+  background-color: #c62424;
+} 
 
 #seleccionar-personaje {
   width: 60%;
   margin: 16px auto;
+  background-color: rgba(124, 146, 157, 0.582);
+  border: rgba(43, 64, 75, 0.582);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);  
 }
 
 #seleccionar-personaje label {
@@ -126,7 +134,7 @@ button {
   font-size: 1em;
   border: none;
   border-radius: 10px;
-  background-color: #4caf50;
+  background-color: #538255;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -179,46 +187,46 @@ section {
 /* Colores personalizados por personaje */
 #seleccionar-personaje label[for="zuko"] {
   border-color: #e25822;
-  background: #fff5f0;
+  background: #fecfbd;
 }
 
 #seleccionar-personaje label[for="zuko"]:hover,
 #seleccionar-personaje input#zuko:checked+label {
   border-color: #e25822;
-  background: #ffe5d5;
+  background: #cf9077;
 }
 
 #seleccionar-personaje label[for="katara"] {
   border-color: #3498db;
-  background: #f0f8ff;
+  background: #c7dff3;
 }
 
 #seleccionar-personaje label[for="katara"]:hover,
 #seleccionar-personaje input#katara:checked+label {
   border-color: #3498db;
-  background: #d6ecfa;
+  background: #93c6f0;
 }
 
 #seleccionar-personaje label[for="aang"] {
   border-color: #7ed6df;
-  background: #f0fcff;
+  background: #bbf7f6;
 }
 
 #seleccionar-personaje label[for="aang"]:hover,
 #seleccionar-personaje input#aang:checked+label {
   border-color: #7ed6df;
-  background: #e0f7fa;
+  background: #91fdfb;
 }
 
 #seleccionar-personaje label[for="toph"] {
   border-color: #27ae60;
-  background: #f3fff0;
+  background: #c4f3b8;
 }
 
 #seleccionar-personaje label[for="toph"]:hover,
 #seleccionar-personaje input#toph:checked+label {
   border-color: #27ae60;
-  background: #e0ffe5;
+  background: #aff79d;
 }
 
 #seleccionar-personaje img {
