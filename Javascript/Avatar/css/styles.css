@@ -82,17 +82,17 @@ header {
 }
 
 #reiniciar {
-  background-color: #a22626;
+  background-color: #a22626de;
   display: flex;
   justify-content: center;
 }
 
 #reiniciar:hover {
-  background-color: #c62424;
+  background-color: #c62424b0;
 }
 
 #seleccionar-personaje {
-  width: 60%;
+  width: 600px;
   margin: 16px auto;
   background-color: rgba(124, 146, 157, 0.582);
   border: rgba(43, 64, 75, 0.582);
@@ -155,8 +155,7 @@ button:hover {
 }
 
 section {
-  margin: 30px 0;
-  padding: 20px;
+  padding: 26px;
   border-radius: 15px;
   background-color: #fff;
   border: 2px solid #eeeeee4b;
@@ -252,6 +251,7 @@ section {
 }
 
 #personajes-vs-enemigo {
+  display: flex;
   background-color: #7c929d94;
 }
 
@@ -319,7 +319,7 @@ dialog::backdrop {
 
 .reglas {
   width: fit-content;
-  display: flex;
+  display: none;
   flex-direction: column;
   margin: 16px auto;
   justify-content: center;
@@ -362,9 +362,8 @@ dialog::backdrop {
     width: 80%;
   }
 
-  #duelo {
-    flex-direction: column;
-    gap: 15px;
+  .duelo {
+    display: flex;
   }
 
   button {

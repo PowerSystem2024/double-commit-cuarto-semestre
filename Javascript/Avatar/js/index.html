@@ -32,7 +32,7 @@
     </div>
 
     <section id="seleccionar-personaje">
-      <h2>Elige tu personaje</h2>
+      <h2 id="h2-eleccion">Elige tu personaje</h2>
       <div id="seccion-1">
         <label for="zuko">
           Zuko🔥
@@ -65,7 +65,7 @@
 
       <section id="personajes-vs-enemigo" style="display: none">
         <h2>¡Duelo!</h2>
-        <div id="duelo">
+        <div id="duelo" class="duelo">
           <div id="tarjeta-jugador" class="tarjeta">
             <p id="vs-nombre-jugador"></p>
             <img id="vs-img-jugador" src="" alt="" width="80" />
@@ -82,16 +82,16 @@
           <p><span id="nombre-jugador">Tu personaje <span id="nro-vidas-jugador">3</span> vidas</p>
           <p><span id="nombre-enemigo">El personaje del enemigo tienen <span id="nro-vidas-enemigo"> 3</span> vidas</p>
         </div>
-      </section>
 
-      <section id="seleccionar-ataque" style="display: none">
-        <h2>Elige tu ataque</h2>
-
-        <p>
-          <button id="boton-punio">Puño 👊</button>
-          <button id="boton-patada">Patada 🦵</button>
-          <button id="boton-barrida">Barrida 🦶</button>
-        </p>
+        <section id="seleccionar-ataque" style="display: none">
+          <h3>Elige tu ataque</h3>
+  
+          <p>
+            <button id="boton-punio">Puño</button>
+            <button id="boton-patada">Patada</button>
+            <button id="boton-barrida">Barrida</button>
+          </p>
+        </section>
       </section>
 
       <section id="mensajes-combate" style="display: none">

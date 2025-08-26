@@ -36,6 +36,7 @@ window.onload = () => {
   const reglasDelJuego = $("reglas");
   const botonReglas = $("ver-reglas");
   const cerrarReglas = $("cerrar-reglas");
+  const h2Eleccion = $("h2-eleccion");
 
   // Utilidades
   const aletarorio = (min, max) =>
@@ -181,6 +182,8 @@ window.onload = () => {
   botonPersonajeJugador.onclick = () => {
     seleccionarPersonajeJugador();
     botonReiniciar.style.display = "flex";
+    h2Eleccion.style.display = "none";
+    botonPersonajeJugador.style.display = "none";
   };
   botonPunio.onclick = () => ataqueJugador("Puño 👊");
   botonPatada.onclick = () => ataqueJugador("Patada 🦵");
