@@ -1,20 +1,22 @@
 @font-face {
-  font-family: 'AvatarFont1';
-  src: url('/Javascript/Avatar/public/Fonts/Avatar\ Airbender.ttf') format('truetype');
+  font-family: "AvatarFont1";
+  src: url("/Javascript/Avatar/public/Fonts/Avatar\ Airbender.ttf")
+    format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'AvatarFont2';
-  src: url('/Javascript/Avatar/public/Fonts/Jhunwest\ Convex.ttf') format('truetype');
+  font-family: "AvatarFont2";
+  src: url("/Javascript/Avatar/public/Fonts/Jhunwest\ Convex.ttf")
+    format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 body {
   font-family: "Segoe UI", sans-serif;
-  background-image: url('../public/fondo.png');
+  background-image: url("../public/fondo.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -39,20 +41,20 @@ h2 {
   color: rgb(27, 42, 50);
 }
 
-h2.subtitle{
-  font-family: 'AvatarFont2', sans-serif;
+h2.subtitle {
+  font-family: "AvatarFont2", sans-serif;
   font-size: 2rem;
   color: #000000;
   margin: 0;
 }
-h3.subtitle{
-  font-family: 'AvatarFont2', sans-serif;
+h3.subtitle {
+  font-family: "AvatarFont2", sans-serif;
   font-size: 1.2rem;
   color: #000000;
   margin: 0;
 }
 
-img.imgLogo{
+img.imgLogo {
   height: 15rem;
   width: auto;
   margin: 0%;
@@ -85,14 +87,19 @@ header {
 
 #reiniciar:hover {
   background-color: #c62424;
-} 
+}
 
 #seleccionar-personaje {
   width: 60%;
   margin: 16px auto;
   background-color: rgba(124, 146, 157, 0.582);
   border: rgba(43, 64, 75, 0.582);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);  
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+#seccion-1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
 #seleccionar-personaje label {
@@ -178,7 +185,7 @@ section {
 }
 
 #seleccionar-personaje label:hover,
-#seleccionar-personaje input[type="radio"]:checked+label {
+#seleccionar-personaje input[type="radio"]:checked + label {
   border-color: #0078d7;
   box-shadow: 0 4px 12px rgba(0, 120, 215, 0.1);
   background: #e6f0fa;
@@ -191,7 +198,7 @@ section {
 }
 
 #seleccionar-personaje label[for="zuko"]:hover,
-#seleccionar-personaje input#zuko:checked+label {
+#seleccionar-personaje input#zuko:checked + label {
   border-color: #e25822;
   background: #cf9077;
 }
@@ -202,7 +209,7 @@ section {
 }
 
 #seleccionar-personaje label[for="katara"]:hover,
-#seleccionar-personaje input#katara:checked+label {
+#seleccionar-personaje input#katara:checked + label {
   border-color: #3498db;
   background: #93c6f0;
 }
@@ -213,7 +220,7 @@ section {
 }
 
 #seleccionar-personaje label[for="aang"]:hover,
-#seleccionar-personaje input#aang:checked+label {
+#seleccionar-personaje input#aang:checked + label {
   border-color: #7ed6df;
   background: #91fdfb;
 }
@@ -224,7 +231,7 @@ section {
 }
 
 #seleccionar-personaje label[for="toph"]:hover,
-#seleccionar-personaje input#toph:checked+label {
+#seleccionar-personaje input#toph:checked + label {
   border-color: #27ae60;
   background: #aff79d;
 }
@@ -309,7 +316,7 @@ dialog::backdrop {
   padding: 16px;
   border-radius: 12px;
 
-  & ol>li {
+  & ol > li {
     text-align: left;
   }
 }
