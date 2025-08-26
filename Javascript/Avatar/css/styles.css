@@ -83,6 +83,8 @@ header {
 
 #reiniciar {
   background-color: #a22626;
+  display: flex;
+  justify-content: center;
 }
 
 #reiniciar:hover {
@@ -140,15 +142,16 @@ button {
   padding: 10px 20px;
   font-size: 1em;
   border: none;
-  border-radius: 10px;
-  background-color: #538255;
+  border-radius: 50px;
+  background-color: transparent;
+  border: 1px solid #eeeeee4b;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #388e3c;
+  background-color: #38648e;
 }
 
 section {
@@ -156,7 +159,11 @@ section {
   padding: 20px;
   border-radius: 15px;
   background-color: #fff;
-  border: 2px solid #eee;
+  border: 2px solid #eeeeee4b;
+}
+
+#seleccionar-ataque {
+  background-color: #7c929d94;
 }
 
 #seleccionar-ataque button {
@@ -244,17 +251,21 @@ section {
   background: #fff;
 }
 
+#personajes-vs-enemigo {
+  background-color: #7c929d94;
+}
+
 .resultado-combate {
   margin: 16px;
   padding: 16px;
-  border: 2px solid #27ae60;
+  border: 2px solid #eeeeee4b;
   border-radius: 12px;
-  background-color: #e0ffe5;
+  background-color: #7c929d94;
 }
 
 dialog {
   padding: 4px;
-  width: 280px;
+  width: 600px;
   border: none;
   border: 2px solid;
   border-color: #eee;
@@ -271,6 +282,7 @@ dialog div header {
   justify-content: space-between;
   align-items: center;
   -webkit-app-region: drag;
+  font-weight: 700;
 }
 
 dialog div p {
