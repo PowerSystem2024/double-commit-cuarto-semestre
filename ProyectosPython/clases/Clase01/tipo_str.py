@@ -4,4 +4,9 @@
 variable = 'Adiós'
 mensaje = 'Hola' + ' ' + 'gente! ' + variable # 'Hola ''Alumnos'
 mensaje += ', Terminamos..'
-print(mensaje)
+# print(mensaje)
+
+# Usamos la clase help para Ayuda o documentación en python (built-in)
+# help(str.capitalize)
+import math
+help(math.isnan)
