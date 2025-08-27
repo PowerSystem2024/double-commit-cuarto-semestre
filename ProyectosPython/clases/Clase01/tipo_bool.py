@@ -48,3 +48,17 @@ print(f'Valor de diccionario vacío: {valor}, Resultado: {resultado}')
 valor = {'Nombre': 'Pedro', 'Apellido': 'Picapiedra'}
 resultado = bool(valor)
 print(f'Valor de diccionario con elementos: {valor}, Resultado: {resultado}')
+
+# Sentencias de control con bool
+if (1,):
+    print('Regresa verdadero')
+else:
+    print('Regresa falso')
+    
+# Ciclos
+variable = 17
+while variable:
+    print('TRegresa verdadero')
+    break
+else:
+    print('Regresa verdadero')
