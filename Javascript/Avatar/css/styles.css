@@ -131,9 +131,8 @@ header {
 
 #duelo {
   display: flex;
-  align-items: flex-end;
   justify-content: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 button {
@@ -250,7 +249,7 @@ section {
 
 #personajes-vs-enemigo {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   flex-direction: column;
   background-color: #7c929d94;
 }
@@ -361,10 +360,6 @@ dialog::backdrop {
     width: 80%;
   }
 
-  .duelo {
-    display: flex;
-  }
-
   button {
     padding: 8px 16px;
     font-size: 0.9em;
@@ -391,11 +386,6 @@ dialog::backdrop {
 
   img.imgLogo {
     height: 6rem;
-  }
-
-  #duelo {
-    flex-direction: column;
-    gap: 10px;
   }
 
   button {
