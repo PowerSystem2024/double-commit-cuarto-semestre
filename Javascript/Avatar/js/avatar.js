@@ -57,6 +57,9 @@ window.onload = () => {
       alert("Por favor selecciona un personaje.");
       return;
     }
+    botonReiniciar.style.display = "flex";
+    h2Eleccion.style.display = "none";
+    botonPersonajeJugador.style.display = "none";
     gameState.personajeSeleccionado = seleccion.nombre;
     gameState.personajeSeleccionadoId = seleccion.id;
 
@@ -181,9 +184,6 @@ window.onload = () => {
   // Listeners
   botonPersonajeJugador.onclick = () => {
     seleccionarPersonajeJugador();
-    botonReiniciar.style.display = "flex";
-    h2Eleccion.style.display = "none";
-    botonPersonajeJugador.style.display = "none";
   };
   botonPunio.onclick = () => ataqueJugador("Puño 👊");
   botonPatada.onclick = () => ataqueJugador("Patada 🦵");
