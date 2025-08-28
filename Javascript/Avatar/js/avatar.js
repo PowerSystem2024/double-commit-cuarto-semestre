@@ -146,11 +146,15 @@ window.onload = () => {
 
   function revisarVidas() {
     if (gameState.vidasJugador === 0) {
-      crearDialogo(`${gameState.personajeEnemigo} ha ganado el combate. 😓`);
+      crearDialogo(
+        `${gameState.personajeEnemigo} ha ganado el combate. 😓`,
+        "Perdiste"
+      );
       deshabilitarBotones();
     } else if (gameState.vidasEnemigo === 0) {
       crearDialogo(
-        `¡${gameState.personajeSeleccionado} ha ganado el combate! 🏆`
+        `¡${gameState.personajeSeleccionado} ha ganado el combate! 🏆`,
+        "Game Over"
       );
       deshabilitarBotones();
     }
@@ -160,6 +164,9 @@ window.onload = () => {
     botonPunio.disabled = true;
     botonPatada.disabled = true;
     botonBarrida.disabled = true;
+    botonPunio.style.cursor = "not-allowed";
+    botonBarrida.style.cursor = "not-allowed";
+    botonPatada.style.cursor = "not-allowed";
   }
 
   // Listeners
