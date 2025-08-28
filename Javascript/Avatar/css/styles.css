@@ -180,7 +180,7 @@ section {
   display: inline-block;
   margin: 10px;
   padding: 10px 16px;
-  border: 2px solid #ccc;
+  border: 2px solid #eeeeee4b;
   border-radius: 12px;
   cursor: pointer;
   transition: border-color 0.2s, box-shadow 0.2s;
