@@ -11,6 +11,7 @@ const crearDialogo = (contenido = "", titulo = "Resultado") => {
         </div>
     `;
   document.body.appendChild(dialogo);
+  dialogo.style.animation = "slideIn 0.3s ease-in";
   dialogo.showModal();
   cerrarDialogo(dialogo);
 };
@@ -29,4 +30,4 @@ const cerrarDialogo = (dialogo) => {
   };
 };
 
-export { crearDialogo, cerrarDialogo };
+export { crearDialogo };

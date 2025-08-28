@@ -1,4 +1,4 @@
-import { cerrarDialogo, crearDialogo } from "../utils/dialog.mjs";
+import { crearDialogo } from "../utils/dialog.mjs";
 
 window.onload = () => {
   const gameState = {

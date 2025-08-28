@@ -397,3 +397,13 @@ dialog::backdrop {
     padding: 10px;
   }
 }
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    transform: translateY(-500%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
