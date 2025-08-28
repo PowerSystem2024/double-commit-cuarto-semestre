@@ -47,7 +47,7 @@ window.onload = () => {
   // Inicialización
   reglasDelJuego.style.display = "none";
   botonReglas.onclick = () =>
-    crearDialogo(reglasDelJuego.textContent, "⚠ Información del Juego");
+    crearDialogo(reglasDelJuego.textContent, "Información del Juego");
   cerrarReglas.onclick = () => (reglasDelJuego.style.display = "none");
 
   // Selección de personaje
@@ -57,7 +57,7 @@ window.onload = () => {
     );
 
     if (!seleccion) {
-      alert("Por favor selecciona un personaje.");
+      crearDialogo("Por favor selecciona un personaje.", "Información");
       return;
     }
 
@@ -87,7 +87,7 @@ window.onload = () => {
     $("personajes-vs-enemigo").style.display = "flex";
     $("seleccionar-ataque").style.display = "block";
 
-    window.scrollTo({ top: 200, behavior: "smooth" });
+    window.scrollTo({ top: 100, behavior: "smooth" });
     actualizarVidasUI();
   }
 

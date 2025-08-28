@@ -1,5 +1,5 @@
 // Método para crear un elemento dialog
-const crearDialogo = (contenido = "", titulo = "Resultado") => {
+const crearDialogo = (contenido = "", titulo = "Resultado", icono = "ℹ") => {
   const dialogo = document.createElement("dialog");
   const botonCerrar = dialogo.querySelector("#cerrar-dialogo");
   const divDialogo = dialogo.querySelector("div");
@@ -7,7 +7,10 @@ const crearDialogo = (contenido = "", titulo = "Resultado") => {
   dialogo.innerHTML = `
         <div>
             <header>
-            <p>${titulo}</p>
+            <p>
+            <span style="padding-inline: 8px; border: 1px solid #fff; border-radius: 50%; background: #2d48e4; color: #fff">${icono}</span>
+            ${titulo}
+            </p>
             <span id="cerrar-dialogo" title="Cerrar diálogo" style="cursor: pointer;">✖</span>
             </header>
             <p style="padding: 24px">${contenido}</p>

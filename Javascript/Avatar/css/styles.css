@@ -421,7 +421,7 @@ dialog::backdrop {
   }
 }
 
-/* Animaciones */
+/* Animaciones para el dialogo */
 @keyframes slideIn {
   from {
     transform: translateY(-500%);
