@@ -1,4 +1,4 @@
-import { mostrarElemento } from "../../../docs/utils/elemento.mjs";
+import { cerrarDialogo, crearDialogo } from "../utils/dialog.mjs";
 
 window.onload = () => {
   const gameState = {
@@ -53,10 +53,12 @@ window.onload = () => {
     const seleccion = gameState.personajes.find(
       (personaje) => $(personaje.id).checked
     );
+
     if (!seleccion) {
       alert("Por favor selecciona un personaje.");
       return;
     }
+
     botonReiniciar.style.display = "flex";
     h2Eleccion.style.display = "none";
     botonPersonajeJugador.style.display = "none";
@@ -149,37 +151,6 @@ window.onload = () => {
     botonPatada.disabled = true;
     botonBarrida.disabled = true;
   }
-
-  // Diálogo
-  const crearDialogo = (contenido = "", titulo = "Resultado") => {
-    const dialogo = document.createElement("dialog");
-    dialogo.innerHTML = `
-        <div>
-            <header>
-            <p>${titulo}</p>
-            <span id="cerrar-dialogo" title="Cerrar diálogo" style="cursor: pointer;">✖</span>
-            </header>
-            <p style="padding: 24px">${contenido}</p>
-        </div>
-    `;
-    document.body.appendChild(dialogo);
-    dialogo.showModal();
-    cerrarDialogo(dialogo);
-  };
-
-  const cerrarDialogo = (dialogo) => {
-    const divDialogo = dialogo.querySelector("div");
-    const botonCerrar = dialogo.querySelector("#cerrar-dialogo");
-    dialogo.onclick = (event) => {
-      if (
-        !divDialogo.contains(event.target) ||
-        botonCerrar.contains(event.target)
-      ) {
-        dialogo.close();
-        dialogo.remove();
-      }
-    };
-  };
 
   // Listeners
   botonPersonajeJugador.onclick = () => {
