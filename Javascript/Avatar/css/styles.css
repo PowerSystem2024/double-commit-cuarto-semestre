@@ -133,6 +133,7 @@ header {
 #duelo {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 24px;
 }
 
@@ -281,6 +282,14 @@ section {
 #vs-nombre-enemigo {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+#vs-img-jugador {
+  animation: slideFromLeft 0.5s ease-in-out;
+}
+
+#vs-img-enemigo {
+  animation: slideFromRight 0.5s ease-in-out;
 }
 
 .resultado-combate {
@@ -457,5 +466,27 @@ dialog::backdrop {
   }
   100% {
     transform: translateY(-10px);
+  }
+}
+
+@keyframes slideFromRight {
+  from {
+    transform: translateX(100%);
+    rotate: 25deg;
+  }
+  to {
+    transform: translateX(0);
+    rotate: 0;
+  }
+}
+
+@keyframes slideFromLeft {
+  from {
+    transform: translateX(-100%);
+    rotate: 25deg;
+  }
+  to {
+    transform: translateX(0);
+    rotate: 0;
   }
 }
