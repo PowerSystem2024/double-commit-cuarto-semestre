@@ -153,12 +153,18 @@ window.onload = () => {
         `${gameState.personajeEnemigo} ha ganado el combate. 😓`,
         "Perdiste"
       );
+      $("vs-img-enemigo").style.outline = "4px solid lightgreen";
+      $("vs-img-enemigo").style.filter = "drop-shadow(0 0 20px lightgreen)";
+      $("vs-img-enemigo").style.animation = "rebote 2s linear infinite";
       deshabilitarBotones();
     } else if (gameState.vidasEnemigo === 0) {
       crearDialogo(
         `¡${gameState.personajeSeleccionado} ha ganado el combate! 🏆`,
         "Game Over"
       );
+      $("vs-img-jugador").style.outline = "4px solid lightgreen";
+      $("vs-img-jugador").style.filter = "drop-shadow(0 0 20px lightgreen)";
+      $("vs-img-jugador").style.animation = "rebote 2s linear infinite";
       deshabilitarBotones();
     }
   }

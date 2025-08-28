@@ -277,6 +277,12 @@ section {
   background-color: #7c929d94;
 }
 
+#vs-nombre-jugador,
+#vs-nombre-enemigo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
 .resultado-combate {
   width: 100%;
   border: 2px solid #eeeeee4b;
@@ -439,5 +445,17 @@ dialog::backdrop {
   }
   to {
     transform: scale(0);
+  }
+}
+
+@keyframes rebote {
+  0% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
   }
 }
