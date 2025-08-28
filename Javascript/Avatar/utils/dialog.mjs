@@ -1,6 +1,9 @@
 // Método para crear un elemento dialog
 const crearDialogo = (contenido = "", titulo = "Resultado") => {
   const dialogo = document.createElement("dialog");
+  const botonCerrar = dialogo.querySelector("#cerrar-dialogo");
+  const divDialogo = dialogo.querySelector("div");
+  const controller = new AbortController();
   dialogo.innerHTML = `
         <div>
             <header>
@@ -12,20 +15,28 @@ const crearDialogo = (contenido = "", titulo = "Resultado") => {
     `;
   document.body.appendChild(dialogo);
   dialogo.style.animation = "slideIn 0.3s ease-in";
+  document.body.style.overflowY = "hidden";
   dialogo.showModal();
-  cerrarDialogo(dialogo);
-};
 
-const cerrarDialogo = (dialogo) => {
-  const divDialogo = dialogo.querySelector("div");
-  const botonCerrar = dialogo.querySelector("#cerrar-dialogo");
+  const cerrarDialogoConAnimacion = () => {
+    dialogo.style.animation = "vanish 0.3s ease-out";
+    dialogo.addEventListener(
+      "animationend",
+      () => {
+        dialogo.close();
+        dialogo.remove();
+        controller.abort();
+      },
+      { once: true, signal: controller.signal }
+    );
+  };
+
   dialogo.onclick = (event) => {
     if (
-      !divDialogo.contains(event.target) ||
-      botonCerrar.contains(event.target)
+      !divDialogo?.contains(event.target) ||
+      botonCerrar?.contains(event.target)
     ) {
-      dialogo.close();
-      dialogo.remove();
+      cerrarDialogoConAnimacion();
     }
   };
 };

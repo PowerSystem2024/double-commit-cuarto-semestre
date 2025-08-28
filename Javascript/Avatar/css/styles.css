@@ -407,3 +407,12 @@ dialog::backdrop {
     transform: translateY(0);
   }
 }
+
+@keyframes vanish {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
