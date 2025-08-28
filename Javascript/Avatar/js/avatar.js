@@ -5,7 +5,9 @@ window.onload = () => {
     ataqueJugador: null,
     ataqueEnemigo: null,
     vidasJugador: 3,
+    corazonesJugador: ["💖", "💖", "💖"],
     vidasEnemigo: 3,
+    corazonesEnemigo: ["💖", "💖", "💖"],
     personajeSeleccionado: "",
     personajeEnemigo: "",
     personajes: [
@@ -119,19 +121,27 @@ window.onload = () => {
     ) {
       crearDialogo(`${gameState.personajeSeleccionado} gana la ronda!`);
       gameState.vidasEnemigo--;
+      gameState.corazonesEnemigo.pop();
     } else {
       crearDialogo(
         `${gameState.personajeEnemigo} le ha ganado a ${gameState.personajeSeleccionado}. Pierdes una vida en esta ronda!`
       );
       gameState.vidasJugador--;
+      gameState.corazonesJugador.pop();
     }
     actualizarVidasUI();
     revisarVidas();
   }
 
   function actualizarVidasUI() {
-    nombreJugador.textContent = `Tu personaje ${gameState.personajeSeleccionado} tiene ${gameState.vidasJugador} vidas`;
-    nombreEnemigo.textContent = `El enemigo ${gameState.personajeEnemigo} tiene ${gameState.vidasEnemigo} vidas`;
+    nombreJugador.textContent = gameState.corazonesJugador
+      .map((vida) => vida)
+      .toString()
+      .replaceAll(",", " ");
+    nombreEnemigo.textContent = gameState.corazonesEnemigo
+      .map((vida) => vida)
+      .toString()
+      .replaceAll(",", " ");
   }
 
   function revisarVidas() {
