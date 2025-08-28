@@ -82,7 +82,7 @@ window.onload = () => {
       gameState.imagenes[gameState.personajeSeleccionadoId];
     $("vs-nombre-enemigo").innerText = gameState.personajeEnemigo;
     $("vs-img-enemigo").src = gameState.imagenes[gameState.personajeEnemigoId];
-    $("personajes-vs-enemigo").style.display = "block";
+    $("personajes-vs-enemigo").style.display = "flex";
     $("seleccionar-ataque").style.display = "block";
 
     window.scrollTo({ top: 200, behavior: "smooth" });
