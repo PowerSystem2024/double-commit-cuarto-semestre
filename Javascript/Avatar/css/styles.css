@@ -55,9 +55,7 @@ h3.subtitle {
 }
 
 img.imgLogo {
-  height: 15rem;
   width: auto;
-  margin: 0%;
 }
 
 header {
@@ -393,7 +391,7 @@ dialog::backdrop {
   }
 
   img.imgLogo {
-    height: 7rem;
+    height: 6rem;
   }
 
   #seleccionar-personaje {
