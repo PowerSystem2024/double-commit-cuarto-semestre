@@ -39,6 +39,7 @@ window.onload = () => {
   const botonReglas = $("ver-reglas");
   const cerrarReglas = $("cerrar-reglas");
   const h2Eleccion = $("h2-eleccion");
+  const tituloHeader = $("titulo-header");
 
   // Utilidades
   const aletarorio = (min, max) =>
@@ -63,6 +64,8 @@ window.onload = () => {
 
     botonReiniciar.style.display = "flex";
     h2Eleccion.style.display = "none";
+    tituloHeader.style.transition = "0.3s ease-in-out";
+    tituloHeader.style.scale = "0.8";
     botonPersonajeJugador.style.display = "none";
     gameState.personajeSeleccionado = seleccion.nombre;
     gameState.personajeSeleccionadoId = seleccion.id;
@@ -87,7 +90,7 @@ window.onload = () => {
     $("personajes-vs-enemigo").style.display = "flex";
     $("seleccionar-ataque").style.display = "block";
 
-    window.scrollTo({ top: 100, behavior: "smooth" });
+    window.scrollTo({ top: 80, behavior: "smooth" });
     actualizarVidasUI();
   }
 
