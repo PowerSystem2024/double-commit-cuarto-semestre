@@ -309,12 +309,6 @@ dialog::backdrop {
   cursor: alias;
 }
 
-@media (width <=762px) {
-  dialog {
-    width: 100%;
-  }
-}
-
 .reglas {
   width: fit-content;
   display: none;
@@ -367,6 +361,12 @@ dialog::backdrop {
 
   section {
     padding: 15px;
+  }
+}
+
+@media (width <=762px) {
+  dialog {
+    width: 100%;
   }
 }
 

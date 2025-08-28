@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8" />
     <title>La Leyenda de Aang: DoubleCommit.ts 🌍🌬️🌊🔥</title>
-    <link rel="stylesheet" href="/Javascript/Avatar/css/styles.css">
-    <link rel="icon" href="/Javascript/Avatar/public/icon.jpg" type="image/png">
+    <link rel="stylesheet" href="/Javascript/Avatar/css/styles.css" />
+    <link
+      rel="icon"
+      href="/Javascript/Avatar/public/icon.jpg"
+      type="image/png"
+    />
   </head>
 
   <body>
+    <!-- HEADER -->
     <header>
       <div class="titulo-header" id="titulo-header">
-        <img 
-            class="imgLogo"
-            id="imgLogo"
-            src="/Javascript/Avatar/public/Logo_de_Avatar_la_leyenda_de_Aang.png"
-            alt="Logo de Avatar: La Leyenda de Aang"
-            loading="lazy"
-            decoding="async"
-            width="300"
-            height="200"
-          />
+        <img
+          class="imgLogo"
+          id="imgLogo"
+          src="/Javascript/Avatar/public/Logo_de_Avatar_la_leyenda_de_Aang.png"
+          alt="Logo de Avatar: La Leyenda de Aang"
+          loading="lazy"
+          decoding="async"
+          width="300"
+          height="200"
+        />
         <h2 class="subtitle" id="subtitle">La Leyenda de Aang</h2>
       </div>
+
       <div class="botones-header" id="botones-header">
         <button id="ver-reglas">ℹ Ver reglas</button>
-        <button id="reiniciar" style="display: none;">Reiniciar</button>
+        <button id="reiniciar" style="display: none">Reiniciar</button>
       </div>
     </header>
 
+    <!-- REGLAS -->
     <div id="reglas" class="reglas">
       <h1>Reglas del Juego!</h1>
       <ol>
@@ -40,38 +46,67 @@
       <span id="cerrar-reglas">Contraer reglas</span>
     </div>
 
+    <!-- SELECCIONAR PERSONAJE -->
     <section id="seleccionar-personaje">
       <h2 id="h2-eleccion">Elige tu personaje</h2>
+
+      <!-- OPCIONES DE PERSONAJE -->
       <div id="seccion-1">
         <label for="zuko">
           Zuko🔥
-          <img width="40" height="40" id="Zuko🔥" src="/Javascript/Avatar/public/avatar-zuko.webp" alt="" />
-          <input type="radio" name="personaje" id="zuko">
+          <img
+            width="40"
+            height="40"
+            id="Zuko🔥"
+            src="/Javascript/Avatar/public/avatar-zuko.webp"
+            alt=""
+          />
+          <input type="radio" name="personaje" id="zuko" />
         </label>
 
         <label for="katara">
           Katara💧
-          <img width="40" height="40" id="Katara💧" src="/Javascript/Avatar/public/images.jpg" alt="" />
-          <input type="radio" name="personaje" id="katara">
+          <img
+            width="40"
+            height="40"
+            id="Katara💧"
+            src="/Javascript/Avatar/public/images.jpg"
+            alt=""
+          />
+          <input type="radio" name="personaje" id="katara" />
         </label>
 
         <label for="aang">
           Aang 🌬️
-          <img width="40" height="40" id="Aang 🌬️" src="/Javascript/Avatar/public/images (1).jpg" alt="" />
-          <input type="radio" name="personaje" id="aang">
+          <img
+            width="40"
+            height="40"
+            id="Aang 🌬️"
+            src="/Javascript/Avatar/public/images (1).jpg"
+            alt=""
+          />
+          <input type="radio" name="personaje" id="aang" />
         </label>
-
 
         <label for="toph">
           Toph 🌍
-          <img width="40" height="40" id="Toph 🌍" src="/Javascript/Avatar/public/Toph_Beifong.webp" alt="" />
-          <input type="radio" name="personaje" id="toph">
+          <img
+            width="40"
+            height="40"
+            id="Toph 🌍"
+            src="/Javascript/Avatar/public/Toph_Beifong.webp"
+            alt=""
+          />
+          <input type="radio" name="personaje" id="toph" />
         </label>
       </div>
-      <div style="margin-top: 20px;">
+
+      <!-- BOTÓN SELECCIONAR -->
+      <div style="margin-top: 20px">
         <button id="boton-personaje">Seleccionar</button>
       </div>
 
+      <!-- SECCIÓN DE DUELO -->
       <section id="personajes-vs-enemigo" style="display: none">
         <h2>¡Duelo!</h2>
         <div id="duelo" class="duelo">
@@ -86,15 +121,25 @@
           </div>
         </div>
 
+        <!-- RESULTADO DEL COMBATE -->
         <div class="resultado-combate">
           <h3>Inicio del combate</h3>
-          <p><span id="nombre-jugador">Tu personaje <span id="nro-vidas-jugador"></span> vidas</p>
-          <p><span id="nombre-enemigo">El personaje del enemigo tienen <span id="nro-vidas-enemigo"></span>vidas</p>
+          <p>
+            <span id="nombre-jugador"
+              >Tu personaje <span id="nro-vidas-jugador"></span> vidas</span
+            >
+          </p>
+          <p>
+            <span id="nombre-enemigo"
+              >El personaje del enemigo tiene
+              <span id="nro-vidas-enemigo"></span> vidas</span
+            >
+          </p>
         </div>
 
+        <!-- SELECCIONAR ATAQUE -->
         <section id="seleccionar-ataque" style="display: none">
           <h3>Elige tu ataque</h3>
-  
           <p>
             <button id="boton-punio">Puño</button>
             <button id="boton-patada">Patada</button>
@@ -103,15 +148,13 @@
         </section>
       </section>
 
+      <!-- MENSAJES DEL COMBATE -->
       <section id="mensajes-combate" style="display: none">
         <h2>Mensajes del combate</h2>
-        <p id="mensaje-final">
-        </p>
+        <p id="mensaje-final"></p>
       </section>
     </section>
 
-
     <script src="/Javascript/Avatar/js/avatar.js" type="module"></script>
   </body>
-
 </html>
