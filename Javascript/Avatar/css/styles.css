@@ -92,8 +92,9 @@ header {
 }
 
 #seleccionar-personaje {
+  display: flex;
+  justify-content: center;
   width: 600px;
-  margin: 16px auto;
   background-color: rgba(124, 146, 157, 0.582);
   border: rgba(43, 64, 75, 0.582);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -155,7 +156,10 @@ button:hover {
 }
 
 section {
-  padding: 26px;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 16px;
   border-radius: 15px;
   background-color: #fff;
   border: 2px solid #eeeeee4b;
@@ -252,6 +256,7 @@ section {
 
 #personajes-vs-enemigo {
   display: flex;
+  width: 100%;
   background-color: #7c929d94;
 }
 
