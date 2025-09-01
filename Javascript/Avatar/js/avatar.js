@@ -173,6 +173,7 @@ window.onload = () => {
       $("tarjeta-enemigo").style.filter = "drop-shadow(0 0 20px lightgreen)";
       $("tarjeta-enemigo").style.animation = "rebote 3s linear infinite";
       $("tarjeta-enemigo").style.transformStyle = "preserve-3d";
+      $("ganador-enemigo").style.display = "flex";
       deshabilitarBotones();
     } else if (gameState.vidasEnemigo === 0) {
       crearDialogo(
@@ -183,6 +184,7 @@ window.onload = () => {
       $("tarjeta-jugador").style.filter = "drop-shadow(0 0 20px lightgreen)";
       $("tarjeta-jugador").style.animation = "rebote 3s linear infinite";
       $("tarjeta-jugador").style.transformStyle = "preserve-3d";
+      $("ganador-jugador").style.display = "flex";
       deshabilitarBotones();
     }
   }
@@ -194,6 +196,9 @@ window.onload = () => {
     botonPunio.style.cursor = "not-allowed";
     botonBarrida.style.cursor = "not-allowed";
     botonPatada.style.cursor = "not-allowed";
+    botonPunio.style.opacity = 0.5;
+    botonBarrida.style.opacity = 0.5;
+    botonPatada.style.opacity = 0.5;
   }
 
   // Listeners

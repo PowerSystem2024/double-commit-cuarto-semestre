@@ -158,6 +158,7 @@ img.imgLogo {
 
 #tarjeta-jugador,
 #tarjeta-enemigo {
+  position: relative;
   width: 160px;
   height: 220px;
   background-size: cover;
@@ -169,6 +170,40 @@ img.imgLogo {
   box-shadow: 1px 3px 12px #0a0a0a;
   -webkit-box-reflect: below -12px linear-gradient(transparent, #00000009, rgb(0
           0 0 / 14%));
+}
+
+#ganador-jugador,
+#ganador-enemigo {
+  position: absolute;
+  top: -54px;
+  left: 50%;
+  translate: -50%;
+  font-weight: 800;
+  color: #fff;
+  background-color: #0a0a0a;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #eeeeee4b;
+}
+
+#ganador-jugador::before,
+#ganador-enemigo::before {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translate(-50%);
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-top: 20px solid #0a0a0a;
+}
+
+#tarjeta-jugador {
+  animation: slideFromLeft 0.5s ease-in-out;
+}
+
+#tarjeta-enemigo {
+  animation: slideFromRight 0.5s ease-in-out;
 }
 
 button {
@@ -300,7 +335,7 @@ section {
   display: block;
   margin: 6px auto 0 auto;
   border-radius: 50%;
-  border: 1.5px solid #ccc;
+  border: 3px solid #ccc;
   background: #fff;
 }
 
@@ -317,14 +352,6 @@ section {
   font-weight: bold;
   color: #fff;
   text-shadow: 1px 2px 3px #000000;
-}
-
-#tarjeta-jugador {
-  animation: slideFromLeft 0.5s ease-in-out;
-}
-
-#tarjeta-enemigo {
-  animation: slideFromRight 0.5s ease-in-out;
 }
 
 .resultado-combate {
