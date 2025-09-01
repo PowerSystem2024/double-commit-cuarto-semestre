@@ -6,7 +6,7 @@ const crearDialogo = (contenido = "", titulo = "Resultado", icono = "ℹ") => {
   const controller = new AbortController();
   dialogo.innerHTML = `
         <div>
-            <header>
+            <header style="display: flex; justify-content: space-between;">
             <p>
             <span style="padding-inline: 8px; border: 1px solid #fff; border-radius: 50%; background: #2d48e4; color: #fff">${icono}</span>
             ${titulo}

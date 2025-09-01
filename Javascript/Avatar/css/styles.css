@@ -15,6 +15,11 @@
 }
 
 body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  overflow: hidden;
   font-family: "Segoe UI", sans-serif;
   background-image: url("../public/fondo.png");
   background-size: cover;
@@ -24,6 +29,7 @@ body {
   color: #333;
   text-align: center;
   padding: 20px;
+  margin: 0 auto;
 }
 
 h1 {
@@ -39,6 +45,10 @@ h2 {
   font-size: 1.8em;
   margin: 0;
   color: rgb(27, 42, 50);
+}
+
+h3 {
+  margin: 0;
 }
 
 h2.subtitle {
@@ -58,13 +68,14 @@ img.imgLogo {
   width: auto;
 }
 
-header {
+#header {
   display: flex;
   flex-wrap: nowrap;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
   margin: 0;
+  padding: 0;
 }
 
 #titulo-header {
@@ -81,7 +92,7 @@ header {
 }
 
 #reiniciar {
-  background-color: #a22626de;
+  background: linear-gradient(to bottom, #db2424de, #a22626de);
   display: flex;
   justify-content: center;
 }
@@ -93,10 +104,18 @@ header {
 #seleccionar-personaje {
   display: flex;
   width: 600px;
+  height: fit-content;
   justify-content: center;
   background-color: rgba(124, 146, 157, 0.582);
   border: rgba(43, 64, 75, 0.582);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+#seleccionar-personaje input[type="radio"]:checked + * {
+  border-color: #4caf50;
+  background-color: #e8f5e8;
+  outline: 3px solid #4caf50;
+  outline-offset: 2px;
 }
 
 #seccion-1 {
@@ -106,9 +125,9 @@ header {
 
 #seleccionar-personaje label {
   display: inline-block;
-  margin: 10px;
   cursor: pointer;
   padding: 10px;
+  margin: 8px;
   border: 2px solid #ccc;
   border-radius: 10px;
   transition: all 0.3s ease;
@@ -134,7 +153,20 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
+}
+
+#tarjeta-jugador,
+#tarjeta-enemigo {
+  width: 160px;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid #eeeeee4b;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 1px 3px 12px #0a0a0a;
 }
 
 button {
@@ -145,7 +177,7 @@ button {
   font-size: 1em;
   border: none;
   border-radius: 50px;
-  background-color: #1e3a56;
+  background: linear-gradient(to bottom, #28517b, #1e3a56);
   border: 1px solid #eeeeee4b;
   color: white;
   cursor: pointer;
@@ -189,7 +221,6 @@ section {
 }
 
 #seleccionar-ataque button {
-  margin: 10px;
   font-size: 1.2em;
 }
 
@@ -273,7 +304,7 @@ section {
 
 #personajes-vs-enemigo {
   display: flex;
-  gap: 16px;
+  gap: 10px;
   flex-direction: column;
   background-color: #7c929d94;
 }
@@ -282,21 +313,25 @@ section {
 #vs-nombre-enemigo {
   font-size: 1.5rem;
   font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 2px 3px #000000;
 }
 
-#vs-img-jugador {
+#tarjeta-jugador {
   animation: slideFromLeft 0.5s ease-in-out;
 }
 
-#vs-img-enemigo {
+#tarjeta-enemigo {
   animation: slideFromRight 0.5s ease-in-out;
 }
 
 .resultado-combate {
   width: 100%;
-  border: 2px solid #eeeeee4b;
-  border-radius: 12px;
-  background-color: #7c929d94;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
 }
 
 dialog {
@@ -403,6 +438,11 @@ dialog::backdrop {
 }
 
 @media (width <=762px) {
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
   dialog {
     width: 100%;
   }
@@ -448,6 +488,15 @@ dialog::backdrop {
   }
 }
 
+@keyframes slideOut {
+  from {
+    transform: translateY(300%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 @keyframes vanish {
   from {
     transform: scale(1);
@@ -463,6 +512,7 @@ dialog::backdrop {
   }
   50% {
     transform: translateY(0);
+    transform: rotateY(180deg);
   }
   100% {
     transform: translateY(-10px);
@@ -488,5 +538,26 @@ dialog::backdrop {
   to {
     transform: translateX(0);
     rotate: 0;
+  }
+}
+
+@keyframes shadowEffect {
+  0% {
+    filter: drop-shadow(0 0 5px green);
+  }
+  25% {
+    filter: drop-shadow(0 0 10px green);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px green);
+  }
+  100% {
+    filter: drop-shadow(0 0 35px green);
+  }
+}
+
+@keyframes spinning {
+  to {
+    rotate: 360deg;
   }
 }

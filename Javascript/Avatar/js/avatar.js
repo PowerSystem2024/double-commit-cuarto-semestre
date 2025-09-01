@@ -11,16 +11,22 @@ window.onload = () => {
     personajeSeleccionado: "",
     personajeEnemigo: "",
     personajes: [
-      { id: "zuko", nombre: "Zuko🔥" },
-      { id: "katara", nombre: "Katara💧" },
-      { id: "aang", nombre: "Aang 🌬️" },
-      { id: "toph", nombre: "Toph 🌍" },
+      { id: "zuko", nombre: "Zuko" },
+      { id: "katara", nombre: "Katara" },
+      { id: "aang", nombre: "Aang" },
+      { id: "toph", nombre: "Toph" },
     ],
     imagenes: {
       zuko: "../public/avatar-zuko.webp",
       katara: "../public/images.jpg",
       aang: "../public/images (1).jpg",
       toph: "../public/Toph_Beifong.webp",
+    },
+    cardBg: {
+      zuko: "../public/zuko-bg-card.jpg",
+      katara: "../public/katara-bg-card.jpg",
+      aang: "../public/aang-bg-card.jpg",
+      toph: "../public/toph-bg-card.jpg",
     },
   };
 
@@ -64,8 +70,9 @@ window.onload = () => {
 
     botonReiniciar.style.display = "flex";
     h2Eleccion.style.display = "none";
-    tituloHeader.style.transition = "0.3s ease-in-out";
+    tituloHeader.style.transition = "0.6s ease-in-out";
     tituloHeader.style.scale = "0.8";
+    $("seleccionar-ataque").style.animation = "slideOut 0.4s ease-in-out";
     botonPersonajeJugador.style.display = "none";
     gameState.personajeSeleccionado = seleccion.nombre;
     gameState.personajeSeleccionadoId = seleccion.id;
@@ -87,10 +94,19 @@ window.onload = () => {
       gameState.imagenes[gameState.personajeSeleccionadoId];
     $("vs-nombre-enemigo").innerText = gameState.personajeEnemigo;
     $("vs-img-enemigo").src = gameState.imagenes[gameState.personajeEnemigoId];
+    $("tarjeta-jugador").style.background = `url(${
+      gameState.cardBg[gameState.personajeSeleccionadoId]
+    })`;
+    $("tarjeta-jugador").style.backgroundPosition = "center";
+    $("tarjeta-jugador").style.backgroundSize = "cover";
+    $("tarjeta-enemigo").style.background = `url(${
+      gameState.cardBg[gameState.personajeEnemigoId]
+    })`;
+    $("tarjeta-enemigo").style.backgroundPosition = "center";
+    $("tarjeta-enemigo").style.backgroundSize = "cover";
     $("personajes-vs-enemigo").style.display = "flex";
     $("seleccionar-ataque").style.display = "block";
 
-    window.scrollTo({ top: 80, behavior: "smooth" });
     actualizarVidasUI();
   }
 
@@ -153,18 +169,20 @@ window.onload = () => {
         `${gameState.personajeEnemigo} ha ganado el combate. 😓`,
         "Perdiste"
       );
-      $("vs-img-enemigo").style.outline = "4px solid lightgreen";
-      $("vs-img-enemigo").style.filter = "drop-shadow(0 0 20px lightgreen)";
-      $("vs-img-enemigo").style.animation = "rebote 2s linear infinite";
+      $("tarjeta-enemigo").style.outline = "4px solid lightgreen";
+      $("tarjeta-enemigo").style.filter = "drop-shadow(0 0 20px lightgreen)";
+      $("tarjeta-enemigo").style.animation = "rebote 3s linear infinite";
+      $("tarjeta-enemigo").style.transformStyle = "preserve-3d";
       deshabilitarBotones();
     } else if (gameState.vidasEnemigo === 0) {
       crearDialogo(
         `¡${gameState.personajeSeleccionado} ha ganado el combate! 🏆`,
         "Game Over"
       );
-      $("vs-img-jugador").style.outline = "4px solid lightgreen";
-      $("vs-img-jugador").style.filter = "drop-shadow(0 0 20px lightgreen)";
-      $("vs-img-jugador").style.animation = "rebote 2s linear infinite";
+      $("tarjeta-jugador").style.outline = "4px solid lightgreen";
+      $("tarjeta-jugador").style.filter = "drop-shadow(0 0 20px lightgreen)";
+      $("tarjeta-jugador").style.animation = "rebote 3s linear infinite";
+      $("tarjeta-jugador").style.transformStyle = "preserve-3d";
       deshabilitarBotones();
     }
   }
@@ -181,6 +199,9 @@ window.onload = () => {
   // Listeners
   botonPersonajeJugador.onclick = () => {
     seleccionarPersonajeJugador();
+    const audio = new Audio("../public/assets/videoplayback.mp3");
+    audio.volume = 0.5;
+    audio.play();
   };
   botonPunio.onclick = () => ataqueJugador("Puño 👊");
   botonPatada.onclick = () => ataqueJugador("Patada 🦵");
