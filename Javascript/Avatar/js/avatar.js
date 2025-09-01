@@ -246,10 +246,14 @@ window.onload = () => {
   botonBarrida.onclick = () => ataqueJugador("Barrida 🦶");
   botonReiniciar.onclick = () => window.location.reload();
 
+  // Inicializar worker de tiempo en otro hilo separado del hilo principal del navegador (sin bloqueos de la UI)
   const worker = new Worker("../worker/timerWorker.js");
+  // Inicializar contador en el worker
   worker.postMessage(1000);
+  // Recibir el contador del web worker
   worker.onmessage = (event) => {
     const timer = event.data;
+    // Evento de itroducción
     if (timer === 3) {
       $("shadder").style.display = "flex";
       $("intro").style.display = "none";
@@ -266,6 +270,8 @@ window.onload = () => {
       botonPersonajeJugador.style.filter = "drop-shadow(0 0 10px #28517b)";
     }
   };
+
+  // Quitar driver de introducción
   botonPersonajeJugador.onmouseover = () => {
     $("shadder").style.display = "none";
     $("intro").style.display = "none";
@@ -273,6 +279,7 @@ window.onload = () => {
     botonPersonajeJugador.style.animation = "none";
     worker.terminate();
   };
+
   botonReglas.onmouseover = () => {
     $("shadder").style.display = "none";
     $("intro-reglas").style.display = "none";
