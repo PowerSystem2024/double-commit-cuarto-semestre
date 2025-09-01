@@ -28,8 +28,61 @@ body {
   min-height: 100vh;
   color: #333;
   text-align: center;
-  padding: 20px;
   margin: 0 auto;
+}
+
+#shadder {
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  transition: background 0.5s ease-in-out;
+  background-color: #000000e7;
+  z-index: 99;
+}
+
+#intro {
+  display: none;
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  translate: -50%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  background: linear-gradient(to bottom, #fff, #f5f5f5);
+  z-index: 99;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+#intro-reglas {
+  display: none;
+  position: absolute;
+  width: 120px;
+  top: -60px;
+  left: 50%;
+  translate: -50%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  background: linear-gradient(to bottom, #fff, #f5f5f5);
+  z-index: 99;
+  animation: slideIn 0.3s ease-in-out;
+  font-weight: 700;
+}
+
+#intro::before,
+#intro-reglas::before {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  translate: -50%;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 16px solid #fff;
 }
 
 h1 {
@@ -86,6 +139,7 @@ img.imgLogo {
 }
 
 #botones-header {
+  position: relative;
   display: flex;
   align-items: stretch;
   flex-direction: column;
@@ -170,6 +224,7 @@ img.imgLogo {
   box-shadow: 1px 3px 12px #0a0a0a;
   -webkit-box-reflect: below -12px linear-gradient(transparent, #00000009, rgb(0
           0 0 / 14%));
+  transform-style: preserve-3d;
 }
 
 #ganador-jugador,
@@ -199,11 +254,11 @@ img.imgLogo {
 }
 
 #tarjeta-jugador {
-  animation: slideFromLeft 0.5s ease-in-out;
+  animation: slideFromLeft 0.6s ease-in-out;
 }
 
 #tarjeta-enemigo {
-  animation: slideFromRight 0.5s ease-in-out;
+  animation: slideFromRight 0.6s ease-in-out;
 }
 
 button {
@@ -279,13 +334,6 @@ section {
   min-width: 110px;
 }
 
-#seleccionar-personaje label:hover,
-#seleccionar-personaje input[type="radio"]:checked + label {
-  border-color: #0078d7;
-  box-shadow: 0 4px 12px rgba(0, 120, 215, 0.1);
-  background: #e6f0fa;
-}
-
 /* Colores personalizados por personaje */
 #seleccionar-personaje label[for="zuko"] {
   border-color: #e25822;
@@ -331,11 +379,17 @@ section {
   background: #aff79d;
 }
 
+#seleccionar-personaje input[type="radio"]:checked + label {
+  box-shadow: 0 4px 12px rgba(0, 120, 215, 0.1);
+  outline: 3px solid blue;
+  outline-offset: 2px;
+}
+
 #seleccionar-personaje img {
   display: block;
   margin: 6px auto 0 auto;
   border-radius: 50%;
-  border: 3px solid #ccc;
+  border: 3px solid #846932;
   background: #fff;
 }
 
@@ -361,6 +415,27 @@ section {
 .buttons {
   display: flex;
   justify-content: space-around;
+}
+
+.buttons button:nth-child(1) {
+  animation: scaleUp 0.4s ease-in-out;
+}
+
+.buttons button:nth-child(2) {
+  animation: scaleUp 0.6s ease-in-out;
+}
+
+.buttons button:nth-child(3) {
+  animation: scaleUp 0.8s ease-in-out;
+}
+
+@keyframes scaleUp {
+  from {
+    scale: 0.3;
+  }
+  to {
+    scale: 1;
+  }
 }
 
 dialog {
@@ -550,7 +625,7 @@ dialog::backdrop {
 
 @keyframes slideFromRight {
   from {
-    transform: translateX(100%);
+    transform: translateX(100%) rotateY(90deg);
     rotate: 25deg;
   }
   to {
@@ -561,7 +636,7 @@ dialog::backdrop {
 
 @keyframes slideFromLeft {
   from {
-    transform: translateX(-100%);
+    transform: translateX(-100%) rotateY(90deg);
     rotate: 25deg;
   }
   to {
@@ -588,5 +663,17 @@ dialog::backdrop {
 @keyframes spinning {
   to {
     rotate: 360deg;
+  }
+}
+
+@keyframes introButton {
+  0% {
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.95);
   }
 }
