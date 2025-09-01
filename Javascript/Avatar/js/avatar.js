@@ -1,4 +1,4 @@
-import { crearDialogo } from "../utils/dialog.mjs";
+import { aletarorio, crearDialogo } from "../utils/dialog.mjs";
 
 window.onload = () => {
   const gameState = {
@@ -43,19 +43,13 @@ window.onload = () => {
   const seccionSeleccionarPersonaje = $("seccion-1");
   const reglasDelJuego = $("reglas");
   const botonReglas = $("ver-reglas");
-  const cerrarReglas = $("cerrar-reglas");
   const h2Eleccion = $("h2-eleccion");
   const tituloHeader = $("titulo-header");
-
-  // Utilidades
-  const aletarorio = (min, max) =>
-    Math.floor(Math.random() * (max - min + 1)) + min;
 
   // Inicialización
   reglasDelJuego.style.display = "none";
   botonReglas.onclick = () =>
     crearDialogo(reglasDelJuego.textContent, "Información del Juego");
-  cerrarReglas.onclick = () => (reglasDelJuego.style.display = "none");
 
   // Selección de personaje
   function seleccionarPersonajeJugador() {
@@ -128,7 +122,16 @@ window.onload = () => {
 
     if (gameState.ataqueEnemigo === gameState.ataqueJugador) {
       crearDialogo(
-        `${gameState.personajeSeleccionado} empató esta ronda con ${gameState.personajeEnemigo}`
+        `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
+          <img src="${
+            gameState.imagenes[gameState.personajeSeleccionadoId]
+          }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
+          gameState.personajeSeleccionado
+        }</strong> empató esta ronda con  <img src="${
+          gameState.imagenes[gameState.personajeEnemigoId]
+        }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
+          gameState.personajeEnemigo
+        }</strong>`
       );
     } else if (
       (gameState.ataqueJugador === "Puño 👊" &&
@@ -138,12 +141,30 @@ window.onload = () => {
       (gameState.ataqueJugador === "Patada 🦵" &&
         gameState.ataqueEnemigo === "Puño 👊")
     ) {
-      crearDialogo(`${gameState.personajeSeleccionado} gana la ronda!`);
+      crearDialogo(
+        `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
+          <img src="${
+            gameState.imagenes[gameState.personajeSeleccionadoId]
+          }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
+          gameState.personajeSeleccionado
+        }</strong> gana la ronda!
+        </div>`
+      );
       gameState.vidasEnemigo--;
       gameState.corazonesEnemigo.pop();
     } else {
       crearDialogo(
-        `${gameState.personajeEnemigo} le ha ganado a ${gameState.personajeSeleccionado}. Pierdes una vida en esta ronda!`
+        `<div  style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
+          <img src="${
+            gameState.imagenes[gameState.personajeEnemigoId]
+          }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
+          gameState.personajeEnemigo
+        }</strong> le ha ganado a <img src="${
+          gameState.imagenes[gameState.personajeSeleccionadoId]
+        }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
+          gameState.personajeSeleccionado
+        }</strong>!
+        </div>`
       );
       gameState.vidasJugador--;
       gameState.corazonesJugador.pop();
@@ -166,7 +187,13 @@ window.onload = () => {
   function revisarVidas() {
     if (gameState.vidasJugador === 0) {
       crearDialogo(
-        `${gameState.personajeEnemigo} ha ganado el combate. 😓`,
+        `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
+          <img src="${
+            gameState.imagenes[gameState.personajeEnemigoId]
+          }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
+          gameState.personajeEnemigo
+        } ha ganado el combate. 😓</strong>
+        </div>`,
         "Perdiste"
       );
       $("tarjeta-enemigo").style.outline = "4px solid lightgreen";
@@ -177,7 +204,13 @@ window.onload = () => {
       deshabilitarBotones();
     } else if (gameState.vidasEnemigo === 0) {
       crearDialogo(
-        `¡${gameState.personajeSeleccionado} ha ganado el combate! 🏆`,
+        `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
+          <img src="${
+            gameState.imagenes[gameState.personajeSeleccionadoId]
+          }" width="45px" height="45px" style="border-radius: 50%" /><strong>¡${
+          gameState.personajeSeleccionado
+        } ha ganado el combate! 🏆</strong>
+        </div>`,
         "Game Over"
       );
       $("tarjeta-jugador").style.outline = "4px solid lightgreen";

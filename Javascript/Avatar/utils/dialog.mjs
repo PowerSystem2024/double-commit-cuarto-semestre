@@ -13,7 +13,7 @@ const crearDialogo = (contenido = "", titulo = "Resultado", icono = "ℹ") => {
             </p>
             <span id="cerrar-dialogo" title="Cerrar diálogo" style="cursor: pointer;">✖</span>
             </header>
-            <p style="padding: 24px">${contenido}</p>
+            <aside style="padding: 24px">${contenido}</aside>
         </div>
     `;
   document.body.appendChild(dialogo);
@@ -44,4 +44,7 @@ const crearDialogo = (contenido = "", titulo = "Resultado", icono = "ℹ") => {
   };
 };
 
-export { crearDialogo };
+const aletarorio = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+export { crearDialogo, aletarorio };
