@@ -167,6 +167,8 @@ img.imgLogo {
   border-radius: 12px;
   padding: 8px;
   box-shadow: 1px 3px 12px #0a0a0a;
+  -webkit-box-reflect: below -12px linear-gradient(transparent, #00000009, rgb(0
+          0 0 / 14%));
 }
 
 button {
