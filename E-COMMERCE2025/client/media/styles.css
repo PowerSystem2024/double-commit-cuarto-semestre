@@ -1,108 +1,114 @@
 /*products styles*/
 .card-products-container {
-    margin: 5vh auto;
+  margin: 5vh auto;
 }
 
 .card-products {
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 .card-products img {
-    margin-top: 40px;
-    width: 250px;
-    height: 250px;
+  margin-top: 40px;
+  width: 250px;
+  height: 250px;
 }
 
 .card-products button {
-    border: none;
-    outline: 0;
-    padding: 10px;
-    color: white;
-    background-color: aqua;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-    font-size: 15px;
+  border: none;
+  outline: 0;
+  padding: 10px;
+  color: white;
+  background-color: aqua;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 15px;
 }
 
 .card-products button:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 /*cart button styles*/
 .cart-btn {
-    position: fixed;
-    top: 90vh;
-    right: 40px;
-    background-color: rgb(25, 25, 25);
-    padding: 10px;
-    border-radius: 50%;
-    height: 24px;
-    width: 24px;
-    z-index: 1000;
-    transition: transform 0.3s ease-in-out;
+  position: fixed;
+  top: 90vh;
+  right: 40px;
+  background-color: rgb(25, 25, 25);
+  padding: 10px;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
 }
 
 .cart-btn:hover {
-    cursor: pointer;
-    transform: scale(1.2);
-    opacity: 0.8;
+  cursor: pointer;
+  transform: scale(1.2);
+  opacity: 0.8;
 }
 
 /*modal styles*/
 .modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
 
 .modal-container {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 500px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    z-index: 1000;
-    justify-content: space-between;
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  animation: slideIn 0.4s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 .modal-container::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .modal-title {
-    font-weight: bold;
-    font-size: 24px;
-    margin-bottom: 10px;
-    text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .modal-close {
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    float: right;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  float: right;
 }
