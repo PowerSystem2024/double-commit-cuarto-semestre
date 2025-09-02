@@ -245,58 +245,56 @@ window.onload = () => {
   }
 
   // Listeners
-  try {
-    botonPersonajeJugador.onclick = () => {
-      seleccionarPersonajeJugador();
-    };
-    botonPunio.onclick = () => ataqueJugador("Puño 👊");
-    botonPatada.onclick = () => ataqueJugador("Patada 🦵");
-    botonBarrida.onclick = () => ataqueJugador("Barrida 🦶");
-    botonReiniciar.onclick = () => window.location.reload();
+  botonPersonajeJugador.onclick = () => {
+    seleccionarPersonajeJugador();
+  };
+  botonPunio.onclick = () => ataqueJugador("Puño 👊");
+  botonPatada.onclick = () => ataqueJugador("Patada 🦵");
+  botonBarrida.onclick = () => ataqueJugador("Barrida 🦶");
+  botonReiniciar.onclick = () => window.location.reload();
 
-    // Inicializar worker de tiempo en otro hilo separado del hilo principal del navegador (sin bloqueos de la UI)
-    const worker = new Worker("../worker/timerWorker.js");
-    // Inicializar contador en el worker
-    worker.postMessage(1000);
-    // Recibir el contador del web worker
-    worker.onmessage = (event) => {
-      const timer = event.data;
-      // Evento de itroducción
-      if (timer === 3) {
-        $("shadder").style.display = "flex";
-        $("intro").style.display = "none";
-        $("intro-reglas").style.display = "flex";
-        botonPersonajeJugador.style.animation = "none";
-        botonPersonajeJugador.style.zIndex = 0;
-        botonReglas.style.zIndex = 99;
-        botonReglas.style.animation = "introButton 3s linear infinite";
-        botonReglas.style.filter = "drop-shadow(0 0 10px #28517b)";
-      } else if (timer === 6) {
-        $("intro").style.display = "flex";
-        botonPersonajeJugador.style.zIndex = 99;
-        botonPersonajeJugador.style.animation =
-          "introButton 3s linear infinite";
-        botonPersonajeJugador.style.filter = "drop-shadow(0 0 10px #28517b)";
-      }
-    };
+  // Inicializar worker de tiempo en otro hilo separado del hilo principal del navegador (sin bloqueos de la UI)
+  const worker = new Worker("web-worker/timerWorker.js");
 
-    // Quitar driver de introducción
-    botonPersonajeJugador.onmouseover = () => {
-      $("shadder").style.display = "none";
+  // Inicializar contador en el worker
+  worker.postMessage(1000);
+  // Recibir el contador del web worker
+  worker.onmessage = (event) => {
+    const timer = event.data;
+
+    // Evento de itroducción
+    if (timer === 2) {
+      $("shadder").style.display = "flex";
       $("intro").style.display = "none";
-      $("intro-reglas").style.display = "none";
+      $("intro-reglas").style.display = "flex";
       botonPersonajeJugador.style.animation = "none";
+      botonPersonajeJugador.style.zIndex = 0;
+      botonReglas.style.zIndex = 99;
+      botonReglas.style.animation = "introButton 3s linear infinite";
+      botonReglas.style.filter = "drop-shadow(0 0 10px #28517b)";
+    } else if (timer === 4) {
+      $("intro").style.display = "flex";
+      botonPersonajeJugador.style.zIndex = 99;
+      botonPersonajeJugador.style.animation = "introButton 3s linear infinite";
+      botonPersonajeJugador.style.filter = "drop-shadow(0 0 10px #28517b)";
       worker.terminate();
-    };
+    }
+  };
 
-    botonReglas.onmouseover = () => {
-      $("shadder").style.display = "none";
-      $("intro-reglas").style.display = "none";
-      $("intro").style.display = "none";
-      botonReglas.style.animation = "none";
-      worker.terminate();
-    };
-  } catch (error) {
-    console.error(error.message);
-  }
+  // Quitar driver de introducción
+  botonPersonajeJugador.onmouseover = () => {
+    $("shadder").style.display = "none";
+    $("intro").style.display = "none";
+    $("intro-reglas").style.display = "none";
+    botonPersonajeJugador.style.animation = "none";
+    worker.terminate();
+  };
+
+  botonReglas.onmouseover = () => {
+    $("shadder").style.display = "none";
+    $("intro-reglas").style.display = "none";
+    $("intro").style.display = "none";
+    botonReglas.style.animation = "none";
+    worker.terminate();
+  };
 };
