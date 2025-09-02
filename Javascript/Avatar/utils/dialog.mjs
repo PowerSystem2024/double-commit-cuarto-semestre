@@ -18,7 +18,6 @@ const crearDialogo = (contenido = "", titulo = "Resultado", icono = "ℹ") => {
     `;
   document.body.appendChild(dialogo);
   dialogo.style.animation = "slideIn 0.3s ease-in";
-  document.body.style.overflowY = "hidden";
   dialogo.showModal();
 
   const cerrarDialogoConAnimacion = () => {
