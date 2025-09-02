@@ -1,11 +1,14 @@
+import { carrito } from "./index.mjs";
+
 const modalOverlay = document.getElementById("modal-overlay");
 const modalContainer = document.getElementById("modal-container");
 const cartBtn = document.getElementById("cart-btn");
 
-const displayCart = () => {
+export const displayCart = ({ buyContent }) => {
   modalContainer.innerHTML = "";
   // mostrar
   modalContainer.style.display = "flex";
+  modalContainer.style.flexDirection = "column";
   modalOverlay.style.display = "block";
 
   //modal Header
@@ -16,7 +19,19 @@ const displayCart = () => {
   modalTitle.innerText = "Carrito de Compras";
   modalTitle.className = "modal-title";
 
+  const modalItems = document.createElement("div");
+  buyContent.map((item) => {
+    modalItems.innerHTML = `<div class="modal-items">
+        <img class="modal-img" src="${item.img}"/>
+        <h3 class="modal-item-name">${item.nombre}</h3>
+        <p class="modal-item-cant">Cantidad: ${item.cant}</p>
+        <p class="modal-item-price">Precio: $${item.precio}</p>
+        </div>
+        `;
+  });
+
   const modalClose = document.createElement("div");
+  modalClose.classList.add("close");
   modalClose.innerText = "❌";
   modalClose.className = "modal-close";
   modalHeader.append(modalClose);
@@ -33,10 +48,5 @@ const displayCart = () => {
     }
   });
 
-  modalContainer.append(modalTitle, modalHeader);
+  modalContainer.append(modalTitle, modalHeader, modalItems);
 };
-
-cartBtn.addEventListener("click", () => {
-  console.log("Carrito clickeado");
-  displayCart();
-});
