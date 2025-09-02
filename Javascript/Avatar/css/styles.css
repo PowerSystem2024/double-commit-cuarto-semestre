@@ -25,7 +25,6 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 100vh;
   color: #333;
   text-align: center;
   margin: 0 auto;
@@ -440,7 +439,7 @@ section {
 
 dialog {
   padding: 4px;
-  width: 600px;
+  width: 800px;
   border: none;
   border: 2px solid;
   border-color: #eee;
@@ -543,8 +542,10 @@ dialog::backdrop {
 
 @media (width <=762px) {
   body {
-    display: flex;
-    flex-direction: column;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
   }
 
   dialog {
@@ -554,6 +555,13 @@ dialog::backdrop {
 
 /* Responsive: móvil y pantallas chicas */
 @media (max-width: 600px) {
+  body {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+  }
+
   h1 {
     font-size: 4rem;
   }
@@ -577,6 +585,13 @@ dialog::backdrop {
 
   section {
     padding: 10px;
+  }
+}
+
+@media (width <= 400px) {
+  body {
+    width: 400px;
+    overflow-x: scroll;
   }
 }
 
