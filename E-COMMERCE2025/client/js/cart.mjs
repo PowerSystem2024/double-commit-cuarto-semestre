@@ -5,7 +5,6 @@ const modalContainer = document.getElementById("modal-container");
 const cartBtn = document.getElementById("cart-btn");
 const cartCounter = document.getElementById("cart-counter");
 
-
 export const displayCart = ({ buyContent = [] }) => {
   modalContainer.innerHTML = "";
   // mostrar
@@ -70,7 +69,7 @@ export const displayCart = ({ buyContent = [] }) => {
         <span class="quantity-input">${product.cant}</span>
         <span class="quantity-btn-increse">+</span>
       </div>
-        <div class="price">${product.precio * product.cant} $</div>
+        <div class="price">${(product.precio * product.cant).toFixed(2)} $</div>
         <div class="delete-product">❌</div>
     </div>
     `;
@@ -109,44 +108,51 @@ export const displayCart = ({ buyContent = [] }) => {
     const modalFooter = document.createElement("div");
     modalFooter.className = "modal-footer";
     modalFooter.innerHTML = `
-    <div class="total-price">Total: ${total} $</div>
+    <div class="total-price">Total: ${total.toFixed(2)} $</div>
     <button class="btn-primary" id="checkout-btn"> go to checkout</button>  
     <div id="wallet_container"></div>
     `;
     modalContainer.append(modalFooter);
 
-    //mp
-    const mp = new MercadoPago("APP_USR-6e8b7479-99c7-4563-b856-4b5c3424b35d", {
+    // Public key de mercadopago
+    const mp = new MercadoPago("APP_USR-a1c5fb3a-2163-4b01-a74b-d2fb029f0dbc", {
       locale: "es-AR",
     });
 
     //funcion que genera un titlo con al info del carrito
     const generateCartDescription = () => {
-      return carrito.map(product => `${product.nombre} (x${product.cant})`).join(', ');
+      return carrito
+        .map((product) => `${product.nombre} (x${product.cant})`)
+        .join(", ");
     };
 
-    document.getElementById("checkout-btn").addEventListener("click", async () => {
-      try {
-        const orderData = {
-          title: generateCartDescription(),
-          quantity: 1,
-          price: total,
-        };
+    document
+      .getElementById("checkout-btn")
+      .addEventListener("click", async () => {
+        try {
+          const orderData = {
+            title: generateCartDescription(),
+            quantity: 1,
+            price: total,
+          };
 
-        const response = await fetch("http://localhost:3000/create_preference", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(orderData),
-        });
+          const response = await fetch(
+            "http://localhost:3000/create_preference",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(orderData),
+            }
+          );
 
-        const preference = await response.json();
-        createCheckoutButton(preference.id);
-      } catch (error) {
-        alert("error :(");
-      }
-    });
+          const preference = await response.json();
+          createCheckoutButton(preference.id);
+        } catch (error) {
+          alert("error :(");
+        }
+      });
 
     const createCheckoutButton = (preferenceId) => {
       const bricksBuilder = mp.bricks();
@@ -163,7 +169,6 @@ export const displayCart = ({ buyContent = [] }) => {
 
       renderComponent();
     };
-
   } else {
     const modalText = document.createElement("h2");
     modalText.className = "modal-body";
