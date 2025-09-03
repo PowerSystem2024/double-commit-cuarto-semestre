@@ -338,7 +338,7 @@ body {
   background: var(--surface);
   box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
   z-index: 2001;
-  overflow-y: auto;
+  overflow-y: scroll;
   animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -411,7 +411,6 @@ body {
 /* Modal Body */
 .modal-body {
   padding: 1rem 2rem;
-  min-height: 100px;
 }
 
 .empty-cart {

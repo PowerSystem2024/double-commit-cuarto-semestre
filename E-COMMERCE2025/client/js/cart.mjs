@@ -47,6 +47,7 @@ export const displayCart = ({ buyContent = [] }) => {
     if (modalContainer && !modalContainer.contains(e.target)) {
       modalContainer.style.display = "none";
       modalOverlay.style.display = "none";
+      document.body.style.overflow = "auto";
     }
   });
 

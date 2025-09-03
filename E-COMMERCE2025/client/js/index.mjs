@@ -39,6 +39,7 @@ productos.forEach((product) => {
         nombre: product.nombre,
         precio: product.precio,
       });
+      document.body.style.overflow = "hidden";
       displayCart({ buyContent: carrito });
     }
   });
