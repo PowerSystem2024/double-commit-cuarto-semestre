@@ -221,7 +221,7 @@ window.onload = () => {
           gameState.personajeSeleccionado
         } ha ganado el combate! 🏆</strong>
         </div>`,
-        "Game Over"
+        "Juego Finalizado"
       );
       $("tarjeta-jugador").style.outline = "4px solid lightgreen";
       $("tarjeta-jugador").style.filter = "drop-shadow(0 0 20px lightgreen)";
