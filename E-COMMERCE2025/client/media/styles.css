@@ -80,7 +80,7 @@ body {
   animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
-.product-card {
+.product-container {
   background: var(--surface);
   border-radius: 20px;
   overflow: hidden;
@@ -90,7 +90,7 @@ body {
   animation: fadeInUp 0.6s ease-out;
 }
 
-.product-card::before {
+.product-container::before {
   content: "";
   position: absolute;
   top: 0;
@@ -103,13 +103,13 @@ body {
   pointer-events: none;
 }
 
-.product-card:hover {
+.product-container:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: var(--shadow-xl), var(--shadow-glow);
   border-color: var(--primary-color);
 }
 
-.product-card:hover::before {
+.product-container:hover::before {
   opacity: 0.1;
 }
 
