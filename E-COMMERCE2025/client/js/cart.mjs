@@ -148,6 +148,7 @@ export const displayCart = ({ buyContent = [] }) => {
           );
 
           const preference = await response.json();
+          alert(JSON.stringify(response));
           createCheckoutButton(preference.id);
         } catch (error) {
           alert("error :(");
@@ -163,6 +164,7 @@ export const displayCart = ({ buyContent = [] }) => {
         await bricksBuilder.create("wallet", "wallet_container", {
           initialization: {
             preferenceId: preferenceId,
+            redirectMode: "modal",
           },
         });
       };

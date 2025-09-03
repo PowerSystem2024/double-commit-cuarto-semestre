@@ -6,10 +6,11 @@ const carrito = [];
 
 productos.forEach((product) => {
   const content = document.createElement("div");
+  content.className = "product-container";
   content.innerHTML = `
         <img src="${product.imagen}">
         <h3>${product.nombre}</h3>
-        <p class="price">${product.precio}</p>
+        <p class="price">$ ${product.precio}</p>
         `;
   shopContent.append(content);
 
@@ -19,13 +20,15 @@ productos.forEach((product) => {
   content.append(buyButton);
 
   buyButton.addEventListener("click", () => {
-    const repeat = carrito.some((repeatProduct) => repeatProduct.id === product.id);
+    const repeat = carrito.some(
+      (repeatProduct) => repeatProduct.id === product.id
+    );
 
     if (repeat) {
       carrito.map((prod) => {
         if (prod.id === product.id) {
           prod.cant++;
-          displayCartCounter();  
+          displayCartCounter();
         }
       });
     } else {
