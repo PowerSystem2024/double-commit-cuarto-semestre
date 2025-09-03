@@ -149,7 +149,7 @@ export const displayCart = ({ buyContent = [] }) => {
           );
 
           const preference = await response.json();
-          alert(JSON.stringify(response));
+
           createCheckoutButton(preference.id);
         } catch (error) {
           alert("error :(");
