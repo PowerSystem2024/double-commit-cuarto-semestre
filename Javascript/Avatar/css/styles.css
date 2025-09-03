@@ -164,13 +164,6 @@ img.imgLogo {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-#seleccionar-personaje input[type="radio"]:checked + * {
-  border-color: #4caf50;
-  background-color: #e8f5e8;
-  outline: 3px solid #4caf50;
-  outline-offset: 2px;
-}
-
 #seccion-1 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -307,19 +300,6 @@ section {
   border: 2px solid #eeeeee4b;
 }
 
-#seleccionar-ataque {
-  background-color: #7c929d94;
-}
-
-#seleccionar-ataque button {
-  font-size: 1.2em;
-}
-
-#mensajes {
-  font-weight: bold;
-  color: #d32f2f;
-}
-
 #seleccionar-personaje {
   display: inline-block;
   margin: 10px;
@@ -333,14 +313,21 @@ section {
   min-width: 110px;
 }
 
+#seleccionar-personaje input[type="radio"] {
+  display: none;
+}
+
+#seleccionar-personaje label {
+  padding-bottom: 24px;
+}
+
 /* Colores personalizados por personaje */
 #seleccionar-personaje label[for="zuko"] {
   border-color: #e25822;
   background: #fecfbd;
 }
 
-#seleccionar-personaje label[for="zuko"]:hover,
-#seleccionar-personaje input#zuko:checked + label {
+#seleccionar-personaje label[for="zuko"]:hover {
   border-color: #e25822;
   background: #cf9077;
 }
@@ -350,8 +337,7 @@ section {
   background: #c7dff3;
 }
 
-#seleccionar-personaje label[for="katara"]:hover,
-#seleccionar-personaje input#katara:checked + label {
+#seleccionar-personaje label[for="katara"]:hover {
   border-color: #3498db;
   background: #93c6f0;
 }
@@ -361,8 +347,7 @@ section {
   background: #bbf7f6;
 }
 
-#seleccionar-personaje label[for="aang"]:hover,
-#seleccionar-personaje input#aang:checked + label {
+#seleccionar-personaje label[for="aang"]:hover {
   border-color: #7ed6df;
   background: #91fdfb;
 }
@@ -372,16 +357,30 @@ section {
   background: #c4f3b8;
 }
 
-#seleccionar-personaje label[for="toph"]:hover,
-#seleccionar-personaje input#toph:checked + label {
+#seleccionar-personaje label[for="toph"]:hover {
   border-color: #27ae60;
   background: #aff79d;
 }
 
-#seleccionar-personaje input[type="radio"]:checked + label {
-  box-shadow: 0 4px 12px rgba(0, 120, 215, 0.1);
-  outline: 3px solid blue;
-  outline-offset: 2px;
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 8px 2px rgba(255, 115, 100, 0.6),
+      0 0 16px 4px rgba(255, 120, 50, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 18px 6px rgba(255, 143, 120, 0.9),
+      0 0 28px 12px rgba(255, 120, 50, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 8px 2px rgba(255, 126, 100, 0.6),
+      0 0 16px 4px rgba(255, 120, 50, 0.4);
+  }
+}
+
+#seleccionar-personaje label:has(input[type="radio"]:checked) {
+  border-color: #fff93d;
+  animation: glowPulse 2s infinite ease-in-out;
+  transform: scale(1.05);
 }
 
 #seleccionar-personaje img {
@@ -390,6 +389,15 @@ section {
   border-radius: 50%;
   border: 3px solid #846932;
   background: #fff;
+}
+
+/* Botón seleccionar ataque */
+#seleccionar-ataque {
+  background-color: #7c929d94;
+}
+
+#seleccionar-ataque button {
+  font-size: 1.2em;
 }
 
 #personajes-vs-enemigo {
