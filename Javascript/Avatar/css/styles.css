@@ -313,53 +313,55 @@ section {
   min-width: 110px;
 }
 
-#seleccionar-personaje input[type="radio"] {
+#seccion-1 label {
+  display: inline-block;
+  width: 260px;
+  height: 150px;
+  background: url("../public/sprite-personajes.jpg") no-repeat;
+  background-size: 1100px 600px;
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  color: #fff;
+  text-shadow: 1px 2px 3px #000000;
+  font-weight: 900;
+  filter: grayscale(40%);
+}
+
+#seccion-1 label.aang {
+  background-position: -120px -84px;
+}
+
+#seccion-1 label.katara {
+  background-position: -410px -90px;
+}
+
+#seccion-1 label.zuko {
+  background-position: -700px -310px;
+}
+
+#seccion-1 label.toph {
+  background-position: -120px -310px;
+}
+
+#seccion-1 input[type="radio"] {
   display: none;
 }
 
-#seleccionar-personaje label {
-  padding-bottom: 24px;
-}
-
-/* Colores personalizados por personaje */
-#seleccionar-personaje label[for="zuko"] {
-  border-color: #e25822;
-  background: #fecfbd;
-}
-
 #seleccionar-personaje label[for="zuko"]:hover {
-  border-color: #e25822;
-  background: #cf9077;
-}
-
-#seleccionar-personaje label[for="katara"] {
-  border-color: #3498db;
-  background: #c7dff3;
+  box-shadow: 0 0 20px 4px rgba(226, 88, 34, 0.7);
 }
 
 #seleccionar-personaje label[for="katara"]:hover {
-  border-color: #3498db;
-  background: #93c6f0;
-}
-
-#seleccionar-personaje label[for="aang"] {
-  border-color: #7ed6df;
-  background: #bbf7f6;
+  box-shadow: 0 0 20px 4px rgba(52, 152, 219, 0.7);
 }
 
 #seleccionar-personaje label[for="aang"]:hover {
-  border-color: #7ed6df;
-  background: #91fdfb;
-}
-
-#seleccionar-personaje label[for="toph"] {
-  border-color: #27ae60;
-  background: #c4f3b8;
+  box-shadow: 0 0 20px 4px rgba(126, 214, 223, 0.7);
 }
 
 #seleccionar-personaje label[for="toph"]:hover {
-  border-color: #27ae60;
-  background: #aff79d;
+  box-shadow: 0 0 20px 4px rgba(39, 174, 96, 0.7);
 }
 
 @keyframes glowPulse {
@@ -517,7 +519,7 @@ dialog::backdrop {
 }
 
 /* Responsive: tablet y pantallas medianas */
-@media (max-width: 1024px) {
+@media (max-width: 1115px) {
   h1 {
     font-size: 6rem;
   }
@@ -538,6 +540,9 @@ dialog::backdrop {
     width: 80%;
   }
 
+  #seccion-1 label {
+    width: 240px;
+  }
   button {
     padding: 8px 16px;
     font-size: 0.9em;
