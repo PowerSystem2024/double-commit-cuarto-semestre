@@ -116,7 +116,7 @@ export const displayCart = ({ buyContent = [] }) => {
     modalContainer.append(modalFooter);
 
     //mp
-    const mp = new MercadoPago("APP_USR-6e8b7479-99c7-4563-b856-4b5c3424b35d", { //no anda mercadopago is not defined
+    const mp = new MercadoPago("APP_USR-6e8b7479-99c7-4563-b856-4b5c3424b35d", {
       locale: "es-AR",
     });
 
