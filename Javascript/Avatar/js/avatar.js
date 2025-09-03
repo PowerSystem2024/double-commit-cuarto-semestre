@@ -61,9 +61,32 @@ window.onload = () => {
       return;
     }
 
-    const audio = new Audio("public/assets/videoplayback.mp3");
-    audio.volume = 0.5;
-    audio.play();
+    const pistas = [
+      "public/assets/videoplayback.mp3",
+      "public/assets/book3-soundtrack.mp3",
+      "public/assets/on_theMount_soundtrack.mp3",
+    ];
+
+    let audio = null;
+
+    function reproducirAleatorio() {
+      const randomIndex = Math.floor(Math.random() * pistas.length);
+
+      // si ya había un audio sonando, lo pausamos
+      if (audio) {
+        audio.pause();
+        audio = null;
+      }
+
+      audio = new Audio(pistas[randomIndex]);
+      audio.volume = 0.5;
+      audio.play();
+      // Cuando termina el audio comienza otro aleatorio
+      audio.addEventListener("ended", reproducirAleatorio);
+    }
+
+    // empezar a reproducir automáticamente
+    reproducirAleatorio();
 
     botonReiniciar.style.display = "flex";
     h2Eleccion.style.display = "none";
