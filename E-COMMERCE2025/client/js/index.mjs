@@ -1,4 +1,4 @@
-import { displayCart } from "./cart.mjs";
+import { displayCart, displayCartCounter } from "./cart.mjs";
 import { productos } from "./products.mjs";
 
 const shopContent = document.getElementById("shopContent");
@@ -9,7 +9,7 @@ productos.forEach((product) => {
   content.innerHTML = `
         <img src="${product.imagen}">
         <h3>${product.nombre}</h3>
-        <p>${product.precio}</p>
+        <p class="price">${product.precio}</p>
         `;
   shopContent.append(content);
 
@@ -19,15 +19,25 @@ productos.forEach((product) => {
   content.append(buyButton);
 
   buyButton.addEventListener("click", () => {
-    carrito.push({
-      id: product.id,
-      img: product.imagen,
-      cant: product.quanty,
-      nombre: product.nombre,
-      precio: product.precio,
-    });
-    displayCart({ buyContent: carrito });
-    console.log(carrito);
+    const repeat = carrito.some((repeatProduct) => repeatProduct.id === product.id);
+
+    if (repeat) {
+      carrito.map((prod) => {
+        if (prod.id === product.id) {
+          prod.cant++;
+          displayCartCounter();  
+        }
+      });
+    } else {
+      carrito.push({
+        id: product.id,
+        img: product.imagen,
+        cant: 1, // inicializa en 1
+        nombre: product.nombre,
+        precio: product.precio,
+      });
+      displayCart({ buyContent: carrito });
+    }
   });
 });
 
