@@ -13,3 +13,17 @@ __pycache__
 *.pyc
 /python/laboratorio_usuarios/myVenv
 /python/laboratorio_usuarios/myVenv
+
+# Archivos de configuración de IDE
+.vscode/
+
+# Archivos de configuracion de node
+node_modules/
+package-lock.json
+package.json
+server/package-lock.json
+server/package.json
+E-COMMERCE2025/server/package-lock.json
+/E-COMMERCE2025
+*.json
+E-COMMERCE2025/server/package.json
