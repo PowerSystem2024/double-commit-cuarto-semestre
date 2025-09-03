@@ -27,14 +27,16 @@ export const displayCart = ({ buyContent = [] }) => {
         <h3 class="modal-item-name">${item.nombre}</h3>
         <p class="modal-item-cant">Cantidad: ${item.cant}</p>
         <p class="modal-item-price">Precio: $${item.precio}</p>
-        <div class="delete-product">❌</div>
+        <div class="delete-product">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </div>
         </div>
         `;
   });
 
   const modalClose = document.createElement("div");
   modalClose.classList.add("close");
-  modalClose.innerText = "❌";
+  modalClose.innerHTML = ` <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
   modalClose.className = "modal-close";
   modalHeader.append(modalClose);
 
@@ -70,8 +72,8 @@ export const displayCart = ({ buyContent = [] }) => {
         <span class="quantity-input">${product.cant}</span>
         <span class="quantity-btn-increse">+</span>
       </div>
-        <div class="price">${(product.precio * product.cant).toFixed(2)} $</div>
-        <div class="delete-product">
+        <div class="price">$${(product.precio * product.cant).toFixed(2)}</div>
+        <div class="delete-product" title="Eliminar ítem">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         </div>
     </div>
@@ -111,7 +113,7 @@ export const displayCart = ({ buyContent = [] }) => {
     const modalFooter = document.createElement("div");
     modalFooter.className = "modal-footer";
     modalFooter.innerHTML = `
-    <div class="total-price">Total: ${total.toFixed(2)} $</div>
+    <div class="total-price">Total: $${total.toFixed(2)}</div>
     <button class="btn-primary" id="checkout-btn"> go to checkout</button>  
     <div id="wallet_container"></div>
     `;
@@ -176,9 +178,13 @@ export const displayCart = ({ buyContent = [] }) => {
     };
   } else {
     const modalText = document.createElement("h2");
+    const modalParagraph = document.createElement("p");
     modalText.className = "modal-body";
     modalText.innerText = "Tu carrito está vacío 🛒";
-    modalContainer.append(modalHeader, modalText);
+    modalParagraph.style.textAlign = "center";
+    modalParagraph.style.color = "#777";
+    modalParagraph.innerText = "Agrega ítems para poder realizar la compra";
+    modalContainer.append(modalHeader, modalText, modalParagraph);
   }
 };
 
