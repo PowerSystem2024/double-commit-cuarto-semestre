@@ -19,7 +19,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hola soy el server y este es tu token gatito!! " + accessToken);
+  res.send(
+    "Hola soy el server y este es tu token!! " + accessToken || "Naa mentira..."
+  );
 });
 
 app.get("/succes", async (req, res) => {

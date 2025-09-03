@@ -71,7 +71,9 @@ export const displayCart = ({ buyContent = [] }) => {
         <span class="quantity-btn-increse">+</span>
       </div>
         <div class="price">${(product.precio * product.cant).toFixed(2)} $</div>
-        <div class="delete-product">❌</div>
+        <div class="delete-product">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </div>
     </div>
     `;
       modalContainer.append(modalBody);
@@ -175,7 +177,7 @@ export const displayCart = ({ buyContent = [] }) => {
   } else {
     const modalText = document.createElement("h2");
     modalText.className = "modal-body";
-    modalText.innerText = "Tu carrito está vacío";
+    modalText.innerText = "Tu carrito está vacío 🛒";
     modalContainer.append(modalHeader, modalText);
   }
 };
