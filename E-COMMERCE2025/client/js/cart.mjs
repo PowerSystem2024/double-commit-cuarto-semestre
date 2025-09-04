@@ -153,7 +153,7 @@ export const displayCart = ({ buyContent = [] }) => {
           );
 
           const preference = await response.json();
-
+          console.log(preference);
           createCheckoutButton(preference.id);
         } catch (error) {
           alert("error :(");

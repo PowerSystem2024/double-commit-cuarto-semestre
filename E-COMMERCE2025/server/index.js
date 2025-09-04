@@ -24,11 +24,46 @@ app.get("/", (req, res) => {
   );
 });
 
-app.get("/succes", async (req, res) => {
+app.get("/success", async (req, res) => {
+  const {
+    collection_id,
+    collection_status,
+    payment_id,
+    payment_type,
+    merchant_order_id,
+    preference_id,
+    site_id,
+    processing_mode,
+    merchant_account_id,
+  } = req.query;
+
+  if (!collection_status || !payment_id) {
+    return res.json({ message: "Parámetros faltantes" });
+  }
+
+  const data = {
+    collection_id,
+    collection_status,
+    payment_id,
+    payment_type,
+    merchant_order_id,
+    preference_id,
+    site_id,
+    processing_mode,
+    merchant_account_id,
+  };
+
   try {
-    res.send(req.body);
+    res.send(`
+      <div>
+        <h1>Muchas gracias por tu compra</h1>
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+      </div>
+    `);
+    console.log("Query params:", req.query);
   } catch (error) {
-    res.status(500).send("Error perro");
+    res.status(500).json({ message: error.message });
+    console.error(error);
   }
 });
 
@@ -44,7 +79,7 @@ app.post("/create_preference", async (req, res) => {
         },
       ],
       back_urls: {
-        success: "/success",
+        success: "http://localhost:3000/success",
         failure: "/failure",
         pending: "",
       },
@@ -55,6 +90,7 @@ app.post("/create_preference", async (req, res) => {
     const result = await preference.create({ body });
     res.json({
       id: result.id,
+      result,
     });
   } catch (error) {
     console.log(error);

@@ -113,6 +113,10 @@ body {
   opacity: 0.1;
 }
 
+.product-container:hover img {
+  transform: scale(1.1);
+}
+
 .product-image-container {
   position: relative;
   overflow: hidden;

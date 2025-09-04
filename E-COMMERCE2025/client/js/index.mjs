@@ -10,7 +10,7 @@ productos.forEach((product) => {
   content.innerHTML = `
         <img src="${product.imagen}">
         <h3>${product.nombre}</h3>
-        <p class="price">$ ${product.precio}</p>
+        <p class="price" style="display: flex; justify-content: center;">$ ${product.precio}</p>
         `;
   shopContent.append(content);
 
