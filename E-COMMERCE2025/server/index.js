@@ -3,8 +3,8 @@ import cors from "cors";
 import path from "path";
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from "mercadopago";
-// Agrega credenciales
 
+// Agrega credenciales
 process.loadEnvFile(".env");
 const accessToken = process.env.MP_ACCESS_TOKEN;
 
