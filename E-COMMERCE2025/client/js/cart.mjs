@@ -40,16 +40,29 @@ export const displayCart = ({ buyContent = [] }) => {
   modalClose.className = "modal-close";
   modalHeader.append(modalClose);
 
+  const closeModalWithEffect = () => {
+    modalContainer.style.animation = "slideOut 0.3s ease-out";
+    const controller = new AbortController();
+
+    modalContainer.addEventListener(
+      "animationend",
+      () => {
+        modalContainer.style.display = "none";
+        modalOverlay.style.display = "none";
+        document.body.style.overflow = "auto";
+        controller.abort();
+      },
+      { signal: controller.signal }
+    );
+  };
+
   modalClose.addEventListener("click", () => {
-    modalContainer.style.display = "none";
-    modalOverlay.style.display = "none";
+    closeModalWithEffect();
   });
 
   modalOverlay.addEventListener("click", (e) => {
     if (modalContainer && !modalContainer.contains(e.target)) {
-      modalContainer.style.display = "none";
-      modalOverlay.style.display = "none";
-      document.body.style.overflow = "auto";
+      closeModalWithEffect();
     }
   });
 
@@ -151,9 +164,9 @@ export const displayCart = ({ buyContent = [] }) => {
               body: JSON.stringify(orderData),
             }
           );
-
+          if (!response.ok)
+            throw new Error("Error en las respuesta al crear la preferencia.");
           const preference = await response.json();
-          console.log(preference);
           createCheckoutButton(preference.id);
         } catch (error) {
           alert("error :(");
@@ -166,10 +179,16 @@ export const displayCart = ({ buyContent = [] }) => {
       const renderComponent = async () => {
         if (window.checkoutButton) window.checkoutButton.unmount();
 
-        await bricksBuilder.create("wallet", "wallet_container", {
+        bricksBuilder.create("wallet", "button-checkout", {
           initialization: {
             preferenceId: preferenceId,
-            redirectMode: "modal",
+            redirectMode: "blank",
+          },
+          callbacks: {
+            onError: (error) => console.error("Error al crear bricks:", error),
+            onReady: () => {
+              console.log("Integración lista");
+            },
           },
         });
       };

@@ -7,20 +7,19 @@ import { MercadoPagoConfig, Preference } from "mercadopago";
 // Agrega credenciales
 process.loadEnvFile(".env");
 const accessToken = process.env.MP_ACCESS_TOKEN;
-
+const PORT = process.env.PORT ?? 3000;
 const client = new MercadoPagoConfig({
   accessToken: accessToken,
 });
 
 const app = express();
-const port = 3000;
 
 app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send(
-    "Hola soy el server y este es tu token!! " + accessToken || "Naa mentira..."
+  res.sendFile(
+    path.resolve(process.cwd(), "..", "client", "media", "index.html")
   );
 });
 
@@ -60,7 +59,6 @@ app.get("/success", async (req, res) => {
         <pre>${JSON.stringify(data, null, 2)}</pre>
       </div>
     `);
-    console.log("Query params:", req.query);
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.error(error);
@@ -79,9 +77,9 @@ app.post("/create_preference", async (req, res) => {
         },
       ],
       back_urls: {
-        success: "http://localhost:3000/success",
-        failure: "/failure",
-        pending: "",
+        success: "https://calcagni-gabriel-dev.vercel.app/api/success",
+        failure: "http://localhost:3000/failure",
+        pending: "http://localhost:3000/pending",
       },
       auto_return: "approved",
     };
@@ -100,8 +98,8 @@ app.post("/create_preference", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(
-    `El servidor esta corriendo en el puerto http://localhost:${port}`
+    `El servidor esta corriendo en el puerto http://localhost:${PORT}`
   );
 });
