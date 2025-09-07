@@ -992,16 +992,13 @@
                   price: total,
                 };
 
-                const response = await fetch(
-                  "http://localhost:3000/create_preference",
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(orderData),
-                  }
-                );
+                const response = await fetch("/create_preference", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(orderData),
+                });
 
                 const preference = await response.json();
                 console.log(preference);
@@ -1023,6 +1020,11 @@
                   redirectMode: "modal",
                 },
                 callbacks: {
+                  onSubmit: async (formData) => {
+                    return await fetch("/create_preference", { method: "POST" })
+                      .then((res) => res.json())
+                      .then((data) => data.id);
+                  },
                   onError: (error) =>
                     console.error("Error al crear bricks:", error),
                   onReady: () => {
