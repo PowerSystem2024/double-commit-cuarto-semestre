@@ -43,7 +43,4 @@ const crearDialogo = (contenido = "", titulo = "Resultado", icono = "ℹ") => {
   };
 };
 
-const aletarorio = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
-
-export { crearDialogo, aletarorio };
+export { crearDialogo };

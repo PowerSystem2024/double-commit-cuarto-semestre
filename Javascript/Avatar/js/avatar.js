@@ -1,52 +1,30 @@
-import { aletarorio, crearDialogo } from "../utils/dialog.mjs";
+import {
+  $,
+  audio,
+  pistas,
+  gameState,
+  h2Eleccion,
+  tituloHeader,
+  botonReglas,
+  botonPunio,
+  botonPatada,
+  botonBarrida,
+  nombreEnemigo,
+  nombreJugador,
+  reglasDelJuego,
+  botonReiniciar,
+  botonPersonajeJugador,
+  seccionSeleccionarPersonaje,
+} from "../utils/constants.mjs";
+import { crearDialogo } from "../utils/dialog.mjs";
+import {
+  aletarorio,
+  ataqueAleatorioEnemigo,
+  reproducirAleatorio,
+} from "../utils/funcionesAleatorias.mjs";
 
 window.onload = () => {
-  const gameState = {
-    ataqueJugador: null,
-    ataqueEnemigo: null,
-    vidasJugador: 3,
-    corazonesJugador: ["💖", "💖", "💖"],
-    vidasEnemigo: 3,
-    corazonesEnemigo: ["💖", "💖", "💖"],
-    personajeSeleccionado: "",
-    personajeEnemigo: "",
-    personajes: [
-      { id: "zuko", nombre: "Zuko" },
-      { id: "katara", nombre: "Katara" },
-      { id: "aang", nombre: "Aang" },
-      { id: "toph", nombre: "Toph" },
-    ],
-    imagenes: {
-      zuko: "public/zuko.webp",
-      katara: "public/katara.jpg",
-      aang: "public/aang.jpg",
-      toph: "public/toph.webp",
-    },
-    cardBg: {
-      zuko: "public/zuko-bg-card.jpg",
-      katara: "public/katara-bg-card.jpg",
-      aang: "public/aang-bg-card.jpg",
-      toph: "public/toph-bg-card.jpg",
-    },
-  };
-
-  // Selectores
-  const $ = (id) => document.getElementById(id);
-  const botonPersonajeJugador = $("boton-personaje");
-  const nombreJugador = $("nombre-jugador");
-  const nombreEnemigo = $("nombre-enemigo");
-  const botonPunio = $("boton-punio");
-  const botonPatada = $("boton-patada");
-  const botonBarrida = $("boton-barrida");
-  const botonReiniciar = $("reiniciar");
-  const seccionSeleccionarPersonaje = $("seccion-1");
-  const reglasDelJuego = $("reglas");
-  const botonReglas = $("ver-reglas");
-  const h2Eleccion = $("h2-eleccion");
-  const tituloHeader = $("titulo-header");
-
   // Inicialización
-  reglasDelJuego.style.display = "none";
   botonReglas.onclick = () =>
     crearDialogo(reglasDelJuego.textContent, "Información del Juego");
 
@@ -61,38 +39,13 @@ window.onload = () => {
       return;
     }
 
-    const pistas = [
-      "public/assets/videoplayback.mp3",
-      "public/assets/book3-soundtrack.mp3",
-      "public/assets/on_theMount_soundtrack.mp3",
-    ];
-
-    let audio = null;
-
-    function reproducirAleatorio() {
-      const randomIndex = Math.floor(Math.random() * pistas.length);
-
-      // si ya había un audio sonando, lo pausamos
-      if (audio) {
-        audio.pause();
-        audio = null;
-      }
-
-      audio = new Audio(pistas[randomIndex]);
-      audio.volume = 0.5;
-      audio.play();
-      // Cuando termina el audio comienza otro aleatorio
-      audio.addEventListener("ended", reproducirAleatorio);
-    }
-
     // empezar a reproducir automáticamente
-    reproducirAleatorio();
+    reproducirAleatorio(audio, pistas);
 
     botonReiniciar.style.display = "flex";
     h2Eleccion.style.display = "none";
     tituloHeader.style.transition = "0.6s ease-in-out";
     tituloHeader.style.scale = "0.8";
-
     botonPersonajeJugador.style.display = "none";
     gameState.personajeSeleccionado = seleccion.nombre;
     gameState.personajeSeleccionadoId = seleccion.id;
@@ -135,11 +88,6 @@ window.onload = () => {
     gameState.ataqueJugador = tipo;
     gameState.ataqueEnemigo = ataqueAleatorioEnemigo();
     procesarCombate();
-  }
-
-  function ataqueAleatorioEnemigo() {
-    const ataques = ["Puño 👊", "Patada 🦵", "Barrida 🦶"];
-    return ataques[aletarorio(0, ataques.length - 1)];
   }
 
   // Lógica de combate
