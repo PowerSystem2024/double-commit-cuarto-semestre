@@ -1,0 +1,10 @@
+### Recuperar todos los usuarios
+GET http://localhost:5000/
+
+### Obtener validación
+POST http://localhost:5000/validate
+Content-Type: application/json
+
+{
+    "jwToken": "7e3fd5ab-60ff-4ae2-92b6-9597f0308d1"
+}
