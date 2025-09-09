@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App de Tareas</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #333;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      h1 {
+        text-align: center;
+        color: #444;
+        margin-bottom: 20px;
+        font-size: 2rem;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      input,
+      textarea {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        resize: none;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 6px rgba(102, 126, 234, 0.4);
+        outline: none;
+      }
+
+      button {
+        padding: 12px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+
+      button:hover {
+        transform: scale(1.03);
+        background: linear-gradient(135deg, #5a67d8, #6b46c1);
+      }
+
+      .task-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .task-item {
+        background: #f9f9ff;
+        border: 1px solid #e0e0f5;
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 12px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .task-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .task-item h3 {
+        margin: 0 0 6px;
+        color: #333;
+        font-size: 1.2rem;
+      }
+
+      .task-item p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>📋 App de Tareas</h1>
+      <form id="taskForm">
+        <input
+          type="text"
+          id="taskTitle"
+          placeholder="Título de la tarea"
+          required
+        />
+        <textarea
+          id="taskDescription"
+          placeholder="Descripción de la tarea"
+          rows="3"
+          required
+        ></textarea>
+        <button type="submit">Agregar Tarea</button>
+      </form>
+      <ul class="task-list" id="taskList"></ul>
+    </div>
+
+    <script>
+      const taskForm = document.getElementById("taskForm");
+      const taskList = document.getElementById("taskList");
+
+      taskForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const title = document.getElementById("taskTitle").value;
+        const description = document.getElementById("taskDescription").value;
+
+        const taskItem = document.createElement("li");
+        taskItem.classList.add("task-item");
+        taskItem.innerHTML = `
+          <h3>${title}</h3>
+          <p>${description}</p>
+        `;
+
+        taskList.appendChild(taskItem);
+
+        taskForm.reset();
+      });
+    </script>
+  </body>
+</html>

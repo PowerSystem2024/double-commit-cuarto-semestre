@@ -1,10 +1,19 @@
-### Recuperar todos los usuarios
-GET http://localhost:5000/
+### Recuperar todas las tareas
+GET http://localhost:5000/api/tareas
 
-### Obtener validación
-POST http://localhost:5000/validate
+
+### Crear tarea
+POST http://localhost:5000/api/tarea
 Content-Type: application/json
 
 {
-    "jwToken": "7e3fd5ab-60ff-4ae2-92b6-9597f0308d1"
+    "id": 1,
+    "date": "08 de Septiembre, 2025",
+    "title": "Crear aplicación de facturación mas e-commerce",
+    "description": "Debo crear la aplicación para facturación y control de stock que vengo posponiendo ultimamente.",
 }
+
+### Obtener perfil del usuario
+POST http://localhost:5000/api/profile
+Content-Type: application/json
+
