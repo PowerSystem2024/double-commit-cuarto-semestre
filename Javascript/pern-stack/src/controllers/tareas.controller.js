@@ -1,20 +1,6 @@
 class TareasController {
   static async getAllTasks(req, res) {
-    const allTasks = [
-      {
-        id: 1,
-        date: "08 de Septiembre, 2025",
-        title: "Crear aplicación",
-        description:
-          "Debo crear la aplicación para facturación y control de stock que vengo posponiendo ultimamente.",
-      },
-      {
-        id: 2,
-        date: "06 de Septiembre, 2025",
-        title: "Crear la web (Agencia)",
-        description: "Debo crear la web para poder venderme profesionalmente.",
-      },
-    ];
+    const allTasks = [];
     try {
       res.status(200).json({ message: "Tareas obtenidas", allTasks });
     } catch (error) {
@@ -42,10 +28,11 @@ class TareasController {
       title: req.body.title,
       description: req.body.description,
     };
-    if (!task)
-      return res
+    if (!task) {
+      res
         .status(400)
         .json({ message: "Faltan datos en el cuerpo de la petición" });
+    }
 
     try {
       res

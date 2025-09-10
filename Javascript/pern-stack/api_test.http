@@ -7,13 +7,9 @@ POST http://localhost:5000/api/tarea
 Content-Type: application/json
 
 {
-    "id": 1,
-    "date": "08 de Septiembre, 2025",
-    "title": "Crear aplicación de facturación mas e-commerce",
-    "description": "Debo crear la aplicación para facturación y control de stock que vengo posponiendo ultimamente.",
+"id": 1,
+"date": "08 de Septiembre, 2025",
+"title": "Crear aplicación de facturación mas e-commerce",
+"description": "Debo crear la aplicación para facturación y control de stock que vengo posponiendo ultimamente.",
 }
-
-### Obtener perfil del usuario
-POST http://localhost:5000/api/profile
-Content-Type: application/json
 

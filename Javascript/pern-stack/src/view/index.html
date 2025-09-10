@@ -18,11 +18,13 @@
         flex-direction: column;
         justify-content: center;
         max-width: 600px;
+        max-height: 600px;
         margin: 40px auto;
         padding: 30px;
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        overflow-y: auto;
       }
 
       h1 {
@@ -72,7 +74,10 @@
         transform: scale(1.03);
         background: linear-gradient(135deg, #5a67d8, #6b46c1);
       }
-
+      li {
+        margin: 0;
+        padding: 0;
+      }
       .task-list {
         list-style: none;
         padding: 0;
@@ -128,26 +133,109 @@
     </div>
 
     <script>
-      const taskForm = document.getElementById("taskForm");
-      const taskList = document.getElementById("taskList");
+      (async () => {
+        const taskForm = document.getElementById("taskForm");
+        const taskList = document.getElementById("taskList");
 
-      taskForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const title = document.getElementById("taskTitle").value;
-        const description = document.getElementById("taskDescription").value;
-
-        const taskItem = document.createElement("li");
-        taskItem.classList.add("task-item");
-        taskItem.innerHTML = `
-          <h3>${title}</h3>
-          <p>${description}</p>
+        const createItem = (id, date, title, description) => {
+          const taskItem = document.createElement("li");
+          taskItem.id = id;
+          taskItem.classList.add("task-item");
+          taskItem.innerHTML = `
+          <article>
+             <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>${title}</h3>
+                <small>${date}</small>
+             </div>      
+            <p>${description}</p>  
+          </article>
         `;
+          return taskItem;
+        };
 
-        taskList.appendChild(taskItem);
+        const getAllTasksFromDB = async () => {
+          try {
+            const res = await fetch("http://localhost:5000/api/tareas", {
+              method: "GET",
+            });
+            const items = await res.json();
+            if (!res.ok) throw new Error(res.statusText);
+            const allTasks = items.allTasks;
+            return allTasks;
+          } catch (error) {
+            console.log("Error al obtener tareas de la DB", error.message);
+          }
+        };
 
-        taskForm.reset();
-      });
+        const sendTaskToDB = async (
+          itemId,
+          itemDate,
+          itemTitle,
+          itemDescription
+        ) => {
+          try {
+            const taskData = {
+              id: itemId,
+              date: itemDate,
+              title: itemTitle,
+              description: itemDescription,
+            };
+            await fetch("http://localhost:5000/api/tarea", {
+              method: "POST",
+              body: JSON.stringify(taskData),
+            })
+              .then((res) => res.json())
+              .then((data) => console.log(data));
+          } catch (error) {
+            console.log("Error al enviar tarea", error.message);
+          }
+        };
+
+        const allTasks = await getAllTasksFromDB();
+        for (const task of allTasks) {
+          const item = createItem(
+            task.id,
+            task.date,
+            task.title,
+            task.description
+          );
+          taskList.append(item);
+
+          if (allTasks.length <= 0) {
+            console.log("No hay elementos para crear.");
+            break;
+          }
+        }
+
+        taskForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const title = document.getElementById("taskTitle");
+          const description = document.getElementById("taskDescription");
+          const today = new Date().toLocaleDateString("es-AR", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+          });
+          const taskItem = createItem(
+            Math.floor(Math.random() * 10),
+            today,
+            title.value,
+            description.value
+          );
+          const res = await sendTaskToDB(
+            Math.floor(Math.random() * 10),
+            today,
+            title.value,
+            description.value
+          );
+          console.log(res);
+
+          taskList.appendChild(taskItem);
+          title.value = "";
+          description.value = "";
+        });
+      })();
     </script>
   </body>
 </html>
