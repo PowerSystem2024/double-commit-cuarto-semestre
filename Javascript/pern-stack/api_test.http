@@ -2,6 +2,9 @@
 GET http://localhost:5000/api/tareas
 
 
+### Recuperar tarea por id
+GET http://localhost:5000/api/tarea/1
+
 ### Crear tarea
 POST http://localhost:5000/api/tarea
 Content-Type: application/json
@@ -9,7 +12,7 @@ Content-Type: application/json
 {
 "id": 1,
 "date": "08 de Septiembre, 2025",
-"title": "Crear aplicación de facturación mas e-commerce",
-"description": "Debo crear la aplicación para facturación y control de stock que vengo posponiendo ultimamente.",
+"title": "Crear aplicación",
+"description": "Aplicación de E-Commerce para UTN",
 }
 

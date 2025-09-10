@@ -11,9 +11,30 @@ class TareasController {
   }
 
   static async getTaskById(req, res) {
-    const id = req.body.taskId;
+    const id = req.query;
+    const tasks = [
+      {
+        id: 1,
+        date: "10 de Septiembre de 2025",
+        title: "Crear una app",
+        description: "En serio dale!",
+      },
+      {
+        id: 2,
+        date: "10 de Septiembre de 2025",
+        title: "Crear otra cosa",
+        description: "En serio dale!",
+      },
+    ];
     try {
-      res.status(200).json({ message: "Se ha creado la trea con éxito." });
+      tasks.forEach((task) => {
+        if (task.id === id) {
+          res
+            .status(200)
+            .json({ message: "Se ha obtenido la tarea con ID: " + id });
+        }
+      });
+      res.status(400).json({ message: "No se encontró la tarea" });
     } catch (error) {
       res
         .status(500)
@@ -23,11 +44,13 @@ class TareasController {
 
   static async createTask(req, res) {
     const task = {
-      id: req.body.id,
-      date: req.body.date,
-      title: req.body.title,
-      description: req.body.description,
+      id: req.body.id || 1,
+      date: req.body.date || "09 de Septiembre, 2025",
+      title: req.body.title || "Crear",
+      description: req.body.description || "La ciencia de la paz.",
     };
+    const allTasks = [];
+
     if (!task) {
       res
         .status(400)
@@ -35,9 +58,10 @@ class TareasController {
     }
 
     try {
+      allTasks.push(task);
       res
         .status(200)
-        .json({ message: "Se ha creado la trea con éxito.", task });
+        .json({ message: "Se ha creado la trea con éxito.", allTasks });
     } catch (error) {
       res
         .status(500)
