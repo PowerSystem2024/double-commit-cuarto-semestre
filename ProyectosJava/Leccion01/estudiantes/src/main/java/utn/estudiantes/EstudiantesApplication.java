@@ -42,6 +42,7 @@ public class EstudiantesApplication implements CommandLineRunner {
     private void mostrarMenu() {
         logger.info(nl);
         logger.info("""
+                
                 1. Listar estudiantes
                 2. Buscar estudiante
                 3. Agregar estudiante

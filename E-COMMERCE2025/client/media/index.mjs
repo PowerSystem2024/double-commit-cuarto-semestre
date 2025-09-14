@@ -1,0 +1,311 @@
+const productos = [
+  {
+    id: 1,
+    nombre: "Naranjas",
+    precio: 1000,
+    Cant: 10,
+    imagen:
+      "https://raw.githubusercontent.com/PowerSystem2024/double-commit-cuarto-semestre/refs/heads/main/E-COMMERCE2025/client/media/fruta1-removebg-preview.png",
+  },
+  {
+    id: 2,
+    nombre: "Bananas",
+    precio: 1.2,
+    cant: 15,
+    imagen:
+      "https://raw.githubusercontent.com/PowerSystem2024/double-commit-cuarto-semestre/refs/heads/main/E-COMMERCE2025/client/media/fruta2-removebg-preview.png",
+  },
+  {
+    id: 3,
+    nombre: "Frutilla",
+    precio: 1.0,
+    cant: 20,
+    imagen:
+      "https://raw.githubusercontent.com/PowerSystem2024/double-commit-cuarto-semestre/refs/heads/main/E-COMMERCE2025/client/media/fruta3-removebg-preview.png",
+  },
+  {
+    id: 4,
+    nombre: "Manzanas",
+    precio: 1.0,
+    cant: 20,
+    imagen:
+      "https://raw.githubusercontent.com/PowerSystem2024/double-commit-cuarto-semestre/refs/heads/main/E-COMMERCE2025/client/media/fruta4-removebg-preview.png",
+  },
+];
+
+const shopContent = document.getElementById("shopContent");
+const carrito = [];
+
+productos.forEach((product) => {
+  const content = document.createElement("div");
+  content.className = "product-container";
+  content.innerHTML = `
+    <img src="${product.imagen}">
+    <h3>${product.nombre}</h3>
+    <p class="price" style="display: flex; justify-content: center;">$ ${product.precio}</p>
+    `;
+  shopContent.append(content);
+
+  const buyButton = document.createElement("button");
+  buyButton.innerText = "Comprar";
+
+  content.append(buyButton);
+
+  buyButton.addEventListener("click", () => {
+    const repeat = carrito.some(
+      (repeatProduct) => repeatProduct.id === product.id
+    );
+
+    if (repeat) {
+      carrito.map((prod) => {
+        if (prod.id === product.id) {
+          prod.cant++;
+          displayCartCounter();
+        }
+      });
+    } else {
+      carrito.push({
+        id: product.id,
+        img: product.imagen,
+        cant: 1, // inicializa en 1
+        nombre: product.nombre,
+        precio: product.precio,
+      });
+      document.body.style.overflow = "hidden";
+      displayCart({ buyContent: carrito });
+    }
+  });
+});
+
+const modalOverlay = document.getElementById("modal-overlay");
+const modalContainer = document.getElementById("modal-container");
+const cartBtn = document.getElementById("cart-btn");
+const cartCounter = document.getElementById("cart-counter");
+
+export const displayCart = ({ buyContent = [] }) => {
+  modalContainer.innerHTML = "";
+  // mostrar
+  modalContainer.style.display = "flex";
+  modalContainer.style.flexDirection = "column";
+  modalOverlay.style.display = "block";
+
+  //modal Header
+  const modalHeader = document.createElement("div");
+  modalHeader.className = "modal-header";
+
+  const modalTitle = document.createElement("div");
+  modalTitle.innerText = "Carrito de Compras";
+  modalTitle.className = "modal-title";
+
+  const modalItems = document.createElement("div");
+  buyContent.forEach((item) => {
+    modalItems.innerHTML += `<div class="modal-items">
+          <img class="modal-img" src="${item.img}"/>
+          <h3 class="modal-item-name">${item.nombre}</h3>
+          <p class="modal-item-cant">Cantidad: ${item.cant}</p>
+          <p class="modal-item-price">Precio: $${item.precio}</p>
+          <div class="delete-product">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </div>
+          </div>
+          `;
+  });
+
+  const modalClose = document.createElement("div");
+  modalClose.classList.add("close");
+  modalClose.innerHTML = ` <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+  modalClose.className = "modal-close";
+  modalHeader.append(modalClose);
+
+  const closeModalWithEffect = () => {
+    modalContainer.style.animation = "slideOut 0.3s ease-out";
+    const controller = new AbortController();
+
+    modalContainer.addEventListener(
+      "animationend",
+      () => {
+        modalContainer.style.display = "none";
+        modalOverlay.style.display = "none";
+        document.body.style.overflow = "auto";
+        controller.abort();
+      },
+      { signal: controller.signal }
+    );
+  };
+
+  modalHeader.append(modalTitle);
+  modalContainer.append(modalHeader);
+  modalContainer.style.animation =
+    "slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
+
+  modalClose.addEventListener("click", () => {
+    closeModalWithEffect();
+  });
+
+  modalOverlay.addEventListener("click", (e) => {
+    if (modalContainer && !modalContainer.contains(e.target)) {
+      closeModalWithEffect();
+    }
+  });
+
+  /*modal body*/
+  if (carrito.length > 0) {
+    carrito.forEach((product) => {
+      const modalBody = document.createElement("div");
+      modalBody.className = "modal-body";
+      modalBody.innerHTML = `
+      <div class="product">
+          <img class="product-img" src="${product.img}" />
+          <div class="product-info">
+              <h4>${product.nombre}</h4>
+          </div>
+        <div class="quantity">
+          <span class="quantity-btn-decrese">-</span>
+          <span class="quantity-input">${product.cant}</span>
+          <span class="quantity-btn-increse">+</span>
+        </div>
+          <div class="price">$${(product.precio * product.cant).toFixed(
+            2
+          )}</div>
+          <div class="delete-product" title="Eliminar ítem">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </div>
+      </div>
+      `;
+      modalContainer.append(modalBody);
+
+      /*increse and decrese product functionality*/
+      const decrese = modalBody.querySelector(".quantity-btn-decrese");
+      decrese.addEventListener("click", () => {
+        if (product.cant !== 1) {
+          product.cant--;
+        }
+        displayCart({ buyContent: carrito });
+        displayCartCounter();
+      });
+
+      const increse = modalBody.querySelector(".quantity-btn-increse");
+      increse.addEventListener("click", () => {
+        product.cant++;
+        displayCart({ buyContent: carrito });
+        displayCartCounter();
+      });
+
+      /*delete product*/
+      const deleteProduct = modalBody.querySelector(".delete-product");
+
+      deleteProduct.addEventListener("click", () => {
+        deleteCartProduct(product.id);
+        displayCart({ buyContent: carrito });
+        displayCartCounter();
+      });
+    });
+
+    /*modal fotter*/
+    const total = carrito.reduce((acc, el) => acc + el.precio * el.cant, 0);
+
+    const modalFooter = document.createElement("div");
+    modalFooter.className = "modal-footer";
+    modalFooter.innerHTML = `
+      <div class="total-price">Total: $${total.toFixed(2)}</div>
+      <button class="btn-primary" id="checkout-btn"> go to checkout</button>
+      <div id="wallet_container"></div>
+      `;
+    modalContainer.append(modalFooter);
+
+    // Public key de mercadopago
+    const mp = new MercadoPago("APP_USR-a1c5fb3a-2163-4b01-a74b-d2fb029f0dbc", {
+      locale: "es-AR",
+    });
+
+    //funcion que genera un titlo con al info del carrito
+    const generateCartDescription = () => {
+      return carrito
+        .map((product) => `${product.nombre} (x${product.cant})`)
+        .join(", ");
+    };
+
+    document
+      .getElementById("checkout-btn")
+      .addEventListener("click", async () => {
+        try {
+          const orderData = {
+            title: generateCartDescription(),
+            quantity: 1,
+            price: total,
+          };
+
+          const response = await fetch("/create_preference", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderData),
+          });
+
+          const preference = await response.json();
+          console.log(preference);
+          createCheckoutButton(preference.id);
+        } catch (error) {
+          alert("error :(");
+        }
+      });
+
+    const createCheckoutButton = (preferenceId) => {
+      const bricksBuilder = mp.bricks();
+
+      const renderComponent = async () => {
+        if (window.checkoutButton) window.checkoutButton.unmount();
+
+        await bricksBuilder.create("wallet", "wallet_container", {
+          initialization: {
+            preferenceId: preferenceId,
+            redirectMode: "modal",
+          },
+          callbacks: {
+            onSubmit: async (formData) => {
+              return await fetch("/create_preference", { method: "POST" })
+                .then((res) => res.json())
+                .then((data) => data.id);
+            },
+            onError: (error) => console.error("Error al crear bricks:", error),
+            onReady: () => {
+              console.log("Integración lista");
+            },
+          },
+        });
+      };
+
+      renderComponent();
+    };
+  } else {
+    const modalText = document.createElement("h2");
+    const modalParagraph = document.createElement("p");
+    modalText.className = "modal-body";
+    modalText.innerText = "Tu carrito está vacío 🛒";
+    modalParagraph.style.textAlign = "center";
+    modalParagraph.style.color = "#777";
+    modalParagraph.innerText = "Agrega ítems para poder realizar la compra";
+    modalContainer.append(modalHeader, modalText, modalParagraph);
+  }
+};
+
+cartBtn.addEventListener("click", displayCart);
+
+const deleteCartProduct = (id) => {
+  const foundId = carrito.findIndex((element) => element.id === id);
+  carrito.splice(foundId, 1);
+  displayCart({ buyContent: carrito });
+  displayCartCounter();
+};
+
+export const displayCartCounter = () => {
+  const cartLength = carrito.reduce((acc, el) => acc + el.cant, 0);
+
+  if (cartLength > 0) {
+    cartCounter.style.display = "block";
+    cartCounter.innerText = cartLength;
+  } else {
+    cartCounter.style.display = "none";
+  }
+};

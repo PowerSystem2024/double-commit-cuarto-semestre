@@ -864,7 +864,7 @@
 
         const modalClose = document.createElement("div");
         modalClose.classList.add("close");
-        modalClose.innerHTML = ` <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+        modalClose.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
         modalClose.className = "modal-close";
         modalHeader.append(modalClose);
 
@@ -982,10 +982,13 @@
               .join(", ");
           };
 
+          let isLoading = false;
           document
             .getElementById("checkout-btn")
             .addEventListener("click", async () => {
               try {
+                isLoading = true;
+
                 const orderData = {
                   title: generateCartDescription(),
                   quantity: 1,
@@ -1001,7 +1004,7 @@
                 });
 
                 const preference = await response.json();
-                console.log(preference);
+                isLoading = false;
                 createCheckoutButton(preference.id);
               } catch (error) {
                 alert("error :(");
@@ -1020,11 +1023,6 @@
                   redirectMode: "modal",
                 },
                 callbacks: {
-                  onSubmit: async (formData) => {
-                    return await fetch("/create_preference", { method: "POST" })
-                      .then((res) => res.json())
-                      .then((data) => data.id);
-                  },
                   onError: (error) =>
                     console.error("Error al crear bricks:", error),
                   onReady: () => {
