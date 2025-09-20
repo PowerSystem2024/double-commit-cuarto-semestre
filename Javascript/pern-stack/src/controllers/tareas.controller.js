@@ -69,7 +69,7 @@ class TareasController {
   static async updateTask(req, res) {
     const task = {
       id: req.params.id,
-      titulo: req.body.titlo,
+      titulo: req.body.titulo,
       descripcion: req.body.descripcion,
     };
     try {
