@@ -3,7 +3,7 @@ GET http://localhost:5000/api/tareas
 
 
 ### Recuperar tarea por id
-GET http://localhost:5000/api/tarea/3
+GET http://localhost:5000/api/tarea/6
 
 ### Crear tarea
 POST http://localhost:5000/api/tarea

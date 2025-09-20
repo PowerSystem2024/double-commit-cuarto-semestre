@@ -1,5 +1,7 @@
 import { Pool } from "pg";
 
+process.loadEnvFile(".env");
+
 export const pool = new Pool({
   database: "pern",
   port: 5432,

@@ -67,18 +67,17 @@ class TareasController {
   }
 
   static async updateTask(req, res) {
-    console.log("Params:", req.params);
-    console.log("Body:", req.body);
-    const id = req.params.id;
-    const task = { titulo: req.body.titulo, descripcion: req.body.descripcion };
+    const task = {
+      id: req.params.id,
+      titulo: req.body.titlo,
+      descripcion: req.body.descripcion,
+    };
     try {
       pool.query(
         UPDATE_TASK,
-        [id, task.titulo, task.descripcion, true],
+        [task.id, task.titulo, task.descripcion, true],
         (err, result) => {
-          if (result.rows.length === 0) {
-            return res.status(404).json({ message: "Tarea no encontrada" });
-          }
+          if (err) res.status(400).json(err.message);
 
           res.status(200).json({
             success: "Se ha actualizado la tarea con éxito!",
