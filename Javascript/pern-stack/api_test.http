@@ -10,18 +10,18 @@ POST http://localhost:5000/api/tarea
 Content-Type: application/json
 
 {
-"titulo": "Crear aplicación",
-"descripcion": "Aplicación de E-Commerce para UTN",
+"titulo": "Terminar la app de Matrix",
+"descripcion": "Terminar con al app de los cuadrantes"
 }
 
 ### Actualizar tarea
-PUT http://localhost:5000/api/tarea/1
+PUT http://localhost:5000/api/tarea/6
 
 Content-Type: application/json
 
 {
-"titulo": "Crear aplicación",
-"descripcion": "Aplicación de E-Commerce para UTN",
+"titulo": "E-commerce para dibujos de Gerardo",
+"descripcion": "Plataforma para que se logear con Google y puedan comprar dibujos o pinturas por mercado pago."
 }
 
 ### Eliminar tarea

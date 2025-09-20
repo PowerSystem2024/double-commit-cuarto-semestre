@@ -4,8 +4,8 @@ export const pool = new Pool({
   database: "pern",
   port: 5432,
   host: "localhost",
-  user: process.env.DB_USER ?? "postgres",
-  password: process.env.DB_PASSWORD ?? "32088028..mGc",
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
 });
 
 pool.on("connect", () => {
