@@ -25,4 +25,4 @@ Content-Type: application/json
 }
 
 ### Eliminar tarea
-DELETE  http://localhost:5000/api/tarea/3
+DELETE  http://localhost:5000/api/tarea/8

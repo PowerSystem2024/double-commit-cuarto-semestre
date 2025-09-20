@@ -14,7 +14,9 @@ class TareasController {
         if (err) res.status(400).json(err.message);
         if (result.rows.length === 0)
           res.status(400).json({ info: "Base de datos vacía" });
+
         const allTasks = result.rows.map((row) => row);
+
         res.status(200).json({ tareas: allTasks });
       });
     } catch (error) {
@@ -30,10 +32,10 @@ class TareasController {
       pool.query(GET_TASK_BY_ID, [id], (err, result) => {
         if (err) res.status(400).json(err.message);
         if (result.rows.length === 0)
-          res
-            .status(400)
-            .json({ info: "No hay elementos en la base de datos" });
+          res.status(400).json({ info: "No se encontró la tarea" });
+
         const task = result.rows[0];
+
         res.status(200).json({ tarea: task });
       });
     } catch (error) {
@@ -51,7 +53,9 @@ class TareasController {
         [task.titulo, task.descripcion],
         (err, result) => {
           if (err) res.status(400).json(err.message);
+
           const created = result.rows.map((row) => row);
+
           res.status(200).json({ success: "Tarea creada", created });
         }
       );
@@ -95,6 +99,9 @@ class TareasController {
     try {
       pool.query(DELETE_TASK, [id], (err, result) => {
         if (err) res.status(400).json(err.message);
+        if (result.rows.length === 0)
+          res.status(404).json("Tarea no encontrada");
+
         const deleted = result.rows[0];
         res.status(200).json({ success: "Tarea eliminada", deleted });
       });
