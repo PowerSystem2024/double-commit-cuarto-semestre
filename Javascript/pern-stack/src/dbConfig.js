@@ -1,5 +1,12 @@
-import { Connection } from "pg";
+import { Pool } from "pg";
 
-const connectionConfig = {};
+export const pool = new Pool({
+  port: 5432,
+  host: "localhost",
+  user: process.env.DB_USER ?? "postgres",
+  password: process.env.DB_PASSWORD,
+});
 
-const connection = new Connection();
+pool.on("connect", () => {
+  console.log("Conectado a la base de de datos");
+});

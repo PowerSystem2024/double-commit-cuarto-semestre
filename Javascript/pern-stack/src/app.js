@@ -5,20 +5,22 @@ import { authRouter } from "./routes/auth.js";
 process.loadEnvFile(".env");
 
 export const createApp = () => {
-  const app = express();
+  try {
+    const app = express();
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.disable("x-powered-by");
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
+    app.disable("x-powered-by");
 
-  app.use("/api", tareasRouter);
-  app.use("/api", authRouter);
+    app.use("/api", tareasRouter);
+    app.use("/api", authRouter);
 
-  const PORT = process.env.PORT ?? 3000;
+    const PORT = process.env.PORT ?? 3000;
 
-  app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto: http://localhost:${PORT}`);
-  });
+    app.listen(PORT, () => {
+      console.log(`Servidor corriendo en el puerto: http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
 };
-
-createApp();
