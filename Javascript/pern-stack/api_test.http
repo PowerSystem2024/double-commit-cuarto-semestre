@@ -3,16 +3,26 @@ GET http://localhost:5000/api/tareas
 
 
 ### Recuperar tarea por id
-GET http://localhost:5000/api/tarea/1
+GET http://localhost:5000/api/tarea/3
 
 ### Crear tarea
 POST http://localhost:5000/api/tarea
 Content-Type: application/json
 
 {
-"id": 1,
-"date": "08 de Septiembre, 2025",
-"title": "Crear aplicación",
-"description": "Aplicación de E-Commerce para UTN",
+"titulo": "Crear aplicación",
+"descripcion": "Aplicación de E-Commerce para UTN",
 }
 
+### Actualizar tarea
+PUT http://localhost:5000/api/tarea/1
+
+Content-Type: application/json
+
+{
+"titulo": "Crear aplicación",
+"descripcion": "Aplicación de E-Commerce para UTN",
+}
+
+### Eliminar tarea
+DELETE  http://localhost:5000/api/tarea/3
