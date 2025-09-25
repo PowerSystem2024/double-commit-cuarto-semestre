@@ -21,4 +21,14 @@ public class Estudiante {
     private String apellido;
     private String telefono;
     private String email;
+
+    @Override
+    public String toString() {
+        return "--------- Estudiante ---------" + "\n" +
+                "idestudiante2024:" + idestudiante2024 + "\n" +
+                "nombre:" + nombre + "\n" +
+                "apellido:" + apellido + "\n" +
+                "telefono:" + telefono + "\n" +
+                "email:" + email + "\n";
+    }
 }
