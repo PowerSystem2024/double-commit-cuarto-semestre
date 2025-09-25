@@ -42,12 +42,14 @@ public class EstudiantesApplication implements CommandLineRunner {
     private void mostrarMenu() {
         logger.info(nl);
         logger.info("""
+                ---------- Sistema Estudiantes ----------
                 
                 1. Listar estudiantes
                 2. Buscar estudiante
                 3. Agregar estudiante
-                4. Eliminar estudiante
-                5. Salir
+                4. Modificar estudiante
+                5. Eliminar estudiante
+                6. Salir
                 
                 Elige una opción:
                 """);
@@ -89,6 +91,15 @@ public class EstudiantesApplication implements CommandLineRunner {
                     }
                 }
                 case 4 -> {
+                    logger.info("Modicar estudiante"+nl);
+                    try {
+                        Estudiante estudiante = new Estudiante();
+                        modificarEstudiante(estudiante, consola);
+                    } catch (Exception e) {
+                        System.out.println("Error al modificar el estudiante: " + e);
+                    }
+                }
+                case 5 -> {
                     logger.info("Ingrese el ID del estudiante a eliminar: " + nl);
                     int idEstudiante = Integer.parseInt(consola.nextLine());
                     Estudiante estudiante = estudianteServicio.buscarEstudiantePorId(idEstudiante);
@@ -102,7 +113,7 @@ public class EstudiantesApplication implements CommandLineRunner {
                         return false;
                     }
                 }
-                case 5 -> {
+                case 6 -> {
                     salir = true;
                     logger.info(nl + "Saliendo de la aplicación...👋");
                 }
@@ -113,7 +124,27 @@ public class EstudiantesApplication implements CommandLineRunner {
             return salir;
     }
 
+    private void modificarEstudiante(Estudiante estudiante, Scanner consola) {
+        logger.info("Ingrese el ID del estudiante a modificar: ");
+        int idEstudiante = Integer.parseInt(consola.nextLine());
+        Estudiante estudianteExistente = estudianteServicio.buscarEstudiantePorId(idEstudiante);
+        if (estudianteExistente == null) {
+            logger.error("El ID: " + idEstudiante +  " del estudiante no se ha encontrado."+nl);
+            return;
+        }
+        logger.info("Estudiante a modificar: " + estudianteExistente+nl);
+        completarFormulario(estudianteExistente, consola);
+        estudianteServicio.modificarEstudiante(estudianteExistente);
+        logger.info("Estudiante modificado con éxito: " + estudianteExistente);
+    }
+
     private void agregarEstudiante(Estudiante estudiante, Scanner consola) {
+        completarFormulario(estudiante, consola);
+        estudianteServicio.guardarEstudiante(estudiante);
+        logger.info(nl+"✅ Se ha guardado el estudiante exitosamente: "+ nl+estudiante+nl);
+    }
+
+    private void completarFormulario(Estudiante estudiante, Scanner consola) {
         logger.info("Ingrese el nombre del estudiante: "+nl);
         String nombre = consola.nextLine();
         estudiante.setNombre(nombre);
@@ -125,8 +156,10 @@ public class EstudiantesApplication implements CommandLineRunner {
         estudiante.setTelefono(telefono);
         logger.info("Ingrese el email del estudiante: "+nl);
         String email = consola.nextLine();
+        if (!email.contains("@")) {
+            System.out.println("❌ Debe ingresar un email válido. Compruebe que el correo electrónico ingresado!");
+            return;
+        }
         estudiante.setEmail(email);
-        estudianteServicio.guardarEstudiante(estudiante);
-        logger.info(nl+"✅ Se ha guardado el estudiante exitosamente: "+ nl+estudiante+nl);
     }
 }
