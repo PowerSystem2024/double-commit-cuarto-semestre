@@ -1,9 +1,30 @@
 const GET_ALL_TASKS = "SELECT * FROM tareas;";
-const GET_TASK_BY_ID = "SELECT * FROM tareas WHERE tarea_id = $1";
+const GET_TASK_BY_ID = "SELECT * FROM tareas WHERE tarea_id = $1;";
 const CREATE_TASK =
-  "INSERT INTO tareas(titulo, descripcion) VALUES($1, $2) RETURNING *";
+  "INSERT INTO tareas(titulo, descripcion) VALUES($1, $2) RETURNING *;";
 const UPDATE_TASK =
-  "UPDATE tareas SET titulo = $2, descripcion = $3, actualizado = $4 WHERE tarea_id = $1 RETURNING *";
-const DELETE_TASK = "DELETE FROM tareas WHERE tarea_id = $1 RETURNING *";
+  "UPDATE tareas SET titulo = $2, descripcion = $3, actualizado = $4 WHERE tarea_id = $1 RETURNING *;";
+const DELETE_TASK = "DELETE FROM tareas WHERE tarea_id = $1 RETURNING *;";
+const GET_ALL_USERS = "SELECT * FROM pern_user;";
+const CREATE_USER =
+  "INSERT INTO pern_user (user_name, user_email, user_password) VALUES($1, $2, $3);";
+const GET_USER =
+  "SELECT user_email, user_password FROM pern_user WHERE user_email = $1 AND user_password = $2;";
+const UPDATE_USER =
+  "UPDATE pern_user SET user_name = $1, user_email = $2, user_password = $3;";
+const UPDATE_USER_PASSWORD = "UPDATE pern_user SET user_password = $1;";
+const DELETE_USER = "DELETE FROM pern_user WHERE user_id = $1;";
 
-export { GET_ALL_TASKS, GET_TASK_BY_ID, CREATE_TASK, UPDATE_TASK, DELETE_TASK };
+export {
+  GET_ALL_TASKS,
+  GET_TASK_BY_ID,
+  CREATE_TASK,
+  UPDATE_TASK,
+  DELETE_TASK,
+  GET_ALL_USERS,
+  GET_USER,
+  CREATE_USER,
+  UPDATE_USER,
+  UPDATE_USER_PASSWORD,
+  DELETE_USER,
+};

@@ -2,7 +2,7 @@ import { Pool } from "pg";
 
 process.loadEnvFile(".env");
 
-export const pool = new Pool({
+export const pgLocalDB = new Pool({
   database: "pern",
   port: 5432,
   host: "localhost",
@@ -10,6 +10,6 @@ export const pool = new Pool({
   password: process.env.DB_PASSWORD,
 });
 
-pool.on("connect", () => {
+pgLocalDB.on("connect", () => {
   console.log("Conectado a la base de de datos");
 });

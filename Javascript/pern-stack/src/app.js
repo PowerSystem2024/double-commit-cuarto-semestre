@@ -1,6 +1,6 @@
 import express from "express";
 import { tareasRouter } from "./routes/tareas.route.js";
-import { authRouter } from "./routes/auth.js";
+import { authRouter } from "./routes/auth.route.js";
 
 process.loadEnvFile(".env");
 
