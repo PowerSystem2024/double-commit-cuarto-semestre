@@ -10,14 +10,18 @@ export const serverNeonDB = neon(
   `postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require&channel_binding=require`
 );
 
-const getUserById = async () => {
+const loginUSer = async () => {
   const id = 11
-  const password = "admin1234"
+  const password = "admin234"
   const result = await serverNeonDB.query(GET_USER_BY_ID, [id])
   const hashedPass = result[0].user_password
-  const comparedPassword = await compare(password, hashedPass)
+  const isValidPassword = await compare(password, hashedPass)
   
-  console.log("Las contraseñas coinciden", comparedPassword)
+  if (isValidPassword) {
+    console.log("Usuario logeado con éxito!")
+  } else {
+    console.log("Contraseña incorrecta!")
+  }
 }
 
 const createUser = async () => {
@@ -27,4 +31,4 @@ const createUser = async () => {
   console.log(resutl)
 }
 
-getUserById()
+loginUSer()
