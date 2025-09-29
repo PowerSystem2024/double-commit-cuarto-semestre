@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { TareasController } from "../controllers/tareas.controller.js";
-import { pgLocalDB } from "../dbConfig.js"
+import { pgLocalDB } from "../dbConfig.js";
 
 export const tareasRouter = Router();
 const tareasController = new TareasController({ taskDB: pgLocalDB })

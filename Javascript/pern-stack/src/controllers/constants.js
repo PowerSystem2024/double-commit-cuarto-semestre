@@ -1,5 +1,5 @@
 const GET_ALL_TASKS = "SELECT * FROM tareas;";
-const GET_TASK_BY_ID = "SELECT * FROM tareas WHERE tarea_id = $1;";
+const GET_TASK_BY_ID = "SELECT * FROM tareas WHERE tarea_id = $1 RETURNING *;";
 const CREATE_TASK =
   "INSERT INTO tareas(titulo, descripcion) VALUES($1, $2) RETURNING *;";
 const UPDATE_TASK =
@@ -7,9 +7,10 @@ const UPDATE_TASK =
 const DELETE_TASK = "DELETE FROM tareas WHERE tarea_id = $1 RETURNING *;";
 const GET_ALL_USERS = "SELECT * FROM pern_user;";
 const CREATE_USER =
-  "INSERT INTO pern_user (user_name, user_email, user_password) VALUES($1, $2, $3);";
+  "INSERT INTO pern_user (user_name, user_email, user_password) VALUES($1, $2, $3) RETURNING *;";
 const GET_USER =
-  "SELECT user_email, user_password FROM pern_user WHERE user_email = $1 AND user_password = $2;";
+  "SELECT user_email FROM pern_user WHERE user_email = $1 RETURNING *";
+const GET_USER_BY_ID = "SELECT * FROM pern_user WHERE user_id = $1;";
 const UPDATE_USER =
   "UPDATE pern_user SET user_name = $1, user_email = $2, user_password = $3;";
 const UPDATE_USER_PASSWORD = "UPDATE pern_user SET user_password = $1;";
@@ -23,6 +24,7 @@ export {
   DELETE_TASK,
   GET_ALL_USERS,
   GET_USER,
+  GET_USER_BY_ID,
   CREATE_USER,
   UPDATE_USER,
   UPDATE_USER_PASSWORD,
