@@ -1,5 +1,5 @@
 import { compare, hash } from "bcrypt";
-import { CREATE_USER, DELETE_USER, GET_ALL_USERS, GET_TASK_BY_ID, GET_USER, GET_USER_BY_ID, UPDATE_USER } from "./constants.js";
+import { CREATE_USER, DELETE_USER, GET_ALL_USERS, GET_USER, GET_USER_BY_ID, UPDATE_USER } from "./constants.js";
 
 export class AuthController {
   constructor({ authDb }) {
@@ -8,11 +8,10 @@ export class AuthController {
 
   getAllUsers = async (req, res) => {
     try {
-      const password = req.query
-      
-      const validPassword = compare(password, )
+     const result = await this.authDb.query(GET_ALL_USERS)
+     const usersResult = result?.rows || result
 
-      res.status(200).json({ users: result });
+      res.status(200).json({ users: usersResult });
     } catch (error) {
       res.status(500).json({ message: "Error al obtener usuarios: " + error.message });
     }
@@ -21,28 +20,29 @@ export class AuthController {
   getUserById = async (req, res) => {
     try {
       const id = req.params.id
-
-      if (!id) res.status(400).json({ message: "Debe proporcionar el ID del usuario" })
-
-      const result = this.authDb.query(GET_USER_BY_ID, [id])
-      console.log(result)
-      res.status(200).json({ message: "Usuario encontrado:", user: result })
+      const result = await this.authDb.query(GET_USER_BY_ID, [id])
+      const userResult = result.rows?.[0] || result
+      
+      if (userResult.length === 0) res.status(400).json({ message: "Usuario inexistente", id })
+      res.status(200).json({ message: "Usuario encontrado:", user: userResult })
     } catch (error) {
       res.status(500).json({ message: "Error en el servidor: " + error.message })
     }
   }
 
-  loginUser = async (req, res) => {
+  signIn = async (req, res) => {
     try {
       const { email, password } = req.body;
       if (!email) res.status(400).json({ message: "Debe proporcionar el parámetro '/email'" })
 
-      const userResult = await this.authDb.query(GET_USER, [email]);
+      const userExist = await this.authDb.query(GET_USER, [email]);
+      const hashedPassword = userExist.rows?.[0].user_password || userExist[0].user_password
+
+      const validatedPassword = await compare(password, hashedPassword)
       
-
-      console.log(userResult)
-
-      res.status(200).json({ message: "Usuario logueado exitosamente", user });
+      if (validatedPassword) {
+        res.status(200).json({ message: "Usuario logueado exitosamente", userExist });
+      }
     } catch (error) {
       res.status(500).json({ message: "Error en el login del usuario: " + error.message });
     }
