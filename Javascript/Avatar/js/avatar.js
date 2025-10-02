@@ -54,7 +54,7 @@ window.onload = () => {
     gameState.personajeSeleccionado = seleccion.nombre;
     gameState.personajeSeleccionadoId = seleccion.id;
 
-    // Crear instancia del jugador
+    // Creamos intancias para el jugador
     jugadorInstancia = new Personaje(
       seleccion.nombre,
       gameState.imagenes[seleccion.id],
@@ -73,7 +73,7 @@ window.onload = () => {
     gameState.personajeEnemigo = enemigo.nombre;
     gameState.personajeEnemigoId = enemigo.id;
 
-    // Crear instancia del enemigo
+    // Creamos instancias para el enemigo
     enemigoInstancia = new Personaje(
       enemigo.nombre,
       gameState.imagenes[enemigo.id],
@@ -121,7 +121,7 @@ window.onload = () => {
     
     if (!resultado) return;
 
-    // Actualizar gameState para mantener compatibilidad
+    // Actualización del gameState
     gameState.ataqueJugador = resultado.ataqueJugador;
     gameState.ataqueEnemigo = resultado.ataqueEnemigo;
     gameState.vidasJugador = jugadorInstancia.vidas;
