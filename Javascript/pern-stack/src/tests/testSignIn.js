@@ -1,6 +1,7 @@
 (async () => {
-  const user = { user_email: "gabriel.calcagni86@gmail.com", user_password: "" }
+  const user = { email: "gabriel.calcagni86@gmail.com", password: "laAlmeja123" }
   await fetch("http://localhost:5000/api/signin", {
+    headers: { "Content-Type": "application/json" },
     method: "POST",
     body: JSON.stringify(user),
   })

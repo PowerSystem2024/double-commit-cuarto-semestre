@@ -17,9 +17,9 @@
 
   async function createUser() {
     const newUser = {
-      user_name: "Mario",
-      user_email: "mario.calcagni@yahoo.es",
-      user_password: "administrador123",
+      name: "Roberto A.",
+      email: "roberto_ayala@msn.com",
+      password: "laAlmeja123",
     };
     await fetch("http://localhost:5000/api/signup", {
       method: "POST",
@@ -27,7 +27,7 @@
       body: JSON.stringify(newUser),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data.user))
+      .then((data) => console.log(data))
       .catch((err) => console.error(err.message));
   }
 
