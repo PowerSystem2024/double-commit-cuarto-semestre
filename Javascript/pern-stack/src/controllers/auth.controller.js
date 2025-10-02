@@ -3,7 +3,7 @@ import { CREATE_USER, DELETE_USER, GET_ALL_USERS, GET_USER_BY_EMAIL, GET_USER_BY
 import { request } from "express";
 
 export class ControladorUsuarios {
-  // se crea el constructor para pasarle la prop e inyectar en la instancia en su posterior uso
+  // se crea el constructor para pasarle la prop e inyectar en la instancia la DB en su posterior uso
   constructor({ authDb }) {
     this.authDb = authDb;
   }
@@ -34,8 +34,8 @@ export class ControladorUsuarios {
 
   ingresoUsuario = async (req = request, res) => {
     try {
-     const password = req.body.password;
-     const email = req.body.email;
+      const password = req.body.password;
+      const email = req.body.email;
 
       const userExist = await this.authDb.query(GET_USER_BY_EMAIL, [email]);
       const userResultExist = userExist?.rows?.[0] || userExist[0]
