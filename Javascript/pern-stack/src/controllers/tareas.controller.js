@@ -19,8 +19,8 @@ class ControladorTareas {
   }
 
   obtenerTareaPorId = async (req, res) => {
-    const id = req.params.id;
     try {
+      const id = req.params.id;
       const result = await this.taskDB.query(GET_TASK_BY_ID, [id]);
       const userResult = result?.rows?.[0] || result[0]
 
@@ -33,16 +33,16 @@ class ControladorTareas {
   }
 
   async crearTarea(req, res) {
-    const { titulo, descripcion } = req.body;
     try {
+      const { titulo, descripcion } = req.body;
       const existTask = await this.taskDB.query(GET_TASK_BY_TITLE, [titulo])
-
       const existTaskResult = existTask?.rows?.[0] || existTask[0]
       
       if (existTaskResult) res.status(400).json({ message: "La tarea con ese título ya existe", title: titulo })
 
       const result = await this.taskDB.query(CREATE_TASK, [titulo, descripcion]);
       const tasksResult = result?.rows?.[0] || result[0]
+
       res.status(200).json({ success: "Tarea creada", tarea: tasksResult });
     } catch (error) {
       res.status(500).json({ message: "Error al obtener las tareas: " + error.message, info: "Compruebe si la DB está conectada" });
@@ -79,15 +79,16 @@ class ControladorTareas {
   }
 
   async eliminarTarea(req, res) {
-    const id = req.params.id;
     try {
+      const id = req.params.id;
       const result = await this.taskDB.query(DELETE_TASK, [id]);
-      if (result.rows.length === 0) {
-        return res.status(400).json({ message: "Tarea no encontrada" });
-      }
+      const taskResult = result?.rows?.[0] || result[0]
+
+      if (!taskResult) return res.status(404).json({ message: "No se encontró la tarea con el ID: " + id });
+      
       res.status(200).json({
         success: "Se ha eliminado la tarea con éxito!",
-        tarea: result.rows[0],
+        tarea: taskResult,
       });
     } catch (error) {
       res.status(500).json({ message: "Error al borrar tarea: " + error.message });

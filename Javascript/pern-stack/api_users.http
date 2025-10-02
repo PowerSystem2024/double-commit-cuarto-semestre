@@ -1,0 +1,5 @@
+### Obtener usuarios
+GET http://localhost:5000/api/users
+
+### Obtener usuario por id
+GET http://localhost:5000/api/user/2
