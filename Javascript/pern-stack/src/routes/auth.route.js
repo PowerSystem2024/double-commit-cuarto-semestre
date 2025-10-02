@@ -12,4 +12,5 @@ authRouter.get("/users", controladorUsuarios.obtenerTodosLosUsuarios)
 authRouter.get("/user/:id", controladorUsuarios.obtenerUsuarioPorId)
 authRouter.post("/signin", controladorUsuarios.ingresoUsuario);
 authRouter.post("/signup", controladorUsuarios.crearUsuario);
+authRouter.put("/update/user/:id", controladorUsuarios.actualizarUsuario)
 authRouter.delete("/delete/user/:id", controladorUsuarios.eliminarUsuario)

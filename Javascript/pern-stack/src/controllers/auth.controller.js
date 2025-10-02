@@ -82,17 +82,22 @@ export class ControladorUsuarios {
 
   actualizarUsuario = async (req, res) => {
     try {
-      const hashedPassword = await hash(req.body.password, 10);
-      const result = await this.authDb.query(UPDATE_USER, [
-        req.body.name,
-        req.body.email,
-        hashedPassword,
-      ]);
+      const id = req.params.id
+      const result = await this.authDb.query(GET_USER_BY_ID, [id])
       const userResult = result?.rows?.[0] || result[0]
 
       if (!userResult) res.status(404).json({ message: "Usuario no encontrado" });
 
-      res.status(200).json({ message: "Usuario actualizado", user: userResult });
+      const hashedPassword = await hash(req.body.password, 10);
+      const updatedUser = await this.authDb.query(UPDATE_USER, [
+        id,
+        req.body.name,
+        req.body.email,
+        hashedPassword,
+      ]);
+      const updatedUserResult = updatedUser?.rows?.[0] || updatedUser[0]
+
+      res.status(200).json({ message: "Usuario actualizado", user: updatedUserResult });
     } catch (error) {
       res.status(500).json({ message: "Error al actualizar usuario: " + error.message });
     }

@@ -13,7 +13,7 @@ const GET_USER_BY_EMAIL =
   "SELECT * FROM pern_user WHERE user_email = $1;";
 const GET_USER_BY_ID = "SELECT * FROM pern_user WHERE user_id = $1;";
 const UPDATE_USER =
-  "UPDATE pern_user SET user_name = $1, user_email = $2, user_password = $3;";
+  "UPDATE pern_user SET user_name = $2, user_email = $3, user_password = $4 WHERE user_id = $1 RETURNING *;";
 const UPDATE_USER_PASSWORD = "UPDATE pern_user SET user_password = $1;";
 const DELETE_USER = "DELETE FROM pern_user WHERE user_id = $1 RETURNING *;";
 

@@ -17,13 +17,13 @@
 
   async function updateUser() {
     const updatedUser = {
-      name: "Rolando Esquiavi",
-      email: "rolando_elflaco@yahoo.es",
+      name: "Mario Meza",
+      email: "meza.mario@yahoo.es",
       password: "laAlmeja123",
     };
-    const id = 13;
-    await fetch(`http://localhost:5000/api/user/${id}`, {
-      method: "POST",
+    const id = 1;
+    await fetch(`http://localhost:5000/api/update/user/${id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedUser),
     })
