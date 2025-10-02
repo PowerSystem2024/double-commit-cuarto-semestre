@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { TareasController } from "../controllers/tareas.controller.js";
+import { ControladorTareas } from "../controllers/tareas.controller.js";
 import { pgLocalDB } from "../dbConfig.js";
 import { serverNeonDB } from "../../neon/neonDbConfig.js";
 
 export const tareasRouter = Router();
-const tareasController = new TareasController({ taskDB: serverNeonDB })
+const contraladorTareas = new ControladorTareas({ taskDB: pgLocalDB });
 
-tareasRouter.get("/tareas", tareasController.getAllTasks);
-tareasRouter.get("/tarea/:id", tareasController.getTaskById);
-tareasRouter.post("/tarea", tareasController.createTask);
-tareasRouter.put("/tarea/:id", tareasController.updateTask);
-tareasRouter.delete("/tarea/:id", tareasController.deleteTask);
+tareasRouter.get("/tareas", contraladorTareas.obtenerTodasLasTareas);
+tareasRouter.get("/tarea/:id", contraladorTareas.obtenerTareaPorId);
+tareasRouter.post("/tarea", contraladorTareas.crearTarea);
+tareasRouter.put("/tarea/:id", contraladorTareas.actualizarTarea);
+tareasRouter.delete("/tarea/:id", contraladorTareas.eliminarTarea);

@@ -1,12 +1,14 @@
 import { compare, hash } from "bcrypt";
 import { CREATE_USER, DELETE_USER, GET_ALL_USERS, GET_USER, GET_USER_BY_ID, UPDATE_USER } from "./constants.js";
+import { request } from "express";
 
-export class AuthController {
+export class ControladorUsuarios {
+  // Le pasamos la prop en el contructor para cambio de DB en local o server
   constructor({ authDb }) {
     this.authDb = authDb;
   }
 
-  getAllUsers = async (req, res) => {
+  obtenerTodosLosUsuarios = async (req, res) => {
     try {
      const result = await this.authDb.query(GET_ALL_USERS)
      const usersResult = result?.rows || result
@@ -17,11 +19,11 @@ export class AuthController {
     }
   }
 
-  getUserById = async (req, res) => {
+  obtenerUsuarioPorId = async (req, res) => {
     try {
       const id = req.params.id
       const result = await this.authDb.query(GET_USER_BY_ID, [id])
-      const userResult = result.rows?.[0] || result
+      const userResult = result?.rows[0] || result
       
       if (userResult.length === 0) res.status(400).json({ message: "Usuario inexistente", id })
       res.status(200).json({ message: "Usuario encontrado:", user: userResult })
@@ -30,41 +32,36 @@ export class AuthController {
     }
   }
 
-  signIn = async (req, res) => {
+  ingresoUsuario = async (req = request, res) => {
     try {
-      const { email, password } = req.body;
-      if (!email) res.status(400).json({ message: "Debe proporcionar el parámetro '/email'" })
+     const user_email = req.body?.user_email
+     const user_password = req.body?.user_password
 
-      const userExist = await this.authDb.query(GET_USER, [email]);
-      const hashedPassword = userExist.rows?.[0].user_password || userExist[0].user_password
-
-      const validatedPassword = await compare(password, hashedPassword)
-      
-      if (validatedPassword) {
-        res.status(200).json({ message: "Usuario logueado exitosamente", userExist });
-      }
-    } catch (error) {
+      const userExist = await this.authDb.query(GET_USER, [user_email]);
+      res.status(200).json({ message: "Todo bien!" })
+    } catch (error) { 
       res.status(500).json({ message: "Error en el login del usuario: " + error.message });
     }
   }
 
-  createUser = async (req, res) => {
+  crearUsuario = async (req, res) => {
     try {
-      const password = req.body.password;
+      const password = req.body.user_password;
       const hashedPassword = await hash(password, 10);
       const result = await this.authDb.query(CREATE_USER, [
-        req.body.username,
-        req.body.email,
+        req.body.user_name,
+        req.body.user_email,
         hashedPassword,
       ]);
+      const createdUser = result?.rows?.[0] || result
 
-      res.status(200).json({ message: "Usuario creado correctamente", user: result.rows[0] });
+      res.status(200).json({ message: "Usuario creado correctamente", user: createdUser });
     } catch (error) {
       res.status(500).json({ message: "Error al crear usuario: " + error.message });
     }
   }
 
-  updateUser = async (req, res) => {
+  actualizarUsuario = async (req, res) => {
     try {
       const hashedPassword = await hash(req.body.password, 10);
       const result = await this.authDb.query(UPDATE_USER, [
@@ -83,7 +80,7 @@ export class AuthController {
     }
   }
 
-  deleteUser = async (req, res) => {
+  eliminarUsuario = async (req, res) => {
     const id = req.params.id;
     try {
       const result = await this.authDb.query(DELETE_USER, [id]);

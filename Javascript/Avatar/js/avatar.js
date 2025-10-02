@@ -19,11 +19,15 @@ import {
 import { crearDialogo } from "../utils/dialog.mjs";
 import {
   aletarorio,
-  ataqueAleatorioEnemigo,
   reproducirAleatorio,
 } from "../utils/funcionesAleatorias.mjs";
+import { Personaje } from "./Personaje.mjs";
 
 window.onload = () => {
+  // Variables para las instancias de personajes
+  let jugadorInstancia = null;
+  let enemigoInstancia = null;
+
   // Inicialización
   botonReglas.onclick = () =>
     crearDialogo(reglasDelJuego.textContent, "Información del Juego");
@@ -39,7 +43,7 @@ window.onload = () => {
       return;
     }
 
-    // empezar a reproducir automáticamente
+    // Empezar a reproducir automáticamente
     reproducirAleatorio(audio, pistas);
 
     botonReiniciar.style.display = "flex";
@@ -49,6 +53,15 @@ window.onload = () => {
     botonPersonajeJugador.style.display = "none";
     gameState.personajeSeleccionado = seleccion.nombre;
     gameState.personajeSeleccionadoId = seleccion.id;
+
+    // Crear instancia del jugador
+    jugadorInstancia = new Personaje(
+      seleccion.nombre,
+      gameState.imagenes[seleccion.id],
+      gameState.vidasJugador,
+      [...gameState.corazonesJugador],
+      null
+    );
 
     // Selección de enemigo
     let enemigo;
@@ -60,13 +73,21 @@ window.onload = () => {
     gameState.personajeEnemigo = enemigo.nombre;
     gameState.personajeEnemigoId = enemigo.id;
 
+    // Crear instancia del enemigo
+    enemigoInstancia = new Personaje(
+      enemigo.nombre,
+      gameState.imagenes[enemigo.id],
+      gameState.vidasEnemigo,
+      [...gameState.corazonesEnemigo],
+      null
+    );
+
     // Ocultar y mostrar secciones
     seccionSeleccionarPersonaje.style.display = "none";
-    $("vs-nombre-jugador").innerText = gameState.personajeSeleccionado;
-    $("vs-img-jugador").src =
-      gameState.imagenes[gameState.personajeSeleccionadoId];
-    $("vs-nombre-enemigo").innerText = gameState.personajeEnemigo;
-    $("vs-img-enemigo").src = gameState.imagenes[gameState.personajeEnemigoId];
+    $("vs-nombre-jugador").innerText = jugadorInstancia.nombre;
+    $("vs-img-jugador").src = jugadorInstancia.imagen;
+    $("vs-nombre-enemigo").innerText = enemigoInstancia.nombre;
+    $("vs-img-enemigo").src = enemigoInstancia.imagen;
     $("tarjeta-jugador").style.background = `url(${
       gameState.cardBg[gameState.personajeSeleccionadoId]
     })`;
@@ -85,95 +106,80 @@ window.onload = () => {
 
   // Ataques
   function ataqueJugador(tipo) {
+    if (!jugadorInstancia || !enemigoInstancia) return;
+    
     gameState.ataqueJugador = tipo;
-    gameState.ataqueEnemigo = ataqueAleatorioEnemigo();
-    procesarCombate();
+    procesarCombate(tipo);
   }
 
-  // Lógica de combate
-  function procesarCombate() {
-    if (gameState.vidasEnemigo <= 0 || gameState.vidasJugador <= 0) return;
+  // Lógica de combate usando las instancias
+  function procesarCombate(tipoAtaque) {
+    if (!jugadorInstancia.estaVivo() || !enemigoInstancia.estaVivo()) return;
 
-    if (gameState.ataqueEnemigo === gameState.ataqueJugador) {
+    // Procesar el combate usando el método estático de la clase
+    const resultado = jugadorInstancia.atacar(enemigoInstancia, tipoAtaque);
+    
+    if (!resultado) return;
+
+    // Actualizar gameState para mantener compatibilidad
+    gameState.ataqueJugador = resultado.ataqueJugador;
+    gameState.ataqueEnemigo = resultado.ataqueEnemigo;
+    gameState.vidasJugador = jugadorInstancia.vidas;
+    gameState.vidasEnemigo = enemigoInstancia.vidas;
+    gameState.corazonesJugador = [...jugadorInstancia.corazones];
+    gameState.corazonesEnemigo = [...enemigoInstancia.corazones];
+
+    // Mostrar resultado del combate
+    mostrarResultadoCombate(resultado);
+    
+    actualizarVidasUI();
+    revisarVidas(resultado);
+  }
+
+  function mostrarResultadoCombate(resultado) {
+    if (resultado.resultado === 'empate') {
       crearDialogo(
         `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
-          <img src="${
-            gameState.imagenes[gameState.personajeSeleccionadoId]
-          }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
-          gameState.personajeSeleccionado
-        }</strong> empató esta ronda con  <img src="${
-          gameState.imagenes[gameState.personajeEnemigoId]
-        }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
-          gameState.personajeEnemigo
-        }</strong>`
-      );
-    } else if (
-      (gameState.ataqueJugador === "Puño 👊" &&
-        gameState.ataqueEnemigo === "Barrida 🦶") ||
-      (gameState.ataqueJugador === "Barrida 🦶" &&
-        gameState.ataqueEnemigo === "Patada 🦵") ||
-      (gameState.ataqueJugador === "Patada 🦵" &&
-        gameState.ataqueEnemigo === "Puño 👊")
-    ) {
-      crearDialogo(
-        `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
-          <img src="${
-            gameState.imagenes[gameState.personajeSeleccionadoId]
-          }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
-          gameState.personajeSeleccionado
-        }</strong> gana la ronda con ${gameState.ataqueJugador} a 
-        <img src="${
-          gameState.imagenes[gameState.personajeEnemigoId]
-        }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
-          gameState.personajeEnemigo
-        }</strong> que eligió ${gameState.ataqueEnemigo}!
+          <img src="${jugadorInstancia.imagen}" width="45px" height="45px" style="border-radius: 50%" />
+          <strong>${jugadorInstancia.nombre}</strong> empató esta ronda con  
+          <img src="${enemigoInstancia.imagen}" width="45px" height="45px" style="border-radius: 50%" />
+          <strong>${enemigoInstancia.nombre}</strong>
         </div>`
       );
-      gameState.vidasEnemigo--;
-      gameState.corazonesEnemigo.pop();
+    } else if (resultado.resultado === 'jugador') {
+      crearDialogo(
+        `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
+          <img src="${jugadorInstancia.imagen}" width="45px" height="45px" style="border-radius: 50%" />
+          <strong>${jugadorInstancia.nombre}</strong> gana la ronda con ${resultado.ataqueJugador} a 
+          <img src="${enemigoInstancia.imagen}" width="45px" height="45px" style="border-radius: 50%" />
+          <strong>${enemigoInstancia.nombre}</strong> que eligió ${resultado.ataqueEnemigo}!
+        </div>`
+      );
     } else {
       crearDialogo(
-        `<div  style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
-          <img src="${
-            gameState.imagenes[gameState.personajeEnemigoId]
-          }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
-          gameState.personajeEnemigo
-        }</strong> eligió ${
-          gameState.ataqueEnemigo
-        } y le ha ganado a <img src="${
-          gameState.imagenes[gameState.personajeSeleccionadoId]
-        }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
-          gameState.personajeSeleccionado
-        }</strong> que eligió ${gameState.ataqueJugador}!
+        `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
+          <img src="${enemigoInstancia.imagen}" width="45px" height="45px" style="border-radius: 50%" />
+          <strong>${enemigoInstancia.nombre}</strong> eligió ${resultado.ataqueEnemigo} y le ha ganado a 
+          <img src="${jugadorInstancia.imagen}" width="45px" height="45px" style="border-radius: 50%" />
+          <strong>${jugadorInstancia.nombre}</strong> que eligió ${resultado.ataqueJugador}!
         </div>`
       );
-      gameState.vidasJugador--;
-      gameState.corazonesJugador.pop();
     }
-    actualizarVidasUI();
-    revisarVidas();
   }
 
   function actualizarVidasUI() {
-    nombreJugador.textContent = gameState.corazonesJugador
-      .map((vida) => vida)
-      .toString()
-      .replaceAll(",", " ");
-    nombreEnemigo.textContent = gameState.corazonesEnemigo
-      .map((vida) => vida)
-      .toString()
-      .replaceAll(",", " ");
+    nombreJugador.textContent = jugadorInstancia.corazones
+      .join(' ');
+    nombreEnemigo.textContent = enemigoInstancia.corazones
+      .join(' ');
   }
 
-  function revisarVidas() {
-    if (gameState.vidasJugador === 0) {
+  function revisarVidas(resultado) {
+    if (resultado.ganadorFinal === 'enemigo') {
       crearDialogo(
         `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
-          <img src="${
-            gameState.imagenes[gameState.personajeEnemigoId]
-          }" width="45px" height="45px" style="border-radius: 50%" /><strong>${
-          gameState.personajeEnemigo
-        } ha ganado el combate. 😓</strong>
+          <img src="${enemigoInstancia.imagen}" width="45px" height="45px" style="border-radius: 50%" />
+          <strong>${enemigoInstancia.nombre} ha ganado el combate. 😓</strong>
         </div>`,
         "Perdiste"
       );
@@ -183,14 +189,11 @@ window.onload = () => {
       $("tarjeta-enemigo").style.transformStyle = "preserve-3d";
       $("ganador-enemigo").style.display = "flex";
       deshabilitarBotones();
-    } else if (gameState.vidasEnemigo === 0) {
+    } else if (resultado.ganadorFinal === 'jugador') {
       crearDialogo(
         `<div style="display: flex; align-items: center; gap: 8px; margin: 0 auto; justify-content: center;">
-          <img src="${
-            gameState.imagenes[gameState.personajeSeleccionadoId]
-          }" width="45px" height="45px" style="border-radius: 50%" /><strong>¡${
-          gameState.personajeSeleccionado
-        } ha ganado el combate! 🏆</strong>
+          <img src="${jugadorInstancia.imagen}" width="45px" height="45px" style="border-radius: 50%" />
+          <strong>¡${jugadorInstancia.nombre} ha ganado el combate! 🏆</strong>
         </div>`,
         "Juego Finalizado"
       );
@@ -233,7 +236,7 @@ window.onload = () => {
   worker.onmessage = (event) => {
     const timer = event.data;
 
-    // Evento de itroducción
+    // Evento de introducción
     if (timer === 2) {
       $("shadder").style.display = "flex";
       $("intro").style.display = "none";

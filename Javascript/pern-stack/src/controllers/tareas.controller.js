@@ -1,21 +1,26 @@
-class TareasController {
+import { serverNeonDB } from "../../neon/neonDbConfig.js";
+import { pgLocalDB } from "../dbConfig.js";
+import { CREATE_TASK, DELETE_TASK, GET_ALL_TASKS, GET_TASK_BY_ID, UPDATE_TASK } from "./constants.js";
+
+class ControladorTareas {
   constructor({ taskDB }) {
     this.taskDB = taskDB;
   }
 
-  async getAllTasks(req, res) {
+  obtenerTodasLasTareas = async (req, res) => {
     try {
       const result = await this.taskDB.query(GET_ALL_TASKS);
-      if (result.rows.length === 0) {
-        return res.status(400).json({ info: "No hay tareas en la DB" });
-      }
-      res.status(200).json({ tareas: result.rows });
+      const tasksResult = result.rows?.[0] || result
+      // if (result.rows?.length === 0) {
+      //   return res.status(400).json({ info: "No hay tareas en la DB" });
+      // }
+      res.status(200).json({ tareas: tasksResult });
     } catch (error) {
       res.status(500).json({ message: "Error al obtener las tareas: " + error.message });
     }
   }
 
-  async getTaskById(req, res) {
+  obtenerTareaPorId = async (req, res) => {
     const id = req.params.id;
     try {
       const result = await this.taskDB.query(GET_TASK_BY_ID, [id]);
@@ -28,7 +33,7 @@ class TareasController {
     }
   }
 
-  async createTask(req, res) {
+  async crearTarea(req, res) {
     const { titulo, descripcion } = req.body;
     try {
       const result = await this.taskDB.query(CREATE_TASK, [titulo, descripcion]);
@@ -38,7 +43,7 @@ class TareasController {
     }
   }
 
-  async updateTask(req, res) {
+  async actualizarTarea(req, res) {
     const task = {
       id: req.params.id,
       titulo: req.body.titulo,
@@ -64,7 +69,7 @@ class TareasController {
     }
   }
 
-  async deleteTask(req, res) {
+  async eliminarTarea(req, res) {
     const id = req.params.id;
     try {
       const result = await this.taskDB.query(DELETE_TASK, [id]);
@@ -81,4 +86,4 @@ class TareasController {
   }
 }
 
-export { TareasController };
+export { ControladorTareas };
