@@ -1,6 +1,6 @@
 (async () => {
-  const id = 10;
-  await fetch(`http://localhost:5000/api/tarea/${id}`, {
+  const id = 9;
+  await fetch(`http://localhost:5000/api/delete/user/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   })

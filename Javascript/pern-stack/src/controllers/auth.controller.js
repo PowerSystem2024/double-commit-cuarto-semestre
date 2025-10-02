@@ -99,14 +99,12 @@ export class ControladorUsuarios {
   }
 
   eliminarUsuario = async (req, res) => {
-    const id = req.params.id;
     try {
+      const id = req.params.id;
       const result = await this.authDb.query(DELETE_USER, [id]);
       const userResult = result?.rows?.[0] || result[0]
 
-      if (!result) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
-      }
+      if (!userResult) res.status(404).json({ message: "Usuario no encontrado:" });
       
       res.status(200).json({ message: "Usuario eliminado", user: userResult });
     } catch (error) {

@@ -1,4 +1,4 @@
-import { CREATE_TASK, DELETE_TASK, GET_ALL_TASKS, GET_TASK_BY_ID, UPDATE_TASK } from "./constants.js";
+import { CREATE_TASK, DELETE_TASK, GET_ALL_TASKS, GET_TASK_BY_ID, GET_TASK_BY_TITLE, UPDATE_TASK } from "./constants.js";
 
 class ControladorTareas {
   constructor({ taskDB }) {
@@ -14,7 +14,7 @@ class ControladorTareas {
       
       res.status(200).json({ tareas: tasksResult });
     } catch (error) {
-      res.status(500).json({ message: "Error al obtener las tareas: " + error.message });
+      res.status(500).json({ message: "Error al obtener las tareas: " + error.message, info: "Compruebe si la DB está conectada" });
     }
   }
 
@@ -28,17 +28,24 @@ class ControladorTareas {
 
       res.status(200).json({ tarea: userResult });
     } catch (error) {
-      res.status(500).json({ message: "Error al obtener tarea por ID: " + error.message });
+      res.status(500).json({ message: "Error al obtener las tareas: " + error.message, info: "Compruebe si la DB está conectada" });
     }
   }
 
   async crearTarea(req, res) {
     const { titulo, descripcion } = req.body;
     try {
+      const existTask = await this.taskDB.query(GET_TASK_BY_TITLE, [titulo])
+
+      const existTaskResult = existTask?.rows?.[0] || existTask[0]
+      
+      if (existTaskResult) res.status(400).json({ message: "La tarea con ese título ya existe", title: titulo })
+
       const result = await this.taskDB.query(CREATE_TASK, [titulo, descripcion]);
-      res.status(200).json({ success: "Tarea creada", tarea: result.rows[0] });
+      const tasksResult = result?.rows?.[0] || result[0]
+      res.status(200).json({ success: "Tarea creada", tarea: tasksResult });
     } catch (error) {
-      res.status(500).json({ message: "Error al crear tarea: " + error.message });
+      res.status(500).json({ message: "Error al obtener las tareas: " + error.message, info: "Compruebe si la DB está conectada" });
     }
   }
 
