@@ -1,6 +1,5 @@
 import { compare, hash } from "bcrypt";
 import { CREATE_USER, DELETE_USER, GET_ALL_USERS, GET_USER_BY_EMAIL, GET_USER_BY_ID, UPDATE_USER } from "./constants.js";
-import { request, response } from "express";
 import { createAccessToken } from "../lib/jwt.js";
 
 export class ControladorUsuarios {
@@ -33,7 +32,7 @@ export class ControladorUsuarios {
     }
   }
 
-  ingresoUsuario = async (req = request, res) => {
+  ingresoUsuario = async (req, res) => {
     try {
       const password = req.body.password;
       const email = req.body.email;
