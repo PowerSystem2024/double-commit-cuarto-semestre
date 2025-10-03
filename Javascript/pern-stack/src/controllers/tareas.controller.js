@@ -35,10 +35,11 @@ class ControladorTareas {
   async crearTarea(req, res) {
     try {
       const { titulo, descripcion } = req.body;
+
       const existTask = await this.taskDB.query(GET_TASK_BY_TITLE, [titulo])
       const existTaskResult = existTask?.rows?.[0] || existTask[0]
       
-      if (existTaskResult) res.status(400).json({ message: "La tarea con ese título ya existe", title: titulo })
+      if (existTaskResult.titulo) res.status(409).json({ message: "La tarea con ese título ya existe", title: titulo })
 
       const result = await this.taskDB.query(CREATE_TASK, [titulo, descripcion]);
       const tasksResult = result?.rows?.[0] || result[0]

@@ -17,8 +17,8 @@
 
   async function createUser() {
     const newUser = {
-      name: "Roberto A.",
-      email: "roberto_ayala@msn.com",
+      name: "Juan Gilberto",
+      email: "juanGil@yahoo.es",
       password: "laAlmeja123",
     };
     await fetch("http://localhost:5000/api/signup", {

@@ -5,7 +5,7 @@ import { pgLocalDB } from "../dbConfig.js";
 
 export const authRouter = Router();
 // Esto permite que si mañana cambias la DB, solo pases otra instancia sin tocar la lógica interna del controlador.
-const controladorUsuarios = new ControladorUsuarios({ authDb: pgLocalDB }); // <- Inyectamos la dependencia de NeonDB server-less
+const controladorUsuarios = new ControladorUsuarios({ authDb: serverNeonDB }); // <- Inyectamos la dependencia de NeonDB server-less
 // const controladorUsuarios = new ControladorUsuarios({ authDb: pgLocalDB }) <- si queremos usar la DB de pgAdmin
 
 authRouter.get("/users", controladorUsuarios.obtenerTodosLosUsuarios)
