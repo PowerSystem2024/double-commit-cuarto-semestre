@@ -71,9 +71,9 @@ export class ControladorUsuarios {
           email,
           hashedPassword,
         ]);
-  
         const createdUser = result?.rows?.[0] || result[0]
-        const token = await createAccessToken(createdUser.user_id)
+        const payload = { id: createdUser.user_id }
+        const token = await createAccessToken({ payload })
 
         res.cookie("user_token_task_app", token, { httpOnly: true, sameSite: "none", maxAge: 60 * 60 * 24 * 1000 })
         res.status(201).json({ message: "Usuario creado correctamente", user: createdUser });
