@@ -44,11 +44,9 @@ export class ControladorUsuarios {
       
       const isValidatedUser = await compare(password, userResultExist.user_password)
      
-      if (isValidatedUser) {
-        res.status(200).json({ message: "Todo bien! Al parecer el usuario ha ingresado.", user: userResultExist })
-      } else {
-        res.status(403).json({ message: "La contraseña es incorrecta!" })
-      }
+      if (isValidatedUser) res.status(200).json({ message: "Todo bien! Al parecer el usuario ha ingresado.", user: userResultExist })
+
+      res.status(403).json({ message: "La contraseña es incorrecta!" })
      
     } catch (error) { 
       res.status(500).json({ message: "Error en el login del usuario: " + error.message });

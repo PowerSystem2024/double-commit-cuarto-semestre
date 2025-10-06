@@ -10,7 +10,7 @@ class ControladorTareas {
       const result = await this.taskDB.query(GET_ALL_TASKS);
       const tasksResult = result?.rows || result
 
-      if (tasksResult.length === 0) return res.status(400).json({ info: "No hay tareas en la DB" });
+      if (tasksResult.length === 0) return res.status(404).json({ info: "No hay tareas en la DB" });
       
       res.status(200).json({ tareas: tasksResult });
     } catch (error) {
@@ -35,6 +35,8 @@ class ControladorTareas {
   async crearTarea(req, res) {
     try {
       const { titulo, descripcion } = req.body;
+
+      if (!titulo || !descripcion) res.status(400).json({ message: "Campos vacíos" })
 
       const existTask = await this.taskDB.query(GET_TASK_BY_TITLE, [titulo])
       const existTaskResult = existTask?.rows?.[0] || existTask[0]
