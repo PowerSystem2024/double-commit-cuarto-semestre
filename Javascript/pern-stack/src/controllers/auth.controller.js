@@ -42,11 +42,15 @@ export class ControladorUsuarios {
 
       if (!userResultExist) res.status(404).json({ message: "El correo electrónico no está registrado", email })
       
-      const isValidatedUser = await compare(password, userResultExist.user_password)
+      const validatedUser = await compare(password, userResultExist.user_password)
      
-      if (isValidatedUser) res.status(200).json({ message: "Todo bien! Al parecer el usuario ha ingresado.", user: userResultExist })
+      if (!validatedUser) res.status(403).json({ message: "La contraseña es incorrecta!" })
 
-      res.status(403).json({ message: "La contraseña es incorrecta!" })
+      const payload = { id: userResultExist.user_id }
+      const token = await createAccessToken({ payload })
+
+      res.cookie("user_token_task_app", token, { httpOnly: true, sameSite: "none", maxAge: 60 * 60 * 24 * 1000 })
+      res.status(200).json({ message: "Ingreso de usuario", user: userResultExist })
      
     } catch (error) { 
       res.status(500).json({ message: "Error en el login del usuario: " + error.message });
@@ -87,6 +91,10 @@ export class ControladorUsuarios {
   actualizarUsuario = async (req, res) => {
     try {
       const id = req.params.id
+      const { name, email } = req.body
+
+      if (!name || !email) res.status(400).json({ message: "Campos vacíos" })
+
       const result = await this.authDb.query(GET_USER_BY_ID, [id])
       const userResult = result?.rows?.[0] || result[0]
 
@@ -95,8 +103,8 @@ export class ControladorUsuarios {
       const hashedPassword = await hash(req.body.password, 10);
       const updatedUser = await this.authDb.query(UPDATE_USER, [
         id,
-        req.body.name,
-        req.body.email,
+        name,
+        email,
         hashedPassword,
       ]);
       const updatedUserResult = updatedUser?.rows?.[0] || updatedUser[0]
