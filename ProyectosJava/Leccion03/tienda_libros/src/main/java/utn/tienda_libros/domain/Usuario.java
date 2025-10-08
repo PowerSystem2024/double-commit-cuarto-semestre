@@ -5,6 +5,7 @@ public class Usuario {
     private int id;
     private String nombre;
     private String correo;
+
     public Usuario() {}
 
     public Usuario(Integer id, String nombre, String correo) {
@@ -16,7 +17,7 @@ public class Usuario {
     @Override
     public String toString() {
         return """
-                
-                """;
+                Usuario: {0}
+                """.formatted(this.nombre);
     }
 }
