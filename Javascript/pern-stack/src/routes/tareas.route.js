@@ -8,7 +8,7 @@ export const tareasRouter = Router();
 const contraladorTareas = new ControladorTareas({ taskDB: serverNeonDB });
 
 tareasRouter.get("/tareas", isAuth, contraladorTareas.obtenerTodasLasTareas);
-tareasRouter.get("/tarea/:id", contraladorTareas.obtenerTareaPorId);
-tareasRouter.post("/tarea", contraladorTareas.crearTarea);
-tareasRouter.put("/tarea/:id", contraladorTareas.actualizarTarea);
-tareasRouter.delete("/tarea/:id", contraladorTareas.eliminarTarea);
+tareasRouter.get("/tarea/:id", isAuth, contraladorTareas.obtenerTareaPorId);
+tareasRouter.post("/tarea", isAuth, contraladorTareas.crearTarea);
+tareasRouter.put("/tarea/:id", isAuth, contraladorTareas.actualizarTarea);
+tareasRouter.delete("/tarea/:id", isAuth, contraladorTareas.eliminarTarea);
