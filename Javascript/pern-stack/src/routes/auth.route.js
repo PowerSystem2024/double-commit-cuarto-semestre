@@ -15,5 +15,5 @@ authRouter.post("/signin", controladorUsuarios.ingresoUsuario);
 authRouter.post("/signup", controladorUsuarios.crearUsuario);
 authRouter.put("/update/user/:id", controladorUsuarios.actualizarUsuario)
 authRouter.delete("/delete/user/:id", controladorUsuarios.eliminarUsuario)
-authRouter.post("/signout", isAuth, controladorUsuarios.salidaUsuario)
+authRouter.get("/signout", controladorUsuarios.salidaUsuario)
 authRouter.get("/profile", isAuth, controladorUsuarios.perfilUsuario)

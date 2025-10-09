@@ -39,23 +39,39 @@
             justify-content: center;
           "
         >
-          <label for="name">
-            <input type="text" placeholder="Nombre" />
-          </label>
           <label for="email">
-            <input type="text" placeholder="Email" />
+            <input name="email" type="text" placeholder="Email" />
           </label>
           <label for="password">
-            <input type="password" placeholder="•••••••" />
+            <input name="password" type="password" placeholder="•••••••" />
           </label>
-          <button type="submit">Ingresar</button>
+          <button type="submit" style="padding: 6px 8px;">Ingresar</button>
           <a href="">¿Olvidaste la contraseña?</a>
         </form>
       </section>
     </main>
     <script type="module">
       (async () => {
-        document.addEventListener("DOMContentLoaded", () => {});
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector("form")
+         
+            form.onsubmit = async (event) => {
+                event.preventDefault()
+                const formData = new FormData(form)
+                const email = formData.get("email")
+                const password = formData.get("password")
+
+                await fetch("http://localhost:5000/api/signin", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                })
+                .then((res) => res.json())
+                .then((data) => alert("Sesión del usuario inciada: " + data))
+                .catch((err) => console.error(err))
+            }
+        });
       })();
     </script>
   </body>

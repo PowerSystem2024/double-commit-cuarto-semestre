@@ -5,8 +5,6 @@ process.loadEnvFile(".env");
 export const isAuth = (req, res, next) => {
   try {
     const token = req.cookies.token;
-    
-    console.log("TOKEN:", token);
 
     if (!token) {
       return res.status(401).json({ message: "No estás autorizado (falta token)" });

@@ -8,10 +8,10 @@ import {
   UPDATE_USER,
 } from "./constants.js";
 import { createAccessToken } from "../lib/jwt.js";
-import { response } from "express";
 
 export class ControladorUsuarios {
   expiracionCookie = 60 * 60 * 24 * 1000
+
   // se crea el constructor para pasarle la prop e inyectar en la instancia la DB en su posterior uso
   constructor({ authDb }) {
     this.authDb = authDb;
@@ -68,17 +68,17 @@ export class ControladorUsuarios {
       if (!validatedUser)
         res.status(403).json({ message: "La contraseña es incorrecta!" });
 
-      const payload = { id: userResultExist.user_id };
-      const token = await createAccessToken({ payload });
+      const token = await createAccessToken({ id: userResultExist.user_id });
 
       res.cookie("token", token, {
         httpOnly: true,
-        sameSite: "none",
+        sameSite: "lax",
+        secure: true,
         maxAge: this.expiracionCookie,
       });
       res
         .status(200)
-        .json({ message: "Ingreso de usuario", user: userResultExist });
+        .json({ message: "Ingreso de usuario", user: userResultExist, token });
     } catch (error) {
       res
         .status(500)
@@ -159,8 +159,15 @@ export class ControladorUsuarios {
       ]);
       const updatedUserResult = updatedUser?.rows?.[0] || updatedUser[0];
 
+      const token = await createAccessToken({ id: updatedUserResult.user_id })
+      
+      res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: this.expiracionCookie
+      })
       res
-        .status(200)
+        .status(201)
         .json({ message: "Usuario actualizado", user: updatedUserResult });
     } catch (error) {
       res
