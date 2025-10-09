@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ControladorUsuarios } from "../controllers/auth.controller.js";
 import { serverNeonDB } from "../../neon/neonDbConfig.js";
 import { pgLocalDB } from "../dbConfig.js";
+import { isAuth } from "../middleware/isAuth.js";
 
 export const authRouter = Router();
 // Esto permite que si mañana cambias la DB, solo pases otra instancia sin tocar la lógica interna del controlador.
@@ -14,3 +15,5 @@ authRouter.post("/signin", controladorUsuarios.ingresoUsuario);
 authRouter.post("/signup", controladorUsuarios.crearUsuario);
 authRouter.put("/update/user/:id", controladorUsuarios.actualizarUsuario)
 authRouter.delete("/delete/user/:id", controladorUsuarios.eliminarUsuario)
+authRouter.post("/signout", isAuth, controladorUsuarios.salidaUsuario)
+authRouter.get("/profile", isAuth, controladorUsuarios.perfilUsuario)

@@ -1,19 +1,22 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
-process.loadEnvFile(".env")
-export const isAuth = async (req, res, next) => {
-    try {
-      const token = req.cookies.token
+process.loadEnvFile(".env");
 
-      if (!token) return res.status(401).json({ message: 'No estás autorizado' })
-  
-      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) res.status(401).json({ message: "No estas autorizado" })
-        req.userId = decoded.id
-        next()
-      })
-    } catch (error) {
-      res.status(500).json({ message: 'Error en el middleware: ' + error.message })
+export const isAuth = (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+    
+    console.log("TOKEN:", token);
+
+    if (!token) {
+      return res.status(401).json({ message: "No estás autorizado (falta token)" });
     }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.userId = decoded.id;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Token inválido o expirado" });
   }
-  
+};
