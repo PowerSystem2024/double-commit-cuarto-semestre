@@ -11,4 +11,4 @@ tareasRouter.get("/tareas", isAuth, contraladorTareas.obtenerTodasLasTareas);
 tareasRouter.get("/tarea/:id", isAuth, contraladorTareas.obtenerTareaPorId);
 tareasRouter.post("/tarea", isAuth, contraladorTareas.crearTarea);
 tareasRouter.put("/actualizar/tarea/:id", isAuth, contraladorTareas.actualizarTarea);
-tareasRouter.delete("/tarea", isAuth, contraladorTareas.eliminarTarea);
+tareasRouter.delete("/eliminar/tarea/:id", isAuth, contraladorTareas.eliminarTarea);

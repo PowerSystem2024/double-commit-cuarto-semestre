@@ -88,8 +88,11 @@ export class ControladorUsuarios {
 
   salidaUsuario = async (req, res) => {
     try {
+      const id = req.userId;
+      const result = await this.authDb.query(GET_USER_BY_ID, [id])
+      const usuario = this.obtenerPrimeraFila(result)
       res.clearCookie("token");
-      return res.status(200).json({ message: "Sesión cerrada correctamente" });
+      return res.status(200).json({ message: "Sesión cerrada correctamente", user: usuario });
     } catch (error) {
       return res.status(500).json({ message: "Error en logout: " + error.message });
     }

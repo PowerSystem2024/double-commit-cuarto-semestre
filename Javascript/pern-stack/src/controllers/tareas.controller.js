@@ -88,7 +88,7 @@ class ControladorTareas {
 
   eliminarTarea = async (req, res) => {
     try {
-      const id = req.userId;
+      const id = req.params.id;
       const result = await this.taskDb.query(DELETE_TASK, [id]);
       const tareaEliminada = this.obtenerLaPrimeraFila(result)
 
