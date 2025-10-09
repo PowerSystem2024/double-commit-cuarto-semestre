@@ -78,7 +78,7 @@ export class ControladorUsuarios {
 
       return res
         .status(200)
-        .json({ message: "Ingreso exitoso", user, token });
+        .json({ message: "Ingreso exitoso", user });
     } catch (error) {
       return res
         .status(500)
@@ -143,7 +143,7 @@ export class ControladorUsuarios {
 
   actualizarUsuario = async (req, res) => {
     try {
-      const { id } = req.params;
+      const id = req.userId
       const { name, email, password } = req.body;
 
       if (!name || !email)
@@ -166,6 +166,7 @@ export class ControladorUsuarios {
         email,
         hashedPassword,
         true,
+        new Date().toISOString()
       ]);
 
       const updatedUser = this.obtenerPrimeraFila(updated);
@@ -182,14 +183,14 @@ export class ControladorUsuarios {
 
   eliminarUsuario = async (req, res) => {
     try {
-      const { id } = req.params;
+      const id = req.userId
       const result = await this.authDb.query(DELETE_USER, [id]);
-      const deleted = this.obtenerPrimeraFila(result);
+      const eliminado = this.obtenerPrimeraFila(result);
 
-      if (!deleted)
+      if (!eliminado)
         return res.status(404).json({ message: "Usuario no encontrado" });
 
-      return res.status(200).json({ message: "Usuario eliminado", user: deleted });
+      return res.status(200).json({ message: "Usuario eliminado", user: eliminado });
     } catch (error) {
       return res
         .status(500)

@@ -1,17 +1,19 @@
 import { CREATE_TASK, DELETE_TASK, GET_ALL_TASKS, GET_TASK_BY_ID, GET_TASK_BY_TITLE, UPDATE_TASK } from "./constants.js";
 
 class ControladorTareas {
-  constructor({ taskDB }) {
-    this.taskDB = taskDB;
+  constructor({ taskDb }) {
+    this.taskDb = taskDb;
   }
+
+  obtenerLaPrimeraFila = (result) => result?.rows?.[0] || result[0]
 
   obtenerTodasLasTareas = async (req, res) => {
     try {
       const id = req.userId
-      const result = await this.taskDB.query(GET_ALL_TASKS, [id]);
+      const result = await this.taskDb.query(GET_ALL_TASKS, [id]);
       const tasksResult = result?.rows || result
       
-      if (tasksResult.length === 0) return res.status(404).json({ info: "No hay tareas en la DB" });
+      if (tasksResult.length === 0) return res.status(404).json({ message: "No hay tareas en la DB" });
       
       res.status(200).json({ tareas: tasksResult });
     } catch (error) {
@@ -22,58 +24,60 @@ class ControladorTareas {
   obtenerTareaPorId = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await this.taskDB.query(GET_TASK_BY_ID, [id]);
-      const userResult = result?.rows?.[0] || result[0]
+      const result = await this.taskDb.query(GET_TASK_BY_ID, [id]);
+      const task = this.obtenerLaPrimeraFila(result)
 
-      if (!userResult) return res.status(404).json({ info: "No se encontró la tarea con el siguiente ID: " + id });
+      if (!task) return res.status(404).json({ info: "No se encontró la tarea con el siguiente ID: " + id });
 
-      res.status(200).json({ tarea: userResult });
+      res.status(200).json({ tarea: task });
     } catch (error) {
       res.status(500).json({ message: "Error al obtener las tareas: " + error.message, info: "Compruebe si la DB está conectada" });
     }
   }
 
-  async crearTarea(req, res) {
+   crearTarea = async (req, res) => {
     try {
       const { titulo, descripcion } = req.body;
 
-      if (!titulo || !descripcion) res.status(400).json({ message: "Campos vacíos" })
+      if (!titulo || !descripcion) return res.status(400).json({ message: "Campos vacíos" })
 
-      const existTask = await this.taskDB.query(GET_TASK_BY_TITLE, [titulo])
-      const existTaskResult = existTask?.rows?.[0] || existTask[0]
+      const id = req.userId
+      const tareaExistente = await this.taskDb.query(GET_TASK_BY_TITLE, [titulo])
       
-      if (existTaskResult.titulo) res.status(409).json({ message: "La tarea con ese título ya existe", title: titulo })
+      if (tareaExistente.length !== 0) return res.status(409).json({ message: "La tarea con ese título ya existe" })
 
-      const result = await this.taskDB.query(CREATE_TASK, [titulo, descripcion]);
-      const tasksResult = result?.rows?.[0] || result[0]
+      const result = await this.taskDb.query(CREATE_TASK, [titulo, descripcion, id]);
+      const tareaCreada = this.obtenerLaPrimeraFila(result)
 
-      res.status(200).json({ success: "Tarea creada", tarea: tasksResult });
+      res.status(200).json({ success: "Tarea creada", tarea: tareaCreada });
     } catch (error) {
       res.status(500).json({ message: "Error al obtener las tareas: " + error.message, info: "Compruebe si la DB está conectada" });
     }
   }
 
-  async actualizarTarea(req, res) {
+   actualizarTarea = async (req, res) => {
     try {
-      const task = {
+      const tarea = {
         id: req.params.id,
         titulo: req.body.titulo,
         descripcion: req.body.descripcion,
       };
-      const result = await this.taskDB.query(UPDATE_TASK, [
-        task.id,
-        task.titulo,
-        task.descripcion,
+      const result = await this.taskDb.query(UPDATE_TASK, [
+        tarea.id,
+        tarea.titulo,
+        tarea.descripcion,
+        true,
+        new Date().toISOString()
       ]);
-      const userResult = result?.rows?.[0] || result[0]
+      const tareaActualizada = this.obtenerLaPrimeraFila(result)
 
-      if (!userResult) {
-        return res.status(404).json({ message: "No se encontró la tarea con ID: " + task.id });
+      if (!tareaActualizada) {
+        return res.status(404).json({ message: "No se encontró la tarea con ID: " + tarea.id });
       }
 
       res.status(200).json({
         success: "Se ha actualizado la tarea con éxito!",
-        tarea: userResult,
+        tarea: tareaActualizada,
       });
     } catch (error) {
       res.status(500).json({
@@ -82,17 +86,17 @@ class ControladorTareas {
     }
   }
 
-  async eliminarTarea(req, res) {
+  eliminarTarea = async (req, res) => {
     try {
-      const id = req.params.id;
-      const result = await this.taskDB.query(DELETE_TASK, [id]);
-      const taskResult = result?.rows?.[0] || result[0]
+      const id = req.userId;
+      const result = await this.taskDb.query(DELETE_TASK, [id]);
+      const tareaEliminada = this.obtenerLaPrimeraFila(result)
 
-      if (!taskResult) return res.status(404).json({ message: "No se encontró la tarea con el ID: " + id });
+      if (!tareaEliminada) return res.status(404).json({ message: "No se encontró la tarea con el ID: " + id });
       
       res.status(200).json({
         success: "Se ha eliminado la tarea con éxito!",
-        tarea: taskResult,
+        tarea: tareaEliminada,
       });
     } catch (error) {
       res.status(500).json({ message: "Error al borrar tarea: " + error.message });
