@@ -1,4 +1,4 @@
-const GET_ALL_TASKS = "SELECT * FROM tareas;";
+const GET_ALL_TASKS = "SELECT * FROM tareas WHERE user_id = $1;";
 const GET_TASK_BY_ID = "SELECT * FROM tareas WHERE tarea_id = $1;";
 const GET_TASK_BY_TITLE = "SELECT * FROM tareas WHERE titulo = $1;"
 const CREATE_TASK =

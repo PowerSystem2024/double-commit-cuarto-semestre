@@ -7,7 +7,8 @@ class ControladorTareas {
 
   obtenerTodasLasTareas = async (req, res) => {
     try {
-      const result = await this.taskDB.query(GET_ALL_TASKS);
+      const id = req.userId
+      const result = await this.taskDB.query(GET_ALL_TASKS, [id]);
       const tasksResult = result?.rows || result
       
       if (tasksResult.length === 0) return res.status(404).json({ info: "No hay tareas en la DB" });

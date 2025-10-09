@@ -10,21 +10,22 @@ import {
 import { createAccessToken } from "../lib/jwt.js";
 
 export class ControladorUsuarios {
-  expiracionCookie = 60 * 60 * 24 * 1000
+  expiracionCookie = 60 * 60 * 24 * 1000; // 24 horas
 
-  // se crea el constructor para pasarle la prop e inyectar en la instancia la DB en su posterior uso
   constructor({ authDb }) {
     this.authDb = authDb;
   }
 
+  // Helper para obtener la primera fila del resultado
+  obtenerPrimeraFila = (result) => result?.rows?.[0] || result[0];
+
   obtenerTodosLosUsuarios = async (req, res) => {
     try {
       const result = await this.authDb.query(GET_ALL_USERS);
-      const usersResult = result?.rows || result;
-
-      res.status(200).json({ users: usersResult });
+      const users = result?.rows || result;
+      return res.status(200).json({ users });
     } catch (error) {
-      res
+      return res
         .status(500)
         .json({ message: "Error al obtener usuarios: " + error.message });
     }
@@ -32,17 +33,16 @@ export class ControladorUsuarios {
 
   obtenerUsuarioPorId = async (req, res) => {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
       const result = await this.authDb.query(GET_USER_BY_ID, [id]);
-      const userResult = result?.rows?.[0] || result[0];
+      const user = this.obtenerPrimeraFila(result);
 
-      if (!userResult)
-        res.status(400).json({ message: "Usuario inexistente", id });
-      res
-        .status(200)
-        .json({ message: "Usuario encontrado:", user: userResult });
+      if (!user)
+        return res.status(404).json({ message: "Usuario inexistente", id });
+
+      return res.status(200).json({ message: "Usuario encontrado", user });
     } catch (error) {
-      res
+      return res
         .status(500)
         .json({ message: "Error en el servidor: " + error.message });
     }
@@ -50,37 +50,37 @@ export class ControladorUsuarios {
 
   ingresoUsuario = async (req, res) => {
     try {
-      const { email, password } = req.body
+      const { email, password } = req.body;
+
+      if (!email || !password)
+        return res.status(400).json({ message: "Campos vacíos" });
 
       const userExist = await this.authDb.query(GET_USER_BY_EMAIL, [email]);
-      const userResultExist = userExist?.rows?.[0] || userExist[0];
+      const user = this.obtenerPrimeraFila(userExist);
 
-      if (!userResultExist)
-        res
+      if (!user)
+        return res
           .status(404)
           .json({ message: "El correo electrónico no está registrado", email });
 
-      const validatedUser = await compare(
-        password,
-        userResultExist.user_password
-      );
+      const validated = await compare(password, user.user_password);
+      if (!validated)
+        return res.status(403).json({ message: "La contraseña es incorrecta" });
 
-      if (!validatedUser)
-        res.status(403).json({ message: "La contraseña es incorrecta!" });
-
-      const token = await createAccessToken({ id: userResultExist.user_id });
+      const token = await createAccessToken({ id: user.user_id });
 
       res.cookie("token", token, {
         httpOnly: true,
-        sameSite: "lax",
-        secure: true,
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production",
         maxAge: this.expiracionCookie,
       });
-      res
+
+      return res
         .status(200)
-        .json({ message: "Ingreso de usuario", user: userResultExist, token });
+        .json({ message: "Ingreso exitoso", user, token });
     } catch (error) {
-      res
+      return res
         .status(500)
         .json({ message: "Error en el login del usuario: " + error.message });
     }
@@ -89,9 +89,9 @@ export class ControladorUsuarios {
   salidaUsuario = async (req, res) => {
     try {
       res.clearCookie("token");
-      res.status(200).json({ message: "Sesíón cerrada" });
+      return res.status(200).json({ message: "Sesión cerrada correctamente" });
     } catch (error) {
-      res.status(500).json({ message: "Error en logout: " + error.message });
+      return res.status(500).json({ message: "Error en logout: " + error.message });
     }
   };
 
@@ -102,36 +102,40 @@ export class ControladorUsuarios {
       if (!name || !email || !password)
         return res.status(400).json({ message: "Campos vacíos" });
 
-      const hashedPassword = await hash(password, 10);
       const userExist = await this.authDb.query(GET_USER_BY_EMAIL, [email]);
-      const userExistent = userExist?.rows?.[0] || userExist[0];
+      const userFound = this.obtenerPrimeraFila(userExist);
 
-      if (userExistent) {
-        return res.status(409).json({ message: `El correo ${email} ya está registrado.` });
-      } 
+      if (userFound)
+        return res
+          .status(409)
+          .json({ message: `El correo ${email} ya está registrado.` });
 
-      if (!userExistent) {
-        const result = await this.authDb.query(CREATE_USER, [
-          name,
-          email,
-          hashedPassword,
-        ]);
-        const createdUser = result?.rows?.[0] || result[0];
-        
-        const token = await createAccessToken({ id: createdUser.user_id });
+      const hashedPassword = await hash(password, 10);
 
-        res.cookie("token", token, {
-          httpOnly: true,
-          sameSite: "lax",
-          secure: true,
-          maxAge: this.expiracionCookie,
-        });
-        res
-          .status(201)
-          .json({ message: "Usuario creado correctamente", user: createdUser });
-      }
+      const result = await this.authDb.query(CREATE_USER, [
+        name,
+        email,
+        hashedPassword,
+      ]);
+
+      const newUser = this.obtenerPrimeraFila(result);
+      const token = await createAccessToken({ id: newUser.user_id });
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: this.expiracionCookie,
+      });
+
+      return res
+        .status(201)
+        .json({ message: "Usuario creado correctamente", user: newUser });
     } catch (error) {
-      res
+      if (error.code === "23505") {
+        return res.status(409).json({ message: "El correo ya está registrado." });
+      }
+      return res
         .status(500)
         .json({ message: "Error al crear usuario: " + error.message });
     }
@@ -139,38 +143,38 @@ export class ControladorUsuarios {
 
   actualizarUsuario = async (req, res) => {
     try {
-      const id = req.params.id;
-      const { name, email } = req.body;
+      const { id } = req.params;
+      const { name, email, password } = req.body;
 
-      if (!name || !email) res.status(400).json({ message: "Campos vacíos" });
+      if (!name || !email)
+        return res.status(400).json({ message: "Campos vacíos" });
 
       const result = await this.authDb.query(GET_USER_BY_ID, [id]);
-      const userResult = result?.rows?.[0] || result[0];
+      const user = this.obtenerPrimeraFila(result);
 
-      if (!userResult) res.status(404).json({ message: "Usuario no encontrado" });
+      if (!user)
+        return res.status(404).json({ message: "Usuario no encontrado" });
 
-      const hashedPassword = await hash(req.body.password, 10);
-      const updatedUser = await this.authDb.query(UPDATE_USER, [
+      let hashedPassword = user.user_password;
+      if (password) {
+        hashedPassword = await hash(password, 10);
+      }
+
+      const updated = await this.authDb.query(UPDATE_USER, [
         id,
         name,
         email,
         hashedPassword,
-        true
+        true,
       ]);
-      const updatedUserResult = updatedUser?.rows?.[0] || updatedUser[0];
 
-      const token = await createAccessToken({ id: updatedUserResult.user_id })
-      
-      res.cookie("token", token, {
-        httpOnly: true,
-        sameSite: "lax",
-        maxAge: this.expiracionCookie
-      })
-      res
-        .status(201)
-        .json({ message: "Usuario actualizado", user: updatedUserResult });
+      const updatedUser = this.obtenerPrimeraFila(updated);
+
+      return res
+        .status(200)
+        .json({ message: "Usuario actualizado", user: updatedUser });
     } catch (error) {
-      res
+      return res
         .status(500)
         .json({ message: "Error al actualizar usuario: " + error.message });
     }
@@ -178,16 +182,16 @@ export class ControladorUsuarios {
 
   eliminarUsuario = async (req, res) => {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
       const result = await this.authDb.query(DELETE_USER, [id]);
-      const userResult = result?.rows?.[0] || result[0];
+      const deleted = this.obtenerPrimeraFila(result);
 
-      if (!userResult)
-        res.status(404).json({ message: "Usuario no encontrado:" });
+      if (!deleted)
+        return res.status(404).json({ message: "Usuario no encontrado" });
 
-      res.status(200).json({ message: "Usuario eliminado", user: userResult });
+      return res.status(200).json({ message: "Usuario eliminado", user: deleted });
     } catch (error) {
-      res
+      return res
         .status(500)
         .json({ message: "Error al borrar usuario: " + error.message });
     }
@@ -195,17 +199,18 @@ export class ControladorUsuarios {
 
   perfilUsuario = async (req, res) => {
     try {
-      const id = req.userId
-      const result = await this.authDb.query(GET_USER_BY_ID, [id])
-      const userResult = result?.rows?.[0] || result[0]
+      const { userId } = req;
+      const result = await this.authDb.query(GET_USER_BY_ID, [userId]);
+      const user = this.obtenerPrimeraFila(result);
 
-      if (!userResult) {
-        return res.status(404).json({ message: "No se encotró el usario" })
-      }
+      if (!user)
+        return res.status(404).json({ message: "No se encontró el usuario" });
 
-      res.status(200).json({ message: "Perfil del usuario", user: userResult })
+      return res.status(200).json({ message: "Perfil del usuario", user });
     } catch (error) {
-      res.status(500).json({ message: "Error al obtener el perfil del usuario" })
+      return res
+        .status(500)
+        .json({ message: "Error al obtener el perfil: " + error.message });
     }
-  }
+  };
 }
