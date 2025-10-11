@@ -13,7 +13,7 @@ authRouter.get("/users", controladorUsuarios.obtenerTodosLosUsuarios)
 authRouter.get("/user/:id", controladorUsuarios.obtenerUsuarioPorId)
 authRouter.post("/signin", controladorUsuarios.ingresoUsuario);
 authRouter.post("/signup", controladorUsuarios.crearUsuario);
-authRouter.put("/update/user/:id", isAuth, controladorUsuarios.actualizarUsuario)
-authRouter.delete("/delete/user/", isAuth, controladorUsuarios.eliminarUsuario)
+authRouter.put("/update/user", isAuth, controladorUsuarios.actualizarUsuario)
+authRouter.delete("/delete/user", isAuth, controladorUsuarios.eliminarUsuario)
 authRouter.get("/signout", isAuth, controladorUsuarios.salidaUsuario)
 authRouter.get("/profile", isAuth, controladorUsuarios.perfilUsuario)

@@ -42,7 +42,7 @@ class ControladorTareas {
       if (!titulo || !descripcion) return res.status(400).json({ message: "Campos vacíos" })
 
       const id = req.userId
-      const tareaExistente = await this.taskDb.query(GET_TASK_BY_TITLE, [titulo])
+      const tareaExistente = await this.taskDb.query(GET_TASK_BY_TITLE, [titulo, id])
       
       if (tareaExistente.length !== 0) return res.status(409).json({ message: "La tarea con ese título ya existe" })
 

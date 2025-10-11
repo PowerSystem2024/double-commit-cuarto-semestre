@@ -8,6 +8,7 @@ import {
   UPDATE_USER,
 } from "./constants.js";
 import { createAccessToken } from "../lib/jwt.js";
+import md5 from "md5"
 
 export class ControladorUsuarios {
   expiracionCookie = 60 * 60 * 24 * 1000; // 24 horas
@@ -114,11 +115,13 @@ export class ControladorUsuarios {
           .json({ message: `El correo ${email} ya está registrado.` });
 
       const hashedPassword = await hash(password, 10);
-
+      const gravatar = `https://gravatar.com/avatar/${md5(email)}`
+      
       const result = await this.authDb.query(CREATE_USER, [
         name,
         email,
         hashedPassword,
+        gravatar
       ]);
 
       const newUser = this.obtenerPrimeraFila(result);
@@ -162,14 +165,15 @@ export class ControladorUsuarios {
       if (password) {
         hashedPassword = await hash(password, 10);
       }
-
+      const gravatar = `https://gravatar.com/avatar/${md5(email)}`
       const updated = await this.authDb.query(UPDATE_USER, [
         id,
         name,
         email,
         hashedPassword,
         true,
-        new Date().toISOString()
+        new Date().toISOString(),
+        gravatar
       ]);
 
       const updatedUser = this.obtenerPrimeraFila(updated);
