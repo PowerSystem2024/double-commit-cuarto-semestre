@@ -26,12 +26,12 @@ export const Home = () => {
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold text-blue-600 mb-4">
         Bienvenidos a la App de Tareas
       </h1>
-      <p className="text-lg text-gray-700">
-        <span className="text-xl text-gray-800">
+      <p className="text-lg text-blue-300">
+        <span className="text-xl ">
           Crea y gestiona tus tareas de manera sencilla y eficiente.
         </span>
       </p>
