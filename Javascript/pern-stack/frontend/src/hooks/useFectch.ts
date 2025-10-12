@@ -1,39 +1,60 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react";
 
-type Data<T> = T | null
-type ErrorType = Error | null
+// Tipos del custom hook
+type Data<T> = T | null;
+type ErrorType = Error | null;
 
 interface Params<T> {
-    data: Data<T> | null;
-    loading: boolean;
-    error: Error | null
+  data: Data<T> | null;
+  loading: boolean;
+  error: Error | null;
+}
+// Props opcionales
+interface FetchOptions {
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  headers:
+    | { "Content-Type": "application/json" }
+    | { "Content-Type": "multipart/form-data" }
+    | { "Content-Type": "image/*" };
+  credentials?: "include" | "omit" | "same-origin" | RequestCredentials;
+  body?: BodyInit | undefined;
+  mode?: "cors" | "navigate" | "no-cors" | "same-origin" | RequestMode;
 }
 
-export const useFetch = <T>(url: string): Params<T> => {
-    const [data, setData] = useState<Data<T>>(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<ErrorType>(null)
+export const useFetch = <T>(
+  url: string,
+  options?: FetchOptions | RequestInit
+): Params<T> => {
+  const [data, setData] = useState<Data<T>>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ErrorType>(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            try {
-                const response = await fetch(url)
-                const jsonData = await response.json()
+  const fetchData = useCallback(
+    async (signal?: AbortSignal) => {
+      setLoading(true);
+      try {
+        const response = await fetch(url, { ...options, signal });
+        const jsonData = await response.json();
 
-                if (!response.ok) throw new Error("Error en la respuesta: " + response.statusText)
+        if (!response.ok)
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
 
-                setData(jsonData)
-                setLoading(false)
-            } catch (error) {
-                setError(error as TypeError)
-                setLoading(false)
-                console.error((error as TypeError).message)
-            }
-        }
+        setData(jsonData);
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [url, options]
+  );
 
-        fetchData()
-    }, [url])
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchData(controller.signal);
+    return () => controller.abort();
+  }, [fetchData]);
 
-    return { data, loading, error }
-}
+  return { data, loading, error };
+};

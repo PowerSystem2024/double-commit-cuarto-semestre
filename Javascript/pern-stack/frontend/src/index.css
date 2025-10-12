@@ -2,4 +2,40 @@
 
 :root {
   color-scheme: dark light;
+  --primary-text-color: #222;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-text-color: #fff;
+  }
+}
+
+dialog {
+  max-width: 672px;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  padding: 24px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  color: var(--primary-text-color);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-500%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
