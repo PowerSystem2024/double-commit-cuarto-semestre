@@ -23,7 +23,7 @@ export const TasksPage = () => {
   };
 
   const { data = initialTasks, loading, error } = useFetch<PartialTasksProps>(
-    `http://localhost:5000/api/tareas?reload=${reload}`, // 👈 fuerza cambio en URL
+    `http://localhost:5000/api/tareas?reload=${reload}`,
     options
   );
 
