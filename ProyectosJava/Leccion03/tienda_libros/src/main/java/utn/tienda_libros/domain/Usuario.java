@@ -18,6 +18,6 @@ public class Usuario {
     public String toString() {
         return """
                 Usuario: {0}
-                """.formatted(this.nombre);
+                """;
     }
 }
