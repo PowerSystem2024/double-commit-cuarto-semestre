@@ -30,6 +30,7 @@ public class LibroForm extends JFrame {
     public LibroForm(LibroServicio libroServicio){
         this.libroServicio = libroServicio;
         iniciarForma();
+        actualizarFechayHora();
         agregarButton.addActionListener(e -> agregarLibro());
         eliminarButton.addActionListener(e -> eliminarLibro());
         modificarButton.addActionListener(e -> modificarLibro());
@@ -99,7 +100,7 @@ public class LibroForm extends JFrame {
         }
 
         libroServicio.guardarLibro(libro);
-        mostrarMensaje("Se modificó la columna: " + nombreColumna + " " + libro.getNombreLibro());
+        mostrarMensaje("Se modificó la columna " + nombreColumna + " del libro " + libro.getNombreLibro());
         listarLibros();
     }
 
@@ -132,6 +133,14 @@ public class LibroForm extends JFrame {
         listarLibros();
     }
 
+    private void actualizarFechayHora() {
+        if (this.actualizacion != null) {
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            String fechaHora = LocalDateTime.now().format(formato);
+            this.actualizacion.setText("Última actualización BD: " + fechaHora);
+        }
+    }
+
     private void listarLibros() {
         // Limpiar la tabla
         tablaModeloLibros.setRowCount(0);
@@ -150,10 +159,6 @@ public class LibroForm extends JFrame {
             this.tablaModeloLibros.addRow(renglonLibro);
         });
 
-        if (this.actualizacion != null) {
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            String fechaHora = LocalDateTime.now().format(formato);
-            this.actualizacion.setText("Última actualización BD: " + fechaHora);
-        }
+        actualizarFechayHora();
     }
 }

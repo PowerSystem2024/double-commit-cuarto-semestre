@@ -239,7 +239,7 @@
             </constraints>
             <properties>
               <font name="Consolas" size="10"/>
-              <text value=""/>
+              <text value="Última actualización BD:"/>
             </properties>
           </component>
         </children>
