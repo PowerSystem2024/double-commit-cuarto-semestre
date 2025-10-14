@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Component
 public class LibroForm extends JFrame {
@@ -24,6 +25,8 @@ public class LibroForm extends JFrame {
     private JButton modificarButton;
     private JButton agregarButton;
     private JLabel actualizacion;
+    private JLabel totalLibros;
+    private JLabel totalEstimado;
     private DefaultTableModel tablaModeloLibros;
 
     @Autowired
@@ -31,6 +34,8 @@ public class LibroForm extends JFrame {
         this.libroServicio = libroServicio;
         iniciarForma();
         actualizarFechayHora();
+        actualizarTotalExistencias();
+        actualizarTotalValorEstimado();
         agregarButton.addActionListener(e -> agregarLibro());
         eliminarButton.addActionListener(e -> eliminarLibro());
         modificarButton.addActionListener(e -> modificarLibro());
@@ -73,29 +78,43 @@ public class LibroForm extends JFrame {
     private void modificarLibro() {
         int filaSeleccionada = tablaLibros.getSelectedRow();
         int columnaSeleccionada = tablaLibros.getSelectedColumn();
-        var id = tablaLibros.getValueAt(filaSeleccionada, 0);
 
-        Libro libro = libroServicio.buscarLibroPorId(Integer.parseInt(id.toString()));
+        if (filaSeleccionada == -1 || columnaSeleccionada == -1) {
+            mostrarMensaje("Debe seleccionar una fila haciendo doble click en la columna que se va a modificar. Una vez que haya cambiado el valor de la columna, haga click en modificar!");
+            return;
+        }
+
+        var id = tablaLibros.getValueAt(filaSeleccionada, 0).toString();
         String nombreColumna = tablaLibros.getColumnName(columnaSeleccionada);
+        Libro libro = libroServicio.buscarLibroPorId(Integer.parseInt(id));
 
         modificar(libro, nombreColumna, filaSeleccionada, columnaSeleccionada);
     }
 
     private void modificar(Libro libro, String nombreColumna, int fila, int columna) {
-        var valorCelda = tablaLibros.getValueAt(fila, columna);
+        var valorCelda = tablaLibros.getValueAt(fila, columna).toString();
+        String nombreOriginal = libro.getNombreLibro();
+        String autorOriginal = libro.getAutor();
+        Double precioOriginal = libro.getPrecio();
+        var existenciasOriginal = libro.getExistencias().toString();
 
+        if (Objects.equals(valorCelda, nombreOriginal) || Objects.equals(valorCelda, autorOriginal)
+        || Objects.equals(valorCelda, precioOriginal.toString()) || Objects.equals(valorCelda, existenciasOriginal)) {
+            mostrarMensaje("Debe modificar una columna primero!");
+            return;
+        }
         switch (nombreColumna) {
             case "Libro" -> {
-                libro.setNombreLibro(valorCelda.toString());
+                libro.setNombreLibro(valorCelda);
             }
             case "Autor" -> {
-                libro.setAutor(valorCelda.toString());
+                libro.setAutor(valorCelda);
             }
             case "Precio" -> {
-                libro.setPrecio(Double.parseDouble(valorCelda.toString()));
+                libro.setPrecio(Double.parseDouble(valorCelda));
             }
             case "Existencias" -> {
-                libro.setExistencias(Integer.parseInt(valorCelda.toString()));
+                libro.setExistencias(Integer.parseInt(valorCelda));
             }
         }
 
@@ -106,10 +125,36 @@ public class LibroForm extends JFrame {
 
     private void eliminarLibro() {
         int filaSeleccionada = tablaLibros.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            mostrarMensaje("Debe seleccionar un libro para eliminar");
+            return;
+        }
+
         var id = tablaLibros.getValueAt(filaSeleccionada, 0);
         Libro libro = libroServicio.buscarLibroPorId(Integer.parseInt(id.toString()));
+
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea eliminar el libro " + libro.getNombreLibro() + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+
+        if (opcion == JOptionPane.NO_OPTION) {
+            mostrarMensaje("Has cancelado eliminar el libro " + libro.getNombreLibro() + ".");
+            return;
+        }
+
+        if (opcion == JOptionPane.CLOSED_OPTION) {
+            mostrarMensaje("Se canceló la eliminación.");
+            return;
+        }
+
         libroServicio.eliminarLibro(libro);
-        mostrarMensaje("Se eliminó el libro: " + libro.getNombreLibro() + ", " + libro.getAutor());
+        mostrarMensaje("Se eliminó el libro: " + libro.getNombreLibro() + ", " + libro.getAutor() + ".");
         listarLibros();
     }
 
@@ -160,5 +205,24 @@ public class LibroForm extends JFrame {
         });
 
         actualizarFechayHora();
+        actualizarTotalExistencias();
+        actualizarTotalValorEstimado();
+    }
+
+    private void actualizarTotalExistencias() {
+        var libros = libroServicio.listarLibros();
+        var total = libros.stream().mapToInt(Libro::getExistencias).sum();
+        if (this.totalLibros != null) {
+            totalLibros.setText("Total de libros: " + total);
+        }
+    }
+
+    private void actualizarTotalValorEstimado() {
+        var libros = libroServicio.listarLibros();
+        int totalExistencias = libros.stream().mapToInt(Libro::getExistencias).sum();
+        double total = libros.stream().mapToDouble(Libro::getPrecio).sum();
+        if (this.totalEstimado != null) {
+            totalEstimado.setText("Total estimado: $" + total * totalExistencias);
+        }
     }
 }
