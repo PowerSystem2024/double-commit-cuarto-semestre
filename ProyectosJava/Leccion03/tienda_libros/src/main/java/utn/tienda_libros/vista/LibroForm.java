@@ -216,7 +216,7 @@ public class LibroForm extends JFrame {
         var libros = libroServicio.listarLibros();
         var total = libros.stream().mapToInt(Libro::getExistencias).sum();
         if (this.totalLibros != null) {
-            totalLibros.setText("Total de libros: " + total);
+            totalLibros.setText("Total de existencias: " + total);
         }
     }
 
