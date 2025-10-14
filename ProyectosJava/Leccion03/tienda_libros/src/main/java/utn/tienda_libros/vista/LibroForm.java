@@ -80,7 +80,10 @@ public class LibroForm extends JFrame {
         int columnaSeleccionada = tablaLibros.getSelectedColumn();
 
         if (filaSeleccionada == -1 || columnaSeleccionada == -1) {
-            mostrarMensaje("Debe seleccionar una fila haciendo doble click en la columna que se va a modificar. Una vez que haya cambiado el valor de la columna, haga click en modificar!");
+            mostrarMensaje("""
+                Para modificar un elemento se deberá hacer doble click en la celda,
+                cambiar el valor, presionamos la tecla 'Enter' y luego click en 'Modificar'.
+                """);
             return;
         }
 
