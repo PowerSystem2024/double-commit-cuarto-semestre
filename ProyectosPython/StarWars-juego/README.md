@@ -1,11 +1,12 @@
-# Proyecto pygame (Python)
+# Juego-pygame-TUP
+Proyecto de juego utilizando la biblioteca Pygame para  la Tecnicatura en Programación  - 2024 -
 
-## Información
+En este repositorio se encuentran todos los recursos para el juego
 
-- Primero hay que crear un entorno virtual para el juego.
-- Después hay que isntalar la librería de pygame (pueden isntalar de manera global también).
-- Crear las carpetas necesarias para los assets como imágenes y sonidos. (colocar los sonidos que más les gusten adecuado a su uso obvio).
+Audios para repruducir en el juego.
 
-### Despues de eso se pdodía editar alunos métodos y probar la ejecución.
+Imagenes de personajes, laser y fondo de pantalla.
 
-- En camino...
+Todos los recursos se encuentran en la carpeta Assets 
+
+Carpeta Asstes aactualizada para personalizar el juego con otro personaje. 
