@@ -1,205 +1,221 @@
 import pygame
-import random
 import sys
+import random
+import os
+from personaje import Personaje, Enemigo, Explosion
+from constantes import SCREEN_WIDTH, SCREEN_HEIGHT, ASSETS_PATH
 
-# -----------------------------
-# CONFIGURACIÓN INICIAL
-# -----------------------------
-pygame.init()
-pygame.mixer.init()
 
-ANCHO, ALTO = 800, 600
-pantalla = pygame.display.set_mode((ANCHO, ALTO))
-pygame.display.set_caption("Amenaza Fantasma: Renacimiento")
+def mostrar_imagen_inicial(screen, imagen_path, duracion):
+    imagen = pygame.image.load(imagen_path).convert()
+    imagen = pygame.transform.scale(imagen, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# -----------------------------
-# RECURSOS
-# -----------------------------
-fondo1 = pygame.image.load("assets/img/fondo1.png").convert()
-fondo2 = pygame.image.load("assets/img/fondo2.png").convert()
-fondo_actual = fondo1
+    # Bucle para mostrar la imagen inicial con desvanecimiento
+    alpha = 255  # Transparencia inicial completa
+    clock = pygame.time.Clock()
 
-sonido_disparo = pygame.mixer.Sound("assets/snd/disparo.wav")
-sonido_explosion = pygame.mixer.Sound("assets/snd/explosion.wav")
+    tiempo_inicial = pygame.time.get_ticks()
+    tiempo_total = duracion  # Duración en milisegundos (8000 ms para 8 segundos)
+    while pygame.time.get_ticks() - tiempo_inicial < tiempo_total:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-# -----------------------------
-# CLASES
-# -----------------------------
-class Nave(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load("assets/img/nave.png").convert_alpha()
-        self.rect = self.image.get_rect(center=(ANCHO // 2, ALTO - 80))
-        self.velocidad = 6
-        self.lasers = pygame.sprite.Group()
-        self.vida = 3
+        # Calcular el tiempo transcurrido
+        tiempo_transcurrido = pygame.time.get_ticks() - tiempo_inicial
 
-    def update(self, teclas):
-        if teclas[pygame.K_LEFT] and self.rect.left > 0:
-            self.rect.x -= self.velocidad
-        if teclas[pygame.K_RIGHT] and self.rect.right < ANCHO:
-            self.rect.x += self.velocidad
-        if teclas[pygame.K_UP] and self.rect.top > 0:
-            self.rect.y -= self.velocidad
-        if teclas[pygame.K_DOWN] and self.rect.bottom < ALTO:
-            self.rect.y += self.velocidad
+        # Calcular nuevo valor de alpha basado en el tiempo transcurrido
+        alpha = 255 - (255 * (tiempo_transcurrido / tiempo_total))
+        if alpha < 0:
+            alpha = 0
 
-    def disparar(self):
-        laser = Laser(self.rect.centerx, self.rect.top)
-        self.lasers.add(laser)
-        sonido_disparo.play()
+        # Establecer transparencia y dibujar la imagen
+        imagen.set_alpha(int(alpha))
+        screen.fill((0, 0, 0))  # Llenar pantalla con negro antes de dibujar la imagen
+        screen.blit(imagen, (0, 0))
+        pygame.display.flip()
 
-class Laser(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.image = pygame.Surface((5, 20))
-        self.image.fill((0, 255, 255))
-        self.rect = self.image.get_rect(center=(x, y))
-        self.velocidad = -9
+        clock.tick(60)  # Mantener 60 FPS
 
-    def update(self):
-        self.rect.y += self.velocidad
-        if self.rect.bottom < 0:
-            self.kill()
 
-class Enemigo(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load("assets/img/enemigo.png").convert_alpha()
-        self.rect = self.image.get_rect(center=(random.randint(40, ANCHO - 40), -50))
-        self.velocidad = random.randint(2, 5)
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption('Amenaza Fantasma')
 
-    def update(self):
-        self.rect.y += self.velocidad
-        if self.rect.top > ALTO:
-            self.kill()
+    # Definir la ruta a la imagen inicial
+    imagen_inicial_path = os.path.join(ASSETS_PATH, 'images', 'inicio', 'star.png')
 
-class Explosion(pygame.sprite.Sprite):
-    def __init__(self, centro):
-        super().__init__()
-        self.frames = [
-            pygame.image.load("assets/img/explosion/exp1.png").convert_alpha(),
-            pygame.image.load("assets/img/explosion/exp2.png").convert_alpha(),
-            pygame.image.load("assets/img/explosion/exp3.png").convert_alpha(),
-        ]
-        self.frame_index = 0
-        self.image = self.frames[self.frame_index]
-        self.rect = self.image.get_rect(center=centro)
-        self.frame_rate = 80  # milisegundos
-        self.ultimo_update = pygame.time.get_ticks()
+    # Mostrar la imagen inicial durante 5 segundos
+    mostrar_imagen_inicial(screen, imagen_inicial_path, 5000)
 
-    def update(self):
-        ahora = pygame.time.get_ticks()
-        if ahora - self.ultimo_update > self.frame_rate:
-            self.ultimo_update = ahora
-            self.frame_index += 1
-            if self.frame_index >= len(self.frames):
-                self.kill()
+    # Usa os.path.join para construir la ruta del icono
+    icon = pygame.image.load(os.path.join(ASSETS_PATH, 'images', '001.jfif'))
+    pygame.display.set_icon(icon)
+
+    # Inicializar los fondos
+    fondo2 = pygame.image.load(os.path.join(ASSETS_PATH, 'images', 'fondo2.jfif'))
+    fondo2 = pygame.transform.scale(fondo2, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    fondo3 = pygame.image.load(os.path.join(ASSETS_PATH, 'images', 'fondo3.jpg'))
+    fondo3 = pygame.transform.scale(fondo3, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    # Inicializar el fondo actual
+    fondo_actual = fondo2
+
+    # Usa os.path.join para construir las rutas de los sonidos
+    sonido_laser = pygame.mixer.Sound(os.path.join(ASSETS_PATH, 'sounds', 'laserdis.mp3'))
+    sonido_explosion = pygame.mixer.Sound(os.path.join(ASSETS_PATH, 'sounds', 'explosion.mp3'))
+
+    # Reproducir sonido de fondo
+    pygame.mixer.music.load(os.path.join(ASSETS_PATH, 'sounds', 'efectos.mp3'))
+    pygame.mixer.music.play(-1)  # Reproduce el sonido en un bucle
+
+    personaje = Personaje(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+    enemigos = []
+    explosiones = []
+    puntos = 0
+    nivel = 1
+    # Movimiento de boton de flechas 
+
+    clock = pygame.time.Clock()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        keys = pygame.key.get_pressed()
+        dx, dy = 0, 0
+        if keys[pygame.K_LEFT]:
+            dx = -5
+        if keys[pygame.K_RIGHT]:
+            dx = 5
+        if keys[pygame.K_UP]:
+            dy = -5
+        if keys[pygame.K_DOWN]:
+            dy = 5
+
+        personaje.mover(dx, dy)
+
+        if keys[pygame.K_SPACE]:
+            personaje.lanzar_laser()
+            sonido_laser.play()
+
+        # Actualizar posición de enemigos y manejar colisiones
+        for enemigo in enemigos[:]:  # Iterar sobre una copia para eliminar de la lista original
+            enemigo.mover()
+            if enemigo.rect.top > SCREEN_HEIGHT:
+                enemigos.remove(enemigo)
+
+            # Verificar colisiones con láseres
+            for laser in personaje.lasers[:]:  # Iterar sobre una copia para eliminar de la lista original
+                if enemigo.rect.colliderect(laser.rect):
+                    explosiones.append(Explosion(enemigo.rect.centerx, enemigo.rect.centery))
+                    enemigos.remove(enemigo)  # Eliminar el enemigo
+                    personaje.lasers.remove(laser)  # Eliminar el láser
+                    sonido_explosion.play()
+                    puntos += 10  # Incrementar el puntaje
+                    break  # Salir del bucle para evitar errores
+
+            if enemigo.rect.colliderect(personaje.shape):
+                if not personaje.recibir_dano():
+                    running = False  # Terminar el juego si la energía llega a 0
+
+        # Generar enemigos aleatoriamente
+        if random.random() < 0.02:
+            x = random.randint(0, SCREEN_WIDTH - 50)  # Asegúrate de que el enemigo esté dentro de la pantalla
+            enemigo = Enemigo(x, 0)
+            enemigos.append(enemigo)
+
+        # Actualizar explosiones
+        explosiones = [explosion for explosion in explosiones if explosion.actualizar()]
+
+        # Cambiar el fondo cada 250 puntos
+        if puntos > 0 and puntos % 250 == 0:
+            if fondo_actual == fondo2:
+                fondo_actual = fondo3
             else:
-                self.image = self.frames[self.frame_index]
+                fondo_actual = fondo2
+            puntos += 10  # Aumenta puntos para evitar el cambio de fondo continuo
 
-# -----------------------------
-# FUNCIONES AUXILIARES
-# -----------------------------
-def mostrar_texto(texto, tam, color, x, y, centrado=True):
-    fuente = pygame.font.Font(None, tam)
-    superficie = fuente.render(texto, True, color)
-    rect = superficie.get_rect(center=(x, y)) if centrado else superficie.get_rect(topleft=(x, y))
-    pantalla.blit(superficie, rect)
+        # Dibujar fondo y objetos en la pantalla
+        screen.blit(fondo_actual, (0, 0))
+        personaje.dibujar(screen)
+        for enemigo in enemigos:
+            enemigo.dibujar(screen)
+        for explosion in explosiones:
+            explosion.dibujar(screen)
 
-# -----------------------------
-# INICIALIZACIÓN DE GRUPOS
-# -----------------------------
-jugador = Nave()
-enemigos = pygame.sprite.Group()
-explosiones = pygame.sprite.Group()
-todos = pygame.sprite.Group(jugador)
+        # Mostrar marcador y nivel
+        font = pygame.font.Font(None, 36)
+        texto_puntos = font.render(f"Puntos: {puntos}", True, (255, 255, 255))
+        texto_nivel = font.render(f"Nivel: {nivel}", True, (255, 255, 255))
+        screen.blit(texto_puntos, (10, 50))
+        screen.blit(texto_nivel, (10, 90))
 
-# -----------------------------
-# VARIABLES DE JUEGO
-# -----------------------------
-puntos = 0
-nivel = 1
-clock = pygame.time.Clock()
-jugando = True
-cambio_fondo = 250
-
-# -----------------------------
-# BUCLE PRINCIPAL
-# -----------------------------
-while True:
-    clock.tick(60)
-
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        elif evento.type == pygame.KEYDOWN and jugando:
-            if evento.key == pygame.K_SPACE:
-                jugador.disparar()
-        elif evento.type == pygame.KEYDOWN and not jugando:
-            if evento.key == pygame.K_r:
-                # Reinicio del juego
-                jugador = Nave()
-                enemigos.empty()
-                explosiones.empty()
-                todos.empty()
-                todos.add(jugador)
-                puntos = 0
-                nivel = 1
-                fondo_actual = fondo1
-                jugando = True
-
-    teclas = pygame.key.get_pressed()
-
-    if jugando:
-        # Spawnear enemigos
-        if random.random() < 0.02 + (nivel * 0.001):
-            enemigo = Enemigo()
-            enemigos.add(enemigo)
-            todos.add(enemigo)
-
-        # Actualizaciones
-        jugador.update(teclas)
-        jugador.lasers.update()
-        enemigos.update()
-        explosiones.update()
-
-        # Colisiones
-        colisiones = pygame.sprite.groupcollide(enemigos, jugador.lasers, True, True)
-        for enemigo in colisiones:
-            puntos += 10
-            sonido_explosion.play()
-            explosion = Explosion(enemigo.rect.center)
-            explosiones.add(explosion)
-            todos.add(explosion)
-
-        # Colisión jugador-enemigo
-        impacto = pygame.sprite.spritecollide(jugador, enemigos, True)
-        if impacto:
-            jugador.vida -= 1
-            sonido_explosion.play()
-            explosion = Explosion(jugador.rect.center)
-            explosiones.add(explosion)
-            todos.add(explosion)
-            if jugador.vida <= 0:
-                jugando = False
-
-        # Aumento de nivel
-        if puntos >= cambio_fondo * nivel:
+        if puntos >= 250:
             nivel += 1
-            fondo_actual = fondo2 if nivel % 2 == 0 else fondo1
+            puntos = 0  # Resetea el puntaje al cambiar de nivel
 
-        # Dibujo
-        pantalla.blit(fondo_actual, (0, 0))
-        todos.draw(pantalla)
-        jugador.lasers.draw(pantalla)
-        mostrar_texto(f"Puntos: {puntos}", 30, (255, 255, 255), 70, 30, centrado=False)
-        mostrar_texto(f"Vida: {jugador.vida}", 30, (255, 255, 255), 70, 60, centrado=False)
-        mostrar_texto(f"Nivel: {nivel}", 30, (255, 255, 255), 70, 90, centrado=False)
-    else:
-        pantalla.blit(fondo_actual, (0, 0))
-        mostrar_texto("GAME OVER", 80, (255, 0, 0), ANCHO // 2, ALTO // 2 - 40)
-        mostrar_texto("Presiona R para reiniciar", 40, (255, 255, 255), ANCHO // 2, ALTO // 2 + 40)
+        pygame.display.flip()
+        clock.tick(60)
 
+    # Mostrar mensaje de GAME OVER
+    screen.fill((0, 0, 0))
+
+    # Definir fuente
+    font_large = pygame.font.Font(None, 74)
+    font_small = pygame.font.Font(None, 36)
+
+    # Renderizar textos
+    texto_game_over = font_large.render("GAME OVER", True, (255, 0, 0))
+    texto_mensaje = font_small.render("Que la Fuerza te acompañe", True, (255, 255, 255))
+
+    # Calcular posiciones para centrar el texto
+    pos_x_game_over = SCREEN_WIDTH // 2 - texto_game_over.get_width() // 2
+    pos_y_game_over = SCREEN_HEIGHT // 2 - texto_game_over.get_height() // 2 - 20  # Ajusta el margen vertical
+
+    pos_x_mensaje = SCREEN_WIDTH // 2 - texto_mensaje.get_width() // 2
+    pos_y_mensaje = SCREEN_HEIGHT // 2 + texto_game_over.get_height() // 2 + 20  # Ajusta el margen vertical
+
+    # Crear el botón de reinicio
+    texto_reinicio = font_small.render("Reiniciar", True, (255, 0, 0))  # Texto en rojo
+    boton_rect = pygame.Rect(SCREEN_WIDTH // 2 - texto_reinicio.get_width() // 2, SCREEN_HEIGHT // 2 + 100,
+                             texto_reinicio.get_width(), texto_reinicio.get_height())
+
+    # Dibujar textos en la pantalla
+    screen.blit(texto_game_over, (pos_x_game_over, pos_y_game_over))
+    screen.blit(texto_mensaje, (pos_x_mensaje, pos_y_mensaje))
+    pygame.draw.rect(screen, (0, 0, 0), boton_rect)  # Dibujar el botón en negro
+    screen.blit(texto_reinicio, (boton_rect.x + (boton_rect.width // 2) - (texto_reinicio.get_width() // 2),
+                                 boton_rect.y + (boton_rect.height // 2) - (texto_reinicio.get_height() // 2)))
+
+    # Actualizar la pantalla
     pygame.display.flip()
+
+    # Esperar 2 segundos antes de mostrar el botón de reiniciar
+    pygame.time.wait(2000)
+
+    # Bucle para esperar clic en el botón de reinicio
+    reiniciar = False
+    while not reiniciar:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            # Verificar clic en el botón de reiniciar
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and boton_rect.collidepoint(event.pos):
+                    reiniciar = True  # El jugador hizo clic en "Reiniciar"
+                    main()  # Reiniciar el juego
+
+        pygame.display.flip()
+        pygame.time.Clock().tick(60)  # Mantener FPS constante
+
+
+if __name__ == '__main__':
+    main()
