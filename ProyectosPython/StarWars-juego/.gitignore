@@ -1,0 +1,5 @@
+# Ignorar los entornos de python
+/venv
+/myVenv
+/starsWarsVenv
+
