@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Component
 public class LibroForm extends JFrame {
@@ -83,54 +84,69 @@ public class LibroForm extends JFrame {
     }
 
     private void modificarLibro() {
-        String nombre = libroTexto.getText();
-        String autor = autorTexto.getText();
-        String precio = precioTexto.getText();
-        String existencias = existenciasTexto.getText();
+        String nombre = libroTexto.getText().trim();
+        String autor = autorTexto.getText().trim();
+        String precio = precioTexto.getText().trim();
+        String existencias = existenciasTexto.getText().trim();
         Libro libro = detectarSeleccionCelda();
 
         if (nombre.isEmpty() || autor.isEmpty() || precio.isEmpty() || existencias.isEmpty()) {
             mostrarMensaje("""
-                Para modificar un elemento se deberá hacer click en la celda,
-                y verás los campos con dicha información a modificar.
-                """);
+            Para modificar un elemento, selecciona un libro en la tabla.
+            Los campos se cargarán automáticamente para su edición.
+            """);
             return;
         }
 
-        if (libro != null) {
+        if (libro == null) {
+            mostrarMensaje("No se ha modificado ningún valor.");
+            return;
+        }
+
+        try {
             libro.setNombreLibro(nombre);
             libro.setAutor(autor);
             libro.setPrecio(Double.parseDouble(precio));
             libro.setExistencias(Integer.parseInt(existencias));
+
             libroServicio.guardarLibro(libro);
-            mostrarMensaje("Se ha modificado el libro!");
             listarLibros();
+            mostrarMensaje("¡Se ha modificado el libro correctamente!");
+        } catch (NumberFormatException e) {
+            mostrarMensaje("Error: el precio o las existencias no son valores válidos.");
         }
-        //modificarPorCelda(libro, nombreColumna, filaSeleccionada, columnaSeleccionada);
     }
 
     private Libro detectarSeleccionCelda() {
-        // Detectar valores de la celda seleccionada
         int filaSeleccionada = tablaLibros.getSelectedRow();
-        int columnaSeleccionada = tablaLibros.getSelectedColumn();
 
-        if (filaSeleccionada != -1 || columnaSeleccionada != -1) {
-            var id = tablaLibros.getValueAt(filaSeleccionada, 0).toString();
-            Libro libro = libroServicio.buscarLibroPorId(Integer.parseInt(id));
-            String nombreLibro = libro.getNombreLibro();
-            String autorLibro = libro.getAutor();
-            double precioLibro = Double.parseDouble(libro.getPrecio().toString());
-            int existenciasLibro = Integer.parseInt(libro.getExistencias().toString());
-
-            libroTexto.setText(nombreLibro);
-            autorTexto.setText(autorLibro);
-            precioTexto.setText(String.valueOf(precioLibro));
-            existenciasTexto.setText(String.valueOf(existenciasLibro));
-            return libro;
+        if (filaSeleccionada == -1) {
+            return null;
         }
-        return null;
-    }
 
+        var id = tablaLibros.getValueAt(filaSeleccionada, 0).toString();
+        Libro libro = libroServicio.buscarLibroPorId(Integer.parseInt(id));
+
+        if (libro == null) return null;
+
+        // Si los campos coinciden exactamente con el libro seleccionado, no hay cambios
+        boolean sinCambios =
+                Objects.equals(libroTexto.getText(), libro.getNombreLibro()) &&
+                        Objects.equals(autorTexto.getText(), libro.getAutor()) &&
+                        Objects.equals(precioTexto.getText(), libro.getPrecio().toString()) &&
+                        Objects.equals(existenciasTexto.getText(), libro.getExistencias().toString());
+
+        if (sinCambios) {
+            return null;
+        }
+
+        libroTexto.setText(libro.getNombreLibro());
+        autorTexto.setText(libro.getAutor());
+        precioTexto.setText(libro.getPrecio().toString());
+        existenciasTexto.setText(libro.getExistencias().toString());
+
+        return libro;
+    }
 
     // Método que se creó antes para prácticas
 //    private void modificarPorCelda(Libro libro, String nombreColumna, int fila, int columna) {
