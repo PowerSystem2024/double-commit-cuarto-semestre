@@ -17,7 +17,7 @@ interface TasksPageProps {
   tareas: {
     tarea_id: number;
     titulo: string;
-    descripcion: boolean;
+    descripcion: string;
     actualizado: boolean;
     creado_el: Date | string;
   }[];
@@ -27,4 +27,4 @@ interface TasksPageProps {
 type PartialUserProps = Partial<UserProps>;
 type PartialTasksProps = Partial<TasksPageProps>;
 
-export { PartialUserProps, PartialTasksProps };
+export { PartialUserProps, PartialTasksProps, TasksPageProps };

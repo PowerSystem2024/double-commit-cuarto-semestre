@@ -29,7 +29,7 @@ export const RegisterForm = () => {
             </div>
           ),
         });
-        setTimeout(() => navigate("/login"), 1000);
+        setTimeout(() => navigate("/profile"), 1000);
       }).catch((err) => showDialog({ content: <div>{err.message}</div> }))
   };
 

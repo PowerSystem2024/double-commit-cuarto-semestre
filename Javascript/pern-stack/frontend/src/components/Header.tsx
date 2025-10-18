@@ -1,5 +1,5 @@
 import { useAuth } from "../contexts/userProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const { auth, signout } = useAuth();
@@ -42,7 +42,7 @@ export const Header = () => {
         {/* Si hay usuario */}
         {auth && auth.user ? (
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
+            <Link to={"/profile"} className="flex items-center gap-2">
               <img
                 src={
                   auth?.user?.user_avatar ||
@@ -54,7 +54,7 @@ export const Header = () => {
               <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
                 {auth?.user?.user_name || "No disponible"}
               </span>
-            </div>
+            </Link>
 
             <button
               onClick={handleLogout}

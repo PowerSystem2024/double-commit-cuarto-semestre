@@ -1,14 +1,25 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackButton } from "./BackButton";
+import { Loader } from "./Loader";
 
 export const TaskForm = () => {
   const [titulo, setTitulo] = useState<string>("");
   const [descripcion, setDescripcion] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+    }
+  }, [descripcion])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const res = await fetch("http://localhost:5000/api/tarea", {
         method: "POST",
@@ -19,11 +30,17 @@ export const TaskForm = () => {
 
       if (!res.ok) throw new Error("Error al crear la tarea");
 
+      setLoading(false)
       navigate("/tareas");
     } catch (err) {
+      setLoading(false)
       console.error("Error al guardar la tarea:", err);
     }
   };
+
+  if (loading) {
+    return <Loader />
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -54,9 +71,10 @@ export const TaskForm = () => {
             </label>
             <textarea
               id="description"
+              ref={textareaRef}
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-gray-400"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-gray-400 resize-none overflow-hidden"
               placeholder="Ej: Comprar dominio en Hostinguer"
               required
               rows={4}

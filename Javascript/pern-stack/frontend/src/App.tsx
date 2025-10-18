@@ -5,6 +5,7 @@ import { LoginForm } from "./components/LoginForm";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { CreateTaskPage } from "./pages/CreateTaskPage";
+import { UpdatePage } from "./pages/UpdatePage";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
       <Route path="/tareas" element={<TasksPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/create-task" element={<CreateTaskPage />} />
+      <Route path="/profile/edit" element={<UpdatePage />} />
     </Routes>
   );
 }
