@@ -1,39 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import { showDialog } from "../utils/dialog";
+import { useEffect } from "react";
 
 export const Home = () => {
-  const navigate = useNavigate()
-  const worker = new Worker(
-    new URL("../workers/timerWorker.ts", import.meta.url)
-  );
+  const navigate = useNavigate();
 
-  worker.postMessage(1000);
-  worker.onmessage = (event: MessageEvent<number>) => {
-    const timer = event.data;
-  
-    if (typeof timer !== "number") return;
-  
-    if (timer === 3) {
-      showDialog({
-        content: (
-          <div className="p-4 text-center space-y-2">
-            <h2 className="text-xl font-semibold text-violet-600">
-              Bienvenido de nuevo 👋
-            </h2>
-            <p className="text-gray-700">
-              Estas son tus tareas diarias, esas mismas que parecen rutinarias…
-            </p>
-            <p className="text-gray-500 italic">
-              Para que vamos a ser tan optimistas!?
-            </p>
-          </div>
-        ),
-      });
-  
-      setTimeout(() => worker.terminate(), 500);
-    }
-  };
-  
+  useEffect(() => {
+    const worker = new Worker(
+      new URL("../workers/timerWorker.ts", import.meta.url)
+    );
+
+    worker.postMessage(1000);
+    worker.onmessage = (event: MessageEvent<number>) => {
+      const timer = event.data;
+
+      if (typeof timer !== "number") return;
+
+      if (timer === 3) {
+        showDialog({
+          content: (
+            <div className="p-4 text-center space-y-2">
+              <h2 className="text-xl font-semibold text-violet-600">
+                Bienvenido de nuevo 👋
+              </h2>
+              <p className="text-gray-700">
+                Estas son tus tareas diarias, esas mismas que parecen
+                rutinarias…
+              </p>
+              <p className="text-gray-500 italic">
+                Para que vamos a ser tan optimistas!?
+              </p>
+            </div>
+          ),
+        });
+
+        return () => setTimeout(() => worker.terminate(), 500);
+      }
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
