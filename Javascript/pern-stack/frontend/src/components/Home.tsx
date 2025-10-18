@@ -4,21 +4,29 @@ import { useEffect } from "react";
 import { useAuth } from "../contexts/userProvider";
 
 export const Home = () => {
-  const { auth } = useAuth()
+  const { auth } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (auth?.user) {
+      const executed = JSON.parse(localStorage.getItem("executed") || "false");
+
+      // Si ya se ejecutó antes, no mostrar el cartel
+      if (executed === true) return;
+
+      // Si no se ejecutó, lo marcamos como ejecutado
+      localStorage.setItem("executed", JSON.stringify(true));
+
       const worker = new Worker(
         new URL("../workers/timerWorker.ts", import.meta.url)
       );
-  
+
       worker.postMessage(1000);
       worker.onmessage = (event: MessageEvent<number>) => {
         const timer = event.data;
-  
+
         if (typeof timer !== "number") return;
-  
+
         if (timer === 3) {
           showDialog({
             content: (
@@ -31,13 +39,13 @@ export const Home = () => {
                   rutinarias…
                 </p>
                 <p className="text-gray-500 italic">
-                  Para que vamos a ser tan optimistas!?
+                  Para qué vamos a ser tan optimistas!?
                 </p>
               </div>
             ),
           });
-  
-          return () => setTimeout(() => worker.terminate(), 500);
+
+          setTimeout(() => worker.terminate(), 500);
         }
       };
     }
@@ -51,7 +59,8 @@ export const Home = () => {
         </h1>
 
         <p className="text-lg text-gray-700">
-          Organiza tu día con facilidad, prioriza lo importante y alcanza tus objetivos sin estrés.
+          Organiza tu día con facilidad, prioriza lo importante y alcanza tus
+          objetivos sin estrés.
         </p>
 
         <p className="text-gray-500 italic">

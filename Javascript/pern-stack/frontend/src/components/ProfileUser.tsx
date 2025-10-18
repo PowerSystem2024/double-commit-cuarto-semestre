@@ -8,14 +8,14 @@ import { showDialog } from "../utils/dialog";
 
 export const ProfileUser = () => {
   const navigate = useNavigate();
-  const { auth, isLoading, signout, deleteUser } = useAuth();
-  const [data, setData] = useState<PartialUserProps>({ user: auth?.user });
+  const { auth: initialData, isLoading, signout, deleteUser } = useAuth();
+  const [data, setData] = useState<PartialUserProps>({ user: initialData?.user });
 
   useEffect(() => {
-    if (auth?.user) {
-      setData({ user: auth.user });
+    if (initialData?.user) {
+      setData({ user: initialData.user });
     }
-  }, [auth]);
+  }, [initialData]);
 
   if (isLoading) return <Loader />;
 
@@ -83,7 +83,7 @@ export const ProfileUser = () => {
 
           <button
             onClick={handleDeleteUser}
-            className="flex items-center gap-2 px-5 py-2.5 bg-rose-600 text-white  shadow-md hover:bg-rose-700 hover:shadow-lg transition-transform "
+            className="flex items-center gap-2 px-5 py-2.5 bg-rose-500 text-white  shadow-md hover:bg-rose-600 hover:shadow-lg transition-transform "
           >
             <i className="fa-solid fa-user-xmark"></i>
             Eliminar Cuenta
@@ -91,7 +91,7 @@ export const ProfileUser = () => {
 
           <button
             onClick={() => navigate("/tareas")}
-            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white  shadow-md hover:bg-emerald-700 hover:shadow-lg transition-transform "
+            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 text-white  shadow-md hover:bg-emerald-600 hover:shadow-lg transition-transform "
           >
             <i className="fa-solid fa-list-check"></i>
             Mis Tareas

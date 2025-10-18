@@ -140,7 +140,7 @@ export const UpdateForm = () => {
 
   return (
     <section className="max-w-2xl flex mx-auto justify-center">
-      <div className="w-full p-6 bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 shadow-lg mt-24">
+      <div className="w-full p-6 bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 shadow-lg my-24">
         <h1 className="text-3xl font-bold mb-6 text-zinc-900 dark:text-zinc-100 text-center">
           Editar Perfil
         </h1>
