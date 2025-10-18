@@ -7,19 +7,20 @@ export const TaskForm = () => {
   const [titulo, setTitulo] = useState<string>("");
   const [descripcion, setDescripcion] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
     }
-  }, [descripcion])
+  }, [descripcion]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await fetch("http://localhost:5000/api/tarea", {
         method: "POST",
@@ -30,22 +31,22 @@ export const TaskForm = () => {
 
       if (!res.ok) throw new Error("Error al crear la tarea");
 
-      setLoading(false)
+      setLoading(false);
       navigate("/tareas");
     } catch (err) {
-      setLoading(false)
+      setLoading(false);
       console.error("Error al guardar la tarea:", err);
     }
   };
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
     <div className="flex items-center justify-center min-h-screen">
       <BackButton />
-      <div className="bg-white bg-opacity-30 backdrop-blur-md rounded-xl border border-zinc-300 shadow-lg p-8 text-zinc-800 w-full max-w-md">
+      <div className="bg-white bg-opacity-30 backdrop-blur-md border border-zinc-300 shadow-lg p-8 text-zinc-800 w-full max-w-md">
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
           Crear Nueva Tarea
         </h2>
@@ -59,7 +60,7 @@ export const TaskForm = () => {
               id="title"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-gray-400"
+              className="mt-1 block w-full p-2 border border-gray-300 focus:outline-none focus:ring focus:ring-gray-400"
               placeholder="Ej: Comprar server"
               required
             />
@@ -74,7 +75,7 @@ export const TaskForm = () => {
               ref={textareaRef}
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-gray-400 resize-none overflow-hidden"
+              className="mt-1 block w-full p-2 border border-gray-300 focus:outline-none focus:ring focus:ring-gray-400 resize-none overflow-hidden"
               placeholder="Ej: Comprar dominio en Hostinguer"
               required
               rows={4}
@@ -83,9 +84,9 @@ export const TaskForm = () => {
 
           <button
             type="submit"
-            className="w-full bg-zinc-800 text-white py-2 rounded-md hover:bg-zinc-700 transition duration-200"
+            className="w-full bg-zinc-800 text-white py-2 hover:bg-zinc-700 transition duration-200"
           >
-            Agregar Tarea
+            Agregar tarea
           </button>
         </form>
       </div>

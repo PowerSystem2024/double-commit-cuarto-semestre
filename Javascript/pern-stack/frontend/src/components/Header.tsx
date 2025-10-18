@@ -2,7 +2,7 @@ import { useAuth } from "../contexts/userProvider";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Header = () => {
-  const { auth, signout } = useAuth();
+  const { auth, signout, isLoading } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -36,7 +36,7 @@ export const Header = () => {
             <rect x="3" y="4" width="6" height="6" rx="1" />
           </svg>
           <span className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
-            PERNO App
+            doubleCommit taskApp
           </span>
         </div>
         {/* Si hay usuario */}
@@ -60,7 +60,7 @@ export const Header = () => {
               onClick={handleLogout}
               className="px-4 py-2 text-sm border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
             >
-              Cerrar sesión
+              {isLoading ? "Cerrando sesión" : "Cerrar sesión"}
             </button>
           </div>
         ) : (

@@ -1,4 +1,5 @@
 import type { PartialTasksProps } from "../definitions";
+import { formatDateAndTime } from "../utils/formatDate";
 
 export const TaskCard = ({ tareas, deleteTask }: PartialTasksProps) => {
   return (
@@ -10,12 +11,8 @@ export const TaskCard = ({ tareas, deleteTask }: PartialTasksProps) => {
             className="flex flex-col border dark:border-zinc-800/50 dark:bg-zinc-900/50 p-5 rounded-xl relative"
           >
             <h3 className="text-xl font-bold">{task.titulo}</h3>
-            <time>
-              {new Date(task.creado_el).toLocaleDateString("es-AR", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+            <time className="text-sm text-zinc-400">
+              {formatDateAndTime(task.creado_el)}
             </time>
             <p className="mt-3">{task.descripcion}</p>
             <span 

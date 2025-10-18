@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { showDialog } from "../utils/dialog";
 import { Loader } from "../components/Loader";
@@ -33,7 +33,7 @@ export const UpdateForm = () => {
   };
 
   // Manejar la selección de archivo
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
@@ -50,7 +50,7 @@ export const UpdateForm = () => {
       return;
     }
 
-    // Validar tamaño (máximo 10MB)
+    // Validar tamaño (máximo 10MB) <- está descrito tambien el backend como limit: "10mb" en los middlewares de express json
     if (file.size > 10 * 1024 * 1024) {
       showDialog({
         content: (
@@ -86,7 +86,7 @@ export const UpdateForm = () => {
     }
   };
 
-  const handleUpdate = async (e: React.FormEvent) => {
+  const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
@@ -97,7 +97,7 @@ export const UpdateForm = () => {
         body: JSON.stringify({
           name: userName,
           email: userEmail,
-          avatar: userAvatar, // ← Enviar base64 de la imagen
+          avatar: userAvatar,
           password: "admin1234",
         }),
       });
@@ -140,7 +140,7 @@ export const UpdateForm = () => {
 
   return (
     <section className="max-w-2xl flex mx-auto justify-center">
-      <div className="w-full p-6 bg-white dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-lg mt-24">
+      <div className="w-full p-6 bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 shadow-lg mt-24">
         <h1 className="text-3xl font-bold mb-6 text-zinc-900 dark:text-zinc-100 text-center">
           Editar Perfil
         </h1>
@@ -177,7 +177,7 @@ export const UpdateForm = () => {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploadingImage}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -210,7 +210,7 @@ export const UpdateForm = () => {
                 placeholder="https://ejemplo.com/imagen.jpg"
                 value={userAvatar.startsWith("data:") ? "" : userAvatar}
                 onChange={(e) => setUserAvatar(e.target.value)}
-                className="w-full px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2  border border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
           </div>
@@ -225,7 +225,7 @@ export const UpdateForm = () => {
               placeholder="Tu nombre"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-2  border border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 outline-none"
               required
             />
           </div>
@@ -240,7 +240,7 @@ export const UpdateForm = () => {
               placeholder="Tu email"
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-2  border border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 outline-none"
               required
             />
           </div>

@@ -4,6 +4,7 @@ import { Loader } from "../components/Loader";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/userProvider";
+import { showDialog } from "../utils/dialog";
 
 export const ProfileUser = () => {
   const navigate = useNavigate();
@@ -19,13 +20,26 @@ export const ProfileUser = () => {
   if (isLoading) return <Loader />;
 
   const handleDeleteUser = async () => {
-    const confirmDelete = confirm(
-      "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer."
-    );
-    if (confirmDelete) {
-      await deleteUser(data?.user?.user_id as number);
-      navigate("/login");
-    }
+    showDialog({
+      content: (
+        <div>
+          <p>¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+          <aside>
+            <button
+             onClick={async() => {
+              await deleteUser(data?.user?.user_id as number);
+              navigate("/login");
+            }}
+            className="px-2 py-1 border">
+              Si estoy de acuerdo
+            </button>
+            <button className="px-2 py-1 border">
+              Na me arrepentí
+            </button>
+          </aside>
+        </div>
+      )
+    })
   };
 
   return (
