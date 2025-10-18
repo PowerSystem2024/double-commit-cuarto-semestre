@@ -14,6 +14,7 @@ export const UpdateForm = () => {
   const [userEmail, setUserEmail] = useState(auth?.user?.user_email || "");
   const [userAvatar, setUserAvatar] = useState(auth?.user?.user_avatar || "");
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Si no hay autenticación, redirigir al login
   if (!auth) {
@@ -34,29 +35,29 @@ export const UpdateForm = () => {
   // Manejar la selección de archivo
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    
+
     if (!file) return;
 
     // Validar tipo de archivo
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       showDialog({
         content: (
           <div>
             <p>Por favor selecciona un archivo de imagen válido.</p>
           </div>
-        )
+        ),
       });
       return;
     }
 
-    // Validar tamaño (máximo 5MB)
-    if (file.size > 5 * 1024 * 1024) {
+    // Validar tamaño (máximo 10MB)
+    if (file.size > 10 * 1024 * 1024) {
       showDialog({
         content: (
           <div>
-            <p>La imagen no debe superar los 5MB.</p>
+            <p>La imagen no debe superar los 10MB.</p>
           </div>
-        )
+        ),
       });
       return;
     }
@@ -70,7 +71,7 @@ export const UpdateForm = () => {
           <div>
             <p>Imagen cargada correctamente.</p>
           </div>
-        )
+        ),
       });
     } catch (error) {
       showDialog({
@@ -78,7 +79,7 @@ export const UpdateForm = () => {
           <div>
             <p>Error al cargar la imagen: {String(error)}</p>
           </div>
-        )
+        ),
       });
     } finally {
       setIsUploadingImage(false);
@@ -87,7 +88,7 @@ export const UpdateForm = () => {
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       const res = await fetch("http://localhost:5000/api/update/user", {
         method: "PUT",
@@ -97,13 +98,14 @@ export const UpdateForm = () => {
           name: userName,
           email: userEmail,
           avatar: userAvatar, // ← Enviar base64 de la imagen
-          password: "admin1234"
+          password: "admin1234",
         }),
       });
 
       const result = await res.json();
 
       if (res.ok) {
+        setIsLoading(false);
         showDialog({
           content: (
             <div>
@@ -116,7 +118,9 @@ export const UpdateForm = () => {
         showDialog({
           content: (
             <div>
-              <p>Error: {result.message || "No se pudo actualizar el perfil."}</p>
+              <p>
+                Error: {result.message || "No se pudo actualizar el perfil."}
+              </p>
             </div>
           ),
         });
@@ -131,6 +135,8 @@ export const UpdateForm = () => {
       });
     }
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <section className="max-w-2xl flex mx-auto justify-center">
@@ -166,32 +172,32 @@ export const UpdateForm = () => {
               onChange={handleImageChange}
               className="hidden"
             />
-            
+
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploadingImage}
               className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="w-5 h-5" 
-                fill="none" 
-                viewBox="0 0 24 24" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
               {isUploadingImage ? "Cargando..." : "Cargar Foto"}
             </button>
 
             <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
-              Tamaño máximo: 5MB • Formatos: JPG, PNG, GIF, WebP
+              Tamaño máximo: 10MB • Formatos: JPG, PNG, GIF, WebP
             </p>
 
             {/* URL del avatar (opcional) */}
@@ -202,7 +208,7 @@ export const UpdateForm = () => {
               <input
                 type="url"
                 placeholder="https://ejemplo.com/imagen.jpg"
-                value={userAvatar.startsWith('data:') ? '' : userAvatar}
+                value={userAvatar.startsWith("data:") ? "" : userAvatar}
                 onChange={(e) => setUserAvatar(e.target.value)}
                 className="w-full px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 outline-none"
               />
@@ -243,16 +249,47 @@ export const UpdateForm = () => {
           <aside className="flex justify-center gap-3 mt-4">
             <button
               type="submit"
-              className="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl shadow-sm hover:bg-green-700 transition"
+              className="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white shadow-sm hover:bg-green-700 transition"
             >
-              <i className="fa-solid fa-floppy-disk"></i> Guardar Cambios
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-save-icon lucide-save"
+              >
+                <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+                <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
+                <path d="M7 3v4a1 1 0 0 0 1 1h7" />
+              </svg>
+              Guardar Cambios
             </button>
             <button
               type="button"
               onClick={() => navigate("/profile")}
-              className="flex items-center gap-2 px-5 py-2.5 bg-zinc-800 text-white rounded-xl shadow-sm hover:bg-zinc-900 dark:bg-zinc-700 dark:hover:bg-zinc-600 transition"
+              className="flex items-center gap-2 px-5 py-2.5 bg-zinc-800 text-white shadow-sm hover:bg-zinc-900 dark:bg-zinc-700 dark:hover:bg-zinc-600 transition"
             >
-              <i className="fa-solid fa-arrow-left"></i> Volver
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-move-left-icon lucide-move-left strok group-hover:-translate-x-1 transition-transform"
+              >
+                <path d="M6 8L2 12L6 16" />
+                <path d="M2 12H22" />
+              </svg>
+              Volver
             </button>
           </aside>
         </form>

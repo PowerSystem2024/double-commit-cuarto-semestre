@@ -58,7 +58,7 @@ export const Header = () => {
 
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-sm rounded-xl border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+              className="px-4 py-2 text-sm border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
             >
               Cerrar sesión
             </button>

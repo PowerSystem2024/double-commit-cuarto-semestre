@@ -7,14 +7,16 @@ import { useAuth } from "../contexts/userProvider";
 
 export const ProfileUser = () => {
   const navigate = useNavigate();
-  const { auth, isLoading, signout, deleteUser } = useAuth()
-  const [data, setData] = useState<PartialUserProps>()
+  const { auth, isLoading, signout, deleteUser } = useAuth();
+  const [data, setData] = useState<PartialUserProps>({ user: auth?.user });
 
   useEffect(() => {
-    if (auth?.user) setData(auth)
-  }, [auth, data])
+    if (auth?.user) {
+      setData({ user: auth.user });
+    }
+  }, [auth]);
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <Loader />;
 
   const handleDeleteUser = async () => {
     const confirmDelete = confirm(
@@ -24,11 +26,11 @@ export const ProfileUser = () => {
       await deleteUser(data?.user?.user_id as number);
       navigate("/login");
     }
-  }
+  };
 
   return (
     <section className="max-w-3xl flex mx-auto justify-center px-4">
-      <div className="w-full p-8 bg-white/90 dark:bg-zinc-900/70 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xl mt-24 backdrop-blur">
+      <div className="w-full p-8 bg-white/90 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 shadow-xl mt-24 backdrop-blur">
         <h1 className="text-3xl font-bold mb-6 text-center text-zinc-900 dark:text-zinc-100 tracking-tight">
           Perfil de Usuario
         </h1>
