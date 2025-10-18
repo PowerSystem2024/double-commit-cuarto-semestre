@@ -27,4 +27,4 @@ interface TasksPageProps {
 type PartialUserProps = Partial<UserProps>;
 type PartialTasksProps = Partial<TasksPageProps>;
 
-export { PartialUserProps, PartialTasksProps, TasksPageProps };
+export { PartialUserProps, PartialTasksProps, UserProps, TasksPageProps };

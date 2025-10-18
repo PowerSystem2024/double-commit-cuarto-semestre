@@ -66,7 +66,7 @@ export const Header = () => {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+            className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white hover:bg-blue-700 transition"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

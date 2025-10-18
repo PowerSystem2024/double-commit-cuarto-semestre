@@ -9,9 +9,11 @@ export const RegisterForm = () => {
   const [name, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true)
     await fetch("http://localhost:5000/api/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -20,6 +22,7 @@ export const RegisterForm = () => {
     })
       .then((res) => res.json())
       .then((data: PartialUserProps) => {
+        setIsLoading(false)
         showDialog({
           content: (
             <div className="p-4">
@@ -29,8 +32,11 @@ export const RegisterForm = () => {
             </div>
           ),
         });
-        setTimeout(() => navigate("/profile"), 1000);
-      }).catch((err) => showDialog({ content: <div>{err.message}</div> }))
+        setTimeout(() => navigate("/profile"), 800);
+      }).catch((err) => {
+        setIsLoading(false)
+        showDialog({ content: <div>{err.message}</div> })
+      })
   };
 
   return (
@@ -38,7 +44,7 @@ export const RegisterForm = () => {
       <BackButton />
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-xl shadow-md w-96"
+        className="bg-white p-6  shadow-md w-96"
       >
         <h2 className="text-lg font-bold mb-4">Registro</h2>
         <div className="mb-4">
@@ -49,7 +55,7 @@ export const RegisterForm = () => {
             type="text"
             value={name}
             onChange={(e) => setUsername(e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300  p-2"
             required
           />
         </div>
@@ -61,7 +67,7 @@ export const RegisterForm = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300  p-2"
             required
           />
         </div>
@@ -73,15 +79,15 @@ export const RegisterForm = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300  p-2"
             required
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-zinc-800 text-white p-2 rounded hover:bg-zinc-700"
+          className="w-full bg-zinc-800 text-white p-2 hover:bg-zinc-700"
         >
-          Registrarse
+          {isLoading ? "Cargando" : "Registrarse"}
         </button>
       </form>
     </div>

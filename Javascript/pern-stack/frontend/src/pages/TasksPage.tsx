@@ -4,8 +4,10 @@ import { useFetch } from "../hooks/useFectch";
 import type { PartialTasksProps } from "../definitions";
 import { TaskCard } from "../components/TaskCard";
 import { showDialog } from "../utils/dialog";
+import { useNavigate } from "react-router-dom";
 
 export const TasksPage = () => {
+  const navigate = useNavigate()
   const options = useMemo(
     () => ({
       method: "GET",
@@ -22,20 +24,14 @@ export const TasksPage = () => {
   } = useFetch<PartialTasksProps>("http://localhost:5000/api/tareas", options);
 
   const [data, setData] = useState<PartialTasksProps>({
-    tareas: [
-      {
-        tarea_id: 0,
-        titulo: "",
-        descripcion: "",
-        actualizado: false,
-        creado_el: new Date(),
-      },
-    ],
+    tareas: [],
   });
 
   useEffect(() => {
     if (initialData?.tareas) setData(initialData);
   }, [initialData]);
+
+  if (loading) return <Loader />;
 
   const deleteTask = async (id: number) => {
     try {
@@ -66,8 +62,6 @@ export const TasksPage = () => {
     }
   };
 
-  if (loading) return <Loader />;
-
   if (error && !data?.tareas?.length) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -80,7 +74,7 @@ export const TasksPage = () => {
           </p>
           <a
             href="/create-task"
-            className="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+            className="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition"
           >
             Crear nueva tarea
           </a>
@@ -96,12 +90,12 @@ export const TasksPage = () => {
           <h1 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-200">
             No hay tareas creadas aún
           </h1>
-          <a
-            href="/create-task"
-            className="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+          <button
+            onClick={() => navigate("/create-task")}
+            className="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition"
           >
             Crear la primera
-          </a>
+          </button>
         </div>
       </div>
     );
@@ -113,9 +107,9 @@ export const TasksPage = () => {
         <h1 className="text-2xl font-bold">
           Lista de Tareas ({data?.tareas?.length})
         </h1>
-        <a
-          href="/create-task"
-          className="flex gap-2 items-center px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition"
+        <button
+          onClick={() => navigate("/create-task")}
+          className="flex gap-2 items-center px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +126,7 @@ export const TasksPage = () => {
             <path d="M12 5v14" />
           </svg>
           Nueva Tarea
-        </a>
+        </button>
       </div>
 
       <TaskCard tareas={data?.tareas} deleteTask={deleteTask} />

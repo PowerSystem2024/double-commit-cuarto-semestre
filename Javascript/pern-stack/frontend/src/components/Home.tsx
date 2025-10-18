@@ -1,11 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { showDialog } from "../utils/dialog";
 
 export const Home = () => {
+  const navigate = useNavigate()
   const worker = new Worker(
     new URL("../workers/timerWorker.ts", import.meta.url)
   );
-  worker.postMessage(1000);
 
+  worker.postMessage(1000);
   worker.onmessage = (event: MessageEvent<number>) => {
     const timer = event.data;
   
@@ -44,12 +46,12 @@ export const Home = () => {
         </span>
       </p>
       <div className="mt-6">
-        <a
-          href="/tareas"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        <button
+          onClick={() => navigate("/tareas")}
+          className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 transition cursor-pointer"
         >
           Comenzar
-        </a>
+        </button>
       </div>
     </div>
   );

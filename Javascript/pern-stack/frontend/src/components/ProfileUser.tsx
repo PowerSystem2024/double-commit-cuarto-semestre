@@ -1,69 +1,30 @@
-import type { PartialTasksProps, PartialUserProps } from "../definitions";
-import { useFetch } from "../hooks/useFectch";
+import type { PartialUserProps } from "../definitions";
 import { formatDateAndTime } from "../utils/formatDate";
 import { Loader } from "../components/Loader";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { showDialog } from "../utils/dialog";
+import { useAuth } from "../contexts/userProvider";
 
 export const ProfileUser = () => {
   const navigate = useNavigate();
-  const options = useMemo(
-    () => ({
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include" as const,
-    }),
-    []
-  );
+  const { auth, isLoading, signout, deleteUser } = useAuth()
+  const [data, setData] = useState<PartialUserProps>()
 
-  const { data, loading, error } = useFetch<PartialUserProps>(
-    "http://localhost:5000/api/profile",
-    options
-  );
+  useEffect(() => {
+    if (auth?.user) setData(auth)
+  }, [auth, data])
 
-  if (error) {
-    return navigate("/login");
+  if (isLoading) return <Loader />
+
+  const handleDeleteUser = async () => {
+    const confirmDelete = confirm(
+      "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer."
+    );
+    if (confirmDelete) {
+      await deleteUser(data?.user?.user_id as number);
+      navigate("/login");
+    }
   }
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  const deleteUser = async (id: number) => {
-    await fetch("http://localhost:5000/api/delete/user/" + id, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data: PartialTasksProps) => {
-        showDialog({ content: <div>{data.message}</div> });
-        setTimeout(() => navigate("/login"), 2000);
-      })
-      .catch((err) => showDialog({ content: <div>{err}</div> }));
-  };
-
-  const signout = async () => {
-    await fetch("http://localhost:5000/api/signout", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data: PartialUserProps) => {
-        showDialog({
-          content: (
-            <div>
-              <p>{data.message}</p>
-              <p>Hasta luego {data.user?.user_name}!</p>
-            </div>
-          ),
-        });
-        setTimeout(() => navigate("/login"), 2000);
-      })
-      .catch((err) => showDialog({ content: <div>{err}</div> }));
-  };
 
   return (
     <section className="max-w-3xl flex mx-auto justify-center px-4">
@@ -89,7 +50,8 @@ export const ProfileUser = () => {
               {data?.user?.user_email}
             </p>
             <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-500">
-              Cuenta creada el {formatDateAndTime(data?.user?.created_at as string)}
+              Cuenta creada el{" "}
+              {formatDateAndTime(data?.user?.created_at as string)}
             </p>
           </div>
         </div>
@@ -97,15 +59,15 @@ export const ProfileUser = () => {
         <aside className="flex flex-wrap justify-center gap-4 mt-8">
           <button
             onClick={() => navigate("/profile/edit")}
-            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl shadow-md hover:bg-indigo-700 hover:shadow-lg transition-transform hover:-translate-y-0.5"
+            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white  shadow-md hover:bg-indigo-700 hover:shadow-lg transition-transform "
           >
             <i className="fa-solid fa-pen-to-square"></i>
             Editar Perfil
           </button>
 
           <button
-            onClick={() => deleteUser(data?.user?.user_id as number)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-rose-600 text-white rounded-xl shadow-md hover:bg-rose-700 hover:shadow-lg transition-transform hover:-translate-y-0.5"
+            onClick={handleDeleteUser}
+            className="flex items-center gap-2 px-5 py-2.5 bg-rose-600 text-white  shadow-md hover:bg-rose-700 hover:shadow-lg transition-transform "
           >
             <i className="fa-solid fa-user-xmark"></i>
             Eliminar Cuenta
@@ -113,7 +75,7 @@ export const ProfileUser = () => {
 
           <button
             onClick={() => navigate("/tareas")}
-            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl shadow-md hover:bg-emerald-700 hover:shadow-lg transition-transform hover:-translate-y-0.5"
+            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white  shadow-md hover:bg-emerald-700 hover:shadow-lg transition-transform "
           >
             <i className="fa-solid fa-list-check"></i>
             Mis Tareas
@@ -121,9 +83,24 @@ export const ProfileUser = () => {
 
           <button
             onClick={signout}
-            className="flex items-center gap-2 px-5 py-2.5 bg-zinc-800 text-white rounded-xl shadow-md hover:bg-zinc-900 dark:bg-zinc-700 dark:hover:bg-zinc-600 hover:shadow-lg transition-transform hover:-translate-y-0.5"
+            className="flex items-center gap-2 px-5 py-2.5 bg-zinc-800 text-white  shadow-md hover:bg-zinc-900 dark:bg-zinc-700 dark:hover:bg-zinc-600 hover:shadow-lg transition-transform "
           >
-            <i className="fa-solid fa-right-from-bracket"></i>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-log-out-icon lucide-log-out"
+            >
+              <path d="m16 17 5-5-5-5" />
+              <path d="M21 12H9" />
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            </svg>
             Cerrar Sesión
           </button>
         </aside>
