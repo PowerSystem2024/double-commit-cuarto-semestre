@@ -9,7 +9,9 @@ import { showDialog } from "../utils/dialog";
 export const ProfileUser = () => {
   const navigate = useNavigate();
   const { auth: initialData, isLoading, signout, deleteUser } = useAuth();
-  const [data, setData] = useState<PartialUserProps>({ user: initialData?.user });
+  const [data, setData] = useState<PartialUserProps>({
+    user: initialData?.user,
+  });
 
   useEffect(() => {
     if (initialData?.user) {
@@ -20,26 +22,44 @@ export const ProfileUser = () => {
   if (isLoading) return <Loader />;
 
   const handleDeleteUser = async () => {
+    document.querySelector("dialog")?.remove()
+    showDialog({
+      content: <div>Usuario <strong className="text-rose-500">{data.user?.user_email}</strong> eliminado!</div>,
+    });
+    await deleteUser(data.user?.user_id as number);
+  };
+
+  const confirmDeleteUser = async () => {
     showDialog({
       content: (
-        <div>
-          <p>¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
-          <aside>
-            <button
-             onClick={async() => {
-              await deleteUser(data?.user?.user_id as number);
-              navigate("/login");
-            }}
-            className="px-2 py-1 border">
-              Si estoy de acuerdo
-            </button>
-            <button className="px-2 py-1 border">
-              Na me arrepentí
-            </button>
-          </aside>
-        </div>
-      )
-    })
+        <article className="flex justify-center mx-auto">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-rose-600">
+              ¿Eliminar tu cuenta?
+            </h3>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              Esta acción{" "}
+              <span className="font-semibold">no se puede deshacer</span>.
+              Perderás todos tus datos y tareas asociadas.
+            </p>
+            <aside className="flex gap-4 items-center justify-center mt-4">
+              <button
+                onClick={handleDeleteUser}
+                className="px-2 py-1 border hover:outline-1 outline-offset-2 outline-rose-600 hover:text-rose-600"
+              >
+                {isLoading ? "Eliminando..." : "Si estoy de acuerdo"}
+              </button>
+              <button
+                onClick={() => document.querySelector("dialog")?.remove()}
+                className="px-2 py-1 border hover:outline-1 outline-offset-2"
+              >
+                Na me arrepentí
+              </button>
+            </aside>
+          </div>
+        </article>
+      ),
+    });
   };
 
   return (
@@ -82,7 +102,7 @@ export const ProfileUser = () => {
           </button>
 
           <button
-            onClick={handleDeleteUser}
+            onClick={confirmDeleteUser}
             className="flex items-center gap-2 px-5 py-2.5 bg-rose-500 text-white  shadow-md hover:bg-rose-600 hover:shadow-lg transition-transform "
           >
             <i className="fa-solid fa-user-xmark"></i>

@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch(`http://localhost:5000/user/delete/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/delete/user/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

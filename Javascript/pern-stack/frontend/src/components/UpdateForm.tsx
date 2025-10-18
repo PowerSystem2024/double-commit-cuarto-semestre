@@ -113,7 +113,7 @@ export const UpdateForm = () => {
             </div>
           ),
         });
-        setTimeout(() => navigate("/profile"), 2000);
+        
       } else {
         showDialog({
           content: (
@@ -177,7 +177,7 @@ export const UpdateForm = () => {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploadingImage}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed active:outline outline-blue-500 outline-offset-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

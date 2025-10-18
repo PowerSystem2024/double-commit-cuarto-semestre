@@ -23,6 +23,7 @@ export const RegisterForm = () => {
       .then((res) => res.json())
       .then((data: PartialUserProps) => {
         setIsLoading(false)
+        navigate("/profile")
         showDialog({
           content: (
             <div className="p-4">
@@ -32,7 +33,6 @@ export const RegisterForm = () => {
             </div>
           ),
         });
-        setTimeout(() => navigate("/profile"), 800);
       }).catch((err) => {
         setIsLoading(false)
         showDialog({ content: <div>{err.message}</div> })
@@ -87,7 +87,7 @@ export const RegisterForm = () => {
           type="submit"
           className="w-full bg-zinc-800 text-white p-2 hover:bg-zinc-700"
         >
-          {isLoading ? "Cargando" : "Registrarse"}
+          {isLoading ? "Cargando..." : "Registrarse"}
         </button>
       </form>
     </div>

@@ -107,13 +107,13 @@ export const TasksPage = () => {
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="text-center">
           <h1 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-200">
-            No hay tareas creadas aún
+            No hay tareas creadas aún 🤔
           </h1>
           <button
             onClick={() => navigate("/create-task")}
             className="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition"
           >
-            Crear la primera
+            Crea tu primer tarea!
           </button>
         </div>
       </div>
