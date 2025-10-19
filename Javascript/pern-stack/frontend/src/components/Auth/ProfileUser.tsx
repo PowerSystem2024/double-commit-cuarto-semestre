@@ -1,9 +1,9 @@
-import { formatDateAndTime } from "../utils/formatDate";
-import { Loader } from "../components/Loader";
+import { formatDateAndTime } from "../../utils/formatDate";
+import { Loader } from "../Layout/Loader";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/userProvider";
-import { showDialog } from "../utils/dialog";
+import { useAuth } from "../../contexts/userProvider";
+import { showDialog } from "../../utils/dialog";
 
 export const ProfileUser = () => {
   const navigate = useNavigate();

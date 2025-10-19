@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Home } from "./components/Home";
+import { Home } from "./components/Layout/Home";
 import { TasksPage } from "./pages/TasksPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ProfilePage } from "./pages/ProfilePage";

@@ -1,4 +1,4 @@
-import { UpdateForm } from "../components/UpdateForm"
+import { UpdateForm } from "../components/Auth/UpdateForm"
 
 export const UpdatePage = ( ) => {
     return <UpdateForm />

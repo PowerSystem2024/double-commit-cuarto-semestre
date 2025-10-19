@@ -1,4 +1,4 @@
-import { useAuth } from "../contexts/userProvider";
+import { useAuth } from "../../contexts/userProvider";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Header = () => {

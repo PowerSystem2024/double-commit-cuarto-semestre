@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Loader } from "../components/Loader";
+import { Loader } from "../components/Layout/Loader";
 import { TaskCard } from "../components/TaskCard";
 import { showDialog } from "../utils/dialog";
 import { useNavigate } from "react-router-dom";

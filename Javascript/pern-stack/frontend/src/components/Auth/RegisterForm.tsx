@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from "react";
-import { showDialog } from "../utils/dialog";
-import { BackButton } from "./BackButton";
+import { showDialog } from "../../utils/dialog";
+import { BackButton } from "../BackButton";
 import { useNavigate } from "react-router-dom";
-import type { PartialUserProps } from "../definitions";
+import type { PartialUserProps } from "../../definitions";
 
 export const RegisterForm = () => {
   const navigate = useNavigate();

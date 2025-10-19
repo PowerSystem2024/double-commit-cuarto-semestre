@@ -1,8 +1,8 @@
 import { useState, useRef, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { showDialog } from "../utils/dialog";
-import { Loader } from "../components/Loader";
-import { useAuth } from "../contexts/userProvider";
+import { showDialog } from "../../utils/dialog";
+import { Loader } from "../Layout/Loader";
+import { useAuth } from "../../contexts/userProvider";
 
 export const UpdateForm = () => {
   const navigate = useNavigate();

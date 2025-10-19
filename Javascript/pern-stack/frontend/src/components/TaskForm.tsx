@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackButton } from "./BackButton";
-import { Loader } from "./Loader";
+import { Loader } from "./Layout/Loader";
 
 export const TaskForm = () => {
   const [titulo, setTitulo] = useState<string>("");

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { showDialog } from "../utils/dialog";
+import { showDialog } from "../../utils/dialog";
 import { useEffect } from "react";
-import { useAuth } from "../contexts/userProvider";
+import { useAuth } from "../../contexts/userProvider";
 
 export const Home = () => {
   const { auth } = useAuth();

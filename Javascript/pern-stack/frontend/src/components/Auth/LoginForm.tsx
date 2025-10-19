@@ -1,7 +1,7 @@
 import { useState, useEffect, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/userProvider";
-import { BackButton } from "./BackButton";
+import { useAuth } from "../../contexts/userProvider";
+import { BackButton } from "../BackButton";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState<string>("");
