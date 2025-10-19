@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/userProvider";
 export const UpdateForm = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { auth } = useAuth(); // ← Obtener datos del usuario autenticado
+  const { auth, refreshUser } = useAuth(); // ← Obtener datos del usuario autenticado del contexto
 
   // Estados inicializados con los datos del contexto
   const [userName, setUserName] = useState(auth?.user?.user_name || "");
@@ -113,6 +113,7 @@ export const UpdateForm = () => {
             </div>
           ),
         });
+        await refreshUser()
         setTimeout(() => navigate("/profile"), 800)
       } else {
         showDialog({

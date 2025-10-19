@@ -40,11 +40,11 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen text-zinc-800">
+    <div className="flex items-center justify-center min-h-screen">
       <BackButton />
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6  shadow-md w-96"
+        className="bg-white p-6 text-zinc-800 shadow-md w-96"
       >
         <h2 className="text-lg font-bold mb-4">Registro</h2>
         <div className="mb-4">

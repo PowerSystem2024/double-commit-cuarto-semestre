@@ -1,23 +1,22 @@
-import type { PartialUserProps } from "../definitions";
 import { formatDateAndTime } from "../utils/formatDate";
 import { Loader } from "../components/Loader";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/userProvider";
 import { showDialog } from "../utils/dialog";
 
 export const ProfileUser = () => {
   const navigate = useNavigate();
-  const { auth: initialData, isLoading, signout, deleteUser } = useAuth();
-  const [data, setData] = useState<PartialUserProps>({
-    user: initialData?.user,
-  });
+  const { auth, isLoading, signout, deleteUser, refreshUser } = useAuth();
+
 
   useEffect(() => {
-    if (initialData?.user) {
-      setData({ user: initialData.user });
+    const fetchNewData = async () => {
+      await refreshUser()
     }
-  }, [initialData]);
+    
+    fetchNewData()
+  }, [refreshUser]);
 
   if (isLoading) return <Loader />;
 
@@ -26,12 +25,12 @@ export const ProfileUser = () => {
     showDialog({
       content: (
         <div>
-          Usuario <strong className="text-rose-500">{data.user?.user_name}</strong>{" "}
-          y correo <strong className="text-rose-500">{data.user?.user_email}</strong> eliminado!
+          Usuario <strong className="text-rose-500">{auth?.user?.user_name}</strong>{" "}
+          y correo <strong className="text-rose-500">{auth?.user?.user_email}</strong> eliminado!
         </div>
       ),
     });
-    await deleteUser(data.user?.user_id as number);
+    await deleteUser(auth?.user?.user_id as number);
   };
 
   const confirmDeleteUser = async () => {
@@ -77,7 +76,7 @@ export const ProfileUser = () => {
         <div className="flex flex-col sm:flex-row items-center sm:items-start sm:gap-8 mb-8">
           <img
             src={
-              data?.user?.user_avatar ||
+              auth?.user?.user_avatar ||
               "https://cdn-icons-png.flaticon.com/512/149/149071.png"
             }
             alt="User Avatar"
@@ -85,14 +84,14 @@ export const ProfileUser = () => {
           />
           <div className="mt-5 sm:mt-0 text-center sm:text-left">
             <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-              {data?.user?.user_name}
+              {auth?.user?.user_name}
             </h2>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              {data?.user?.user_email}
+              {auth?.user?.user_email}
             </p>
             <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-500">
               Cuenta creada el{" "}
-              {formatDateAndTime(data?.user?.created_at as string)}
+              {formatDateAndTime(auth?.user?.created_at as string)}
             </p>
           </div>
         </div>

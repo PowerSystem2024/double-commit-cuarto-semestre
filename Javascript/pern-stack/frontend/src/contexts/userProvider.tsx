@@ -13,6 +13,7 @@ interface AuthContextType {
   signin: (email: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
+  refreshUser: () => Promise<void>
   isLoading: boolean;
   error: Error | null;
 }
@@ -101,9 +102,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const refreshUser = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/profile", {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Error al obtener usuario actualizado");
+      const data = await res.json();
+      setUser(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
+
   return (
     <AuthContext.Provider
-      value={{ auth: user, signin, signout, deleteUser, isLoading, error }}
+      value={{ auth: user, signin, signout, deleteUser, refreshUser, isLoading, error }}
     >
       {children}
     </AuthContext.Provider>

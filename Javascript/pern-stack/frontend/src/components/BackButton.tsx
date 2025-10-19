@@ -23,7 +23,7 @@ export const BackButton = () => {
         <path d="M6 8L2 12L6 16" />
         <path d="M2 12H22" />
       </svg>
-      <span className="text-zinc-800 dark:text-zinc-100">Volver</span>
+      <span className="text-zinc-100">Volver</span>
     </div>
   );
 };

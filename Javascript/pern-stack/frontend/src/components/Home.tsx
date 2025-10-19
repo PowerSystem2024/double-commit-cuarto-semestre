@@ -53,15 +53,15 @@ export const Home = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4">
-      <div className="text-center max-w-xl">
-        <p className="w-fit mx-auto text-zinc-100 italic text-sm px-2 bg-gradient-to-br from-[#57B4FF] via-[#8D70FE] to-[#BD34FE] border border-zinc-400/50 rounded-full">
+      <div className="text-center max-w-2xl">
+        <p className="welcome-p w-fit mx-auto text-[#FFC820] italic text-sm px-2 bg-gradient-to-br from-[#57B4FF] via-[#8D70FE] to-[#BD34FE] border border-zinc-400/50 rounded-full">
           “Una tarea a la vez, un paso más cerca del éxito.”
         </p>
-        <h1 className="text-5xl font-extrabold bg-clip-text bg-gradient-to-t from-blue-400 to-blue-600 text-transparent tracking-tight">
+        <h1 className="welcome-h1 text-[3.3rem] font-extrabold bg-clip-text bg-gradient-to-t from-blue-400 to-blue-600 text-transparent">
           Bienvenido a tu Gestor de Tareas
         </h1>
 
-        <p className="text-lg text-gray-400 my-2">
+        <p className="text-lg text-gray-400 my-1">
           Organiza tu día con facilidad, prioriza lo importante y alcanza tus
           objetivos sin estrés.
         </p>
@@ -69,7 +69,7 @@ export const Home = () => {
         <div className="mt-8">
           <button
             onClick={() => navigate("/tareas")}
-            className="px-6 py-3 bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition transform hover:scale-105 hover:shadow-blue-600/50 shadow-2xl"
+            className="welcome-btn px-6 py-3 bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition transform hover:scale-105 hover:shadow-blue-600/50 shadow-2xl"
           >
             Comenzar ahora
           </button>
