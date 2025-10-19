@@ -74,7 +74,7 @@ export const Home = () => {
   }, [auth]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+    <div className="flex flex-col items-center justify-center mt-28 px-4">
       <div className="text-center max-w-2xl">
         <p className="welcome-p w-fit mx-auto text-[#FFC820] italic text-sm px-2 bg-gradient-to-br from-[#57B4FF] via-[#8D70FE] to-[#BD34FE] border border-zinc-400/50 rounded-full">
           “Una tarea a la vez, un paso más cerca del éxito.”
