@@ -53,18 +53,17 @@ export const Home = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4">
-      <div className="text-center space-y-4 max-w-xl">
+      <div className="text-center max-w-xl">
+        <p className="w-fit mx-auto text-zinc-100 italic text-sm px-2 bg-gradient-to-br from-[#57B4FF] via-[#8D70FE] to-[#BD34FE] border border-zinc-400/50 rounded-full">
+          “Una tarea a la vez, un paso más cerca del éxito.”
+        </p>
         <h1 className="text-5xl font-extrabold bg-clip-text bg-gradient-to-t from-blue-400 to-blue-600 text-transparent tracking-tight">
           Bienvenido a tu Gestor de Tareas
         </h1>
 
-        <p className="text-lg text-gray-700">
+        <p className="text-lg text-gray-400 my-2">
           Organiza tu día con facilidad, prioriza lo importante y alcanza tus
           objetivos sin estrés.
-        </p>
-
-        <p className="text-gray-500 italic">
-          “Una tarea a la vez, un paso más cerca del éxito.”
         </p>
 
         <div className="mt-8">

@@ -113,7 +113,7 @@ export const UpdateForm = () => {
             </div>
           ),
         });
-        
+        setTimeout(() => navigate("/profile"), 800)
       } else {
         showDialog({
           content: (

@@ -24,7 +24,12 @@ export const ProfileUser = () => {
   const handleDeleteUser = async () => {
     document.querySelector("dialog")?.remove()
     showDialog({
-      content: <div>Usuario <strong className="text-rose-500">{data.user?.user_email}</strong> eliminado!</div>,
+      content: (
+        <div>
+          Usuario <strong className="text-rose-500">{data.user?.user_name}</strong>{" "}
+          y correo <strong className="text-rose-500">{data.user?.user_email}</strong> eliminado!
+        </div>
+      ),
     });
     await deleteUser(data.user?.user_id as number);
   };
