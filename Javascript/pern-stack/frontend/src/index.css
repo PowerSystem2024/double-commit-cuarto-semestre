@@ -65,3 +65,22 @@ dialog {
 .welcome-btn {
   animation: smoothScaleIn 1.6s forwards;
 }
+
+@keyframes slide-in-stack {
+  0% {
+    transform: translateX(-50px) scale(0.8);
+    opacity: 0;
+  }
+  80% {
+    transform: translateX(5px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-stack {
+  animation: slide-in-stack 0.5s ease-out forwards;
+}

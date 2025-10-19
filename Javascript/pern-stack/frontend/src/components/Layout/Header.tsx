@@ -33,7 +33,7 @@ export const Header = () => {
                   "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 }
                 alt={auth?.user?.user_name}
-                className="w-9 h-9 rounded-full object-cover border border-zinc-300 dark:border-zinc-700"
+                className="w-9 h-9 rounded-full object-cover border border-zinc-300 dark:border-zinc-700 hover:outline-4 outline-indigo-500/60 transition-colors duration-500"
               />
               <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
                 {auth?.user?.user_name || "No disponible"}
@@ -42,7 +42,7 @@ export const Header = () => {
 
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-sm border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+              className="w-44 px-4 py-2 text-sm border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
             >
               {isLoading ? "Cerrando sesión" : "Cerrar sesión"}
             </button>

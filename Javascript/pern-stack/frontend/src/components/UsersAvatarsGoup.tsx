@@ -1,6 +1,6 @@
 interface UserAvatarsGroupProps {
     users: { id: string; name: string; avatar: string; github: string }[];
-    size?: number; // Tamaño opcional del avatar (px)
+    size?: number;
   }
   
   export const UserAvatarsGroup = ({
@@ -17,12 +17,12 @@ interface UserAvatarsGroupProps {
             key={user.id}
             target="_blank"
             title={user.name}
-            className="rounded-full border-2 border-blue-500 overflow-hidden shadow-sm transform transition-all duration-300 relative hover:z-50 hover:scale-110"
+            className="rounded-full border-2 border-blue-500 overflow-hidden shadow-sm transform transition-all duration-300 relative hover:z-50 hover:scale-110 animate-stack"
             style={{
               width: size,
               height: size,
               marginLeft: index === 0 ? 0 : -overlap,
-             
+              animationDelay: `${index * 0.15}s`,
             }}
           >
             <img
