@@ -2,10 +2,32 @@ import { useNavigate } from "react-router-dom";
 import { showDialog } from "../../utils/dialog";
 import { useEffect } from "react";
 import { useAuth } from "../../contexts/userProvider";
+import { UserAvatarsGroup } from "../UsersAvatarsGoup";
 
 export const Home = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
+
+  const users = [
+    {
+      id: "1",
+      name: "Cecilia Olejarczyk",
+      avatar: "https://avatars.githubusercontent.com/u/104603137?v=4",
+      github: "https://github.com/CeciliaOlejar",
+    },
+    {
+      id: "2",
+      name: "Franco Morales",
+      avatar: "https://avatars.githubusercontent.com/u/134340520?v=4",
+      github: "https://github.com/Xeneixxe",
+    },
+    {
+      id: "3",
+      name: "Gabriel Calcagni",
+      avatar: "https://avatars.githubusercontent.com/u/93176365?v=4",
+      github: "https://github.com/solidsnk86",
+    },
+  ];
 
   useEffect(() => {
     if (auth?.user) {
@@ -74,6 +96,9 @@ export const Home = () => {
             Comenzar ahora
           </button>
         </div>
+      </div>
+      <div className="flex px-4 py-2 mt-10">
+        <UserAvatarsGroup users={users} size={45} />
       </div>
     </div>
   );
