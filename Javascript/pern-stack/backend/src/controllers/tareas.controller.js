@@ -13,7 +13,7 @@ class ControladorTareas {
       const result = await this.taskDb.query(GET_ALL_TASKS, [id]);
       const tasksResult = result?.rows || result
       
-      if (tasksResult.length === 0) return res.status(404).json({ message: "No hay tareas en la DB" });
+      if (tasksResult.length === 0) return res.status(200).json({ message: "No hay tareas en la DB", tareas: [] });
       
       res.status(200).json({ tareas: tasksResult });
     } catch (error) {

@@ -1,85 +1,140 @@
-import { useMemo, useState } from "react";
-import { Loader } from "../components/Loader";
-import { useFetch } from "../hooks/useFectch";
-import type { PartialTasksProps } from "../definitions";
+import { useEffect, useState } from "react";
+import { Loader } from "../components/Layout/Loader";
 import { TaskCard } from "../components/TaskCard";
 import { showDialog } from "../utils/dialog";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/userProvider"; // 👈 importante
+import type { PartialTasksProps } from "../definitions";
 
 export const TasksPage = () => {
-  const [reload, setReload] = useState(false); // 👈 bandera para recargar
+  const navigate = useNavigate();
+  const { auth, isLoading: authLoading } = useAuth();
 
-  const options = useMemo(
-    () => ({
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include" as const,
-    }),
-    []
-  );
+  const [data, setData] = useState<PartialTasksProps>({ tareas: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  const initialTasks: PartialTasksProps = {
-    message: "",
-    tareas: [],
-  };
+  useEffect(() => {
+    if (authLoading) return; // esperar a que termine la carga del usuario
+    if (!auth) {
+      navigate("/login");
+      return;
+    }
 
-  const { data = initialTasks, loading, error } = useFetch<PartialTasksProps>(
-    `http://localhost:5000/api/tareas?reload=${reload}`,
-    options
-  );
+    const fetchTasks = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("http://localhost:5000/api/tareas", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+
+        if (!res.ok) throw new Error("Error al obtener las tareas");
+
+        const result = await res.json();
+        setData(result);
+      } catch (err) {
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, [auth, authLoading, navigate]);
 
   const deleteTask = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/eliminar/tarea/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/eliminar/tarea/${id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        }
+      );
+
+      if (!res.ok) throw new Error("Error al eliminar la tarea");
 
       const data = await res.json();
 
       showDialog({
         content: (
           <div>
-            <h3>Se eliminó la tarea</h3>
-            <p>{data.message}</p>
+            <h3>Se eliminó la tarea: {data.tarea.titulo}</h3>
           </div>
         ),
       });
 
-      // 🔁 recargar lista
-      setReload((prev) => !prev);
+      setData((prev) => ({
+        ...prev,
+        tareas: prev.tareas?.filter((t) => t.tarea_id !== id),
+      }));
     } catch (err) {
       showDialog({ content: <div>{String(err)}</div> });
     }
   };
 
-  if (loading) return <Loader />;
-  if (error)
+  // Loader general (auth + tareas)
+  if (authLoading || loading) return <Loader />;
+
+  // Error al cargar tareas
+  if (error && !data?.tareas?.length) {
     return (
-      <div className="flex justify-center mx-auto bg-violet-400 mt-24">
-        <div className="flex justify-center flex-col">
-          <h1 className="text-2xl">No hay tareas creadas</h1>
-          <a href="/create-task" className="text-center hover:underline">
-            Crear la primera!
-          </a>
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="bg-red-50 dark:bg-red-950/30 p-6 rounded-xl shadow-md text-center">
+          <h1 className="text-xl font-semibold text-red-700 dark:text-red-300">
+            Error al cargar las tareas
+          </h1>
+          <p className="text-sm text-red-500 dark:text-red-400 mt-2">
+            {error.message || "No se pudo obtener la lista de tareas."}
+          </p>
+          <button
+            onClick={() => navigate("/create-task")}
+            className="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition"
+          >
+            Crear nueva tarea
+          </button>
         </div>
       </div>
     );
+  }
 
+  // Sin tareas
+  if (data?.tareas?.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-200">
+            No hay tareas creadas aún 🤔
+          </h1>
+          <button
+            onClick={() => navigate("/create-task")}
+            className="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition"
+          >
+            Crea tu primer tarea!
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Vista principal
   return (
     <div className="mt-24 p-4">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold mb-4">
-          Lista de Tareas {data?.tareas?.length}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">
+          Lista de Tareas ({data?.tareas?.length})
         </h1>
-        <a
-          href="/create-task"
-          className="flex gap-2 items-center px-3 py-2 bg-violet-400 border-violet-300 border rounded-xl"
+        <button
+          onClick={() => navigate("/create-task")}
+          className="flex gap-2 items-center px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 transition"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -90,9 +145,10 @@ export const TasksPage = () => {
             <path d="M5 12h14" />
             <path d="M12 5v14" />
           </svg>
-          Crear Tarea
-        </a>
+          Nueva Tarea
+        </button>
       </div>
+
       <TaskCard tareas={data?.tareas} deleteTask={deleteTask} />
     </div>
   );

@@ -150,30 +150,25 @@ export class ControladorUsuarios {
   actualizarUsuario = async (req, res) => {
     try {
       const id = req.userId
-      const { name, email, password } = req.body;
+      const { name, email, avatar } = req.body;
 
       if (!name || !email)
         return res.status(400).json({ message: "Campos vacíos" });
-
       const result = await this.authDb.query(GET_USER_BY_ID, [id]);
+
       const user = this.obtenerPrimeraFila(result);
 
       if (!user)
         return res.status(404).json({ message: "Usuario no encontrado" });
 
-      let hashedPassword = user.user_password;
-      if (password) {
-        hashedPassword = await hash(password, 10);
-      }
-      const gravatar = `https://gravatar.com/avatar/${md5(email)}`
       const updated = await this.authDb.query(UPDATE_USER, [
         id,
         name,
         email,
-        hashedPassword,
+        user.user_password,
         true,
         new Date().toISOString(),
-        gravatar
+        avatar
       ]);
 
       const updatedUser = this.obtenerPrimeraFila(updated);
@@ -194,9 +189,11 @@ export class ControladorUsuarios {
       const result = await this.authDb.query(DELETE_USER, [id]);
       const eliminado = this.obtenerPrimeraFila(result);
 
-      if (!eliminado)
+      if (!eliminado) {
         return res.status(404).json({ message: "Usuario no encontrado" });
+      }
 
+      res.clearCookie()
       return res.status(200).json({ message: "Usuario eliminado", user: eliminado });
     } catch (error) {
       return res
@@ -212,7 +209,7 @@ export class ControladorUsuarios {
       const user = this.obtenerPrimeraFila(result);
 
       if (!user)
-        return res.status(404).json({ message: "No se encontró el usuario" });
+        return res.status(404).json({ message: "Usuario inexistente" });
 
       return res.status(200).json({ message: "Perfil del usuario", user });
     } catch (error) {
